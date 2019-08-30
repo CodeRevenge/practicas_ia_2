@@ -1,0 +1,6 @@
+[submodule "Practica01_Perceptron/Perceptron_Back"]
+	path = Practica01_Perceptron/Perceptron_Back
+	url = https://github.com/WichoFlores/Perceptron_Back.git
+[submodule "Practica01_Perceptron/Perceptron_Front"]
+	path = Practica01_Perceptron/Perceptron_Front
+	url = https://github.com/WichoFlores/Perceptron_Front.git

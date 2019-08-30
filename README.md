@@ -19,8 +19,8 @@
 #### <center>Profesora: Arana Daniel, Nancy Guadalupe</center>
 
 ### <center>Autores</center>
-### <center>Flores Camarena, Luis Manuel</center>
-### <center>César Arley Ojeda Escobar</center>
++ <center>Flores Camarena, Luis Manuel</center>
++ <center>César Arley Ojeda Escobar</center>
 
 ## Practicas
 + Perceptrón
