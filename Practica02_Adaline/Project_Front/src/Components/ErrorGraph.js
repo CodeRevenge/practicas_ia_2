@@ -27,7 +27,15 @@ class ErrorGraph extends Component {
               marker: {color: 'black'},
             }
           ]}
-          layout={{width: 654, height: 250, title: 'Errores', hovermode: 'closest', showlegend: false}}
+          layout = {
+            {
+              width: 654,
+              height: 250,
+              title: 'Errores',
+              hovermode: 'closest',
+              showlegend: false
+            }
+          }
         />
       </Fragment>
     );

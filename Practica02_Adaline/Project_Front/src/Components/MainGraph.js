@@ -10,8 +10,8 @@ class MainGraph extends Component {
     class2: { x: [], y: []}
   };
 
-  componentWillUpdate() {
-    if(!(this.state.class1.x.length == 0 && this.state.class2.x.length == 0) && this.props.reset) {
+  UNSAFE_componentWillUpdate() {
+    if(!(this.state.class1.x.length === 0 && this.state.class2.x.length === 0) && this.props.reset) {
       this.resetPoints()
     }
   }
@@ -35,14 +35,14 @@ class MainGraph extends Component {
     }
 
     this.setState((prevState) => {
-      if(selectedClass == 0) {
+      if(selectedClass === 0) {
         let class1 = prevState.class1;
         class1.x.push(e.points[0].x)
         class1.y.push(e.points[0].y)
         this.props.setPoints(0, class1);
         return {class1}
 
-      } else if (selectedClass == 1) {
+      } else if (selectedClass === 1) {
           let class2 = prevState.class2;
           class2.x.push(e.points[0].x)
           class2.y.push(e.points[0].y)
@@ -61,8 +61,14 @@ class MainGraph extends Component {
 
   render() {
 
-    let config = {modeBarButtonsToRemove: ['hoverCompareCartesian'], scrollZoom: true}
+    let config = {modeBarButtonsToRemove: ['hoverCompareCartesian'], scrollZoom: false}
+    let tipo = ''
 
+    if (this.props.algorithmType === 'perceptron'){
+      tipo = "Perceptrón"
+    } else if(this.props.algorithmType === 'adaline'){
+      tipo = "Adaline"
+    }
     return(
       <Fragment>
         <Plot
@@ -97,7 +103,25 @@ class MainGraph extends Component {
               marker: {color: 'black'},
             }
           ]}
-          layout={{width: 654, height: 370, title: `Perceptrón (${this.props.finalEpochs} Épocas - ${this.props.converged ? "Sí" : "No"} Convergió)`, hovermode: 'closest', showlegend: false}}
+          layout = {
+            {
+              width: 654,
+              height: 370,
+              title: tipo,
+              hovermode: 'closest',
+              showlegend: false,
+              xaxis:{
+                autorange: false,
+                range: [-5,5],
+                zeroline: true
+              },
+              yaxis:{
+                autorange: false,
+                range: [-5,5],
+                zeroline: true
+              }
+            }
+          }
         />
       </Fragment>
     );

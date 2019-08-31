@@ -163,7 +163,7 @@ code {
     width: 100%;
     justify-content: space-around;
     align-items: center;
-    
+    display: block;
   }
   
   .button-inicializar, .button-resetear {
@@ -193,6 +193,8 @@ code {
     font-size: 26.4px;
     font-family: 'Darker Grotesque', sans-serif;
     font-weight: 100;
+    display: block;
+    margin-bottom: 5px;
   }
   
   .button-entrenar {
@@ -200,15 +202,63 @@ code {
     width: 80%;
     height: 52.8px; 
     border: none;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .info-panel {
+    position: relative;
+    background:white;
+    height: 150px;
+    width: 81%;
+  }
+
+  .info-panel ul{
+    list-style-type: none;
+    font-size: 18px;
+  }
+
+  .activate-panel{
+    display: block;
   }
 }
 
 @media (min-width: 1281px) { 
+  .activate-panel{
+    display: block !important;
+  }
+
+  .info-panel {
+    position: relative;
+    background:white;
+    height: 150px;
+    width: 81%;
+    display: none;
+  }
+
+  .info-panel ul{
+    list-style-type: none;
+    font-size: 18px;
+    position: inherit;
+    left:50%;
+  }
+  
+  .info {
+    font-size: 20px;
+    text-align: center;
+    display:none
+  }
+
+  .info-title{
+    text-align: center;
+    font-size: 25px;
+  }
+
   .navbar {
     width: 100%;
     height: 120px;
     min-height: 60px;
-    background-color: #16bac5;
+    background-color: #0d2a9e;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -216,7 +266,7 @@ code {
   }
   
   .navbar p {
-    font-size: 25px;
+    font-size: 40px;
     margin: 0 0 0 5.2vw;
     font-weight: 400;
     color: white;
@@ -263,7 +313,6 @@ code {
   }
   
   .control-panel {
-    border: 1px solid black;
     background-color: white;
     width: 660px;
     height: 860px;
@@ -271,6 +320,7 @@ code {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    margin: 0 15px 0 15px;
   }
   
   .classes-container, .inputs-container {
@@ -316,7 +366,7 @@ code {
   
   .buttons-container input {
     border-radius: 10px;
-    margin: auto;
+    margin: 5px auto 5px auto;
   }
   
   .buttons-container input:hover {
@@ -330,7 +380,7 @@ code {
     width: 100%;
     justify-content: space-around;
     align-items: center;
-    
+    display: block;
   }
   
   .button-inicializar, .button-resetear {
@@ -360,6 +410,8 @@ code {
     font-size: 40px;
     font-family: 'Darker Grotesque', sans-serif;
     font-weight: 100;
+    display: block;
+    margin-bottom: 5px;
   }
   
   .button-entrenar {
@@ -367,5 +419,15 @@ code {
     width: 80%;
     height: 80px; 
     border: none;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .red :hover{
+    opacity: 80%;
+  }
+
+  .blue :hover{
+    opacity: 80%;
   }
 }

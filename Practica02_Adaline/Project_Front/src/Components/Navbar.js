@@ -3,7 +3,7 @@ import React from 'react';
 const navbar = () => {
     return(
         <div className="navbar">
-            <p>Perceptrón</p>
+            <p>Proyecto de Inteligencia Artificial</p>
         </div>
     );
 };

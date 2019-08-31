@@ -7,7 +7,7 @@ import NavBar from './Components/Navbar';
 import MainGraph from './Components/MainGraph';
 import ErrorGraph from './Components/ErrorGraph';
 import ControlPanel from './Components/ControlPanel';
-import { log } from 'util';
+import InfoPanel from './Components/InfoPanel';
 
 class App extends Component {
   state = {
@@ -25,7 +25,9 @@ class App extends Component {
     finalWeights: [],
     finalTheta: "",
     initialized: false,
-    trained: false
+    trained: false,
+    algorithmType: "",
+    response: false
   };
 
   setClass = (c) => {
@@ -33,9 +35,9 @@ class App extends Component {
   }
 
   setPoints = async (classType, points) => {    
-    if(classType == 0) {
+    if(classType === 0) {
       this.setState({class1points: points})
-    } else if(classType == 1) {
+    } else if(classType === 1) {
       this.setState({class2points: points})
     }
   }
@@ -54,7 +56,7 @@ class App extends Component {
       return;
     }
 
-    if(this.state.maxEpochs == 0) {
+    if(this.state.maxEpochs === 0) {
       console.log('not initialized // invalid epochs');
       Swal.fire({
         title: 'Error',
@@ -66,7 +68,7 @@ class App extends Component {
       return;
     }
 
-    if(this.state.learningRate == 0 || this.state.learningRate == 1) {
+    if(this.state.learningRate <= 0 || this.state.learningRate >= 1) {
       console.log('not initialized // invalid epochs');
       Swal.fire({
         title: 'Error',
@@ -78,7 +80,7 @@ class App extends Component {
       return;
     }
 
-    if(Object.values(this.state.class1points).length == 0 || Object.values(this.state.class2points).length == 0) {
+    if(Object.values(this.state.class1points).length === 0 || Object.values(this.state.class2points).length === 0) {
       console.log('not initialized // invalid epochs');
       Swal.fire({
         title: 'Error',
@@ -123,7 +125,107 @@ class App extends Component {
       converged: response.data.converged,
       finalWeights: response.data.weights,
       finalTheta: response.data.theta,
-      trained: response.data.converged
+      trained: response.data.converged,
+      algorithmType: "perceptron",
+      response: true
+    });
+
+    if(this.state.trained) {
+      Swal.fire({
+        title: 'Entrenamiento Exitoso',
+        text: 'Ahora puedes agregar puntos para probar el modelo',
+        type: "success",
+        confirmButtonText: "Aceptar"
+      })
+    }
+  }
+
+  sendPointsAdaline = async () => {
+
+    if((!this.state.initialized)) {
+      console.log('not initialized // invalid epochs');
+      Swal.fire({
+        title: 'Error',
+        text: 'No se han inicializado los pesos',
+        type: 'error',
+        showConfirmButton: false,
+        timer: 1700
+      })
+      return;
+    }
+
+    if(this.state.maxEpochs === 0) {
+      console.log('not initialized // invalid epochs');
+      Swal.fire({
+        title: 'Error',
+        text: 'Las Épocas no pueden ser 0',
+        type: 'error',
+        showConfirmButton: false,
+        timer: 1700
+      })
+      return;
+    }
+
+    if(this.state.learningRate <= 0 || this.state.learningRate >= 1) {
+      console.log('not initialized // invalid epochs');
+      Swal.fire({
+        title: 'Error',
+        text: 'El Learning Rate no puede ser 0',
+        type: 'error',
+        showConfirmButton: false,
+        timer: 1700
+      })
+      return;
+    }
+
+    if(Object.values(this.state.class1points).length === 0 || Object.values(this.state.class2points).length === 0) {
+      console.log('not initialized // invalid epochs');
+      Swal.fire({
+        title: 'Error',
+        text: 'Faltan puntos en la gráfica',
+        type: 'error',
+        showConfirmButton: false,
+        timer: 1700
+      })
+      return;
+    }
+
+    let data = {
+      inputs: [],
+      classes: [],
+      maxEpochs: Number(this.state.maxEpochs),
+      learningRate: Number(this.state.learningRate),
+      weights: this.state.weights,
+      theta: this.state.theta
+    }
+    
+    this.state.class1points.x.forEach((point, i) => {
+      let pair = [point, this.state.class1points.y[i]]
+      data.inputs.push(pair)
+      data.classes.push(0)
+    })
+
+    this.state.class2points.x.forEach((point, i) => {
+      let pair = [point, this.state.class2points.y[i]]
+      data.inputs.push(pair)
+      data.classes.push(1)
+    })
+
+    console.log(data);
+
+    let response = await axios.post("http://127.0.0.1:5000/perceptron", data)
+    console.log(response.data);
+
+    await this.setState({
+      errors: response.data.errors,
+      slopes: response.data.slopes,
+      finalEpochs: response.data.errors.length,
+      converged: response.data.converged,
+      finalWeights: response.data.weights,
+      finalTheta: response.data.theta,
+      trained: response.data.converged,
+      algorithmType: 'adaline',
+      response: true
     });
 
     if(this.state.trained) {
@@ -148,7 +250,8 @@ class App extends Component {
       initialized: false,
       finalWeights: [],
       finalTheta: "",
-      trained: false
+      trained: false,
+      respones: false
     })
 
     await this.setState({
@@ -186,11 +289,12 @@ class App extends Component {
         <NavBar />
         <div className="main-container">
           <div className="container-left">
-            <MainGraph finalWeights={this.state.finalWeights} finalTheta={this.state.finalTheta} trained={this.state.trained} reset={this.state.reset} converged={this.state.converged} finalEpochs={this.state.finalEpochs} selectedClass={this.state.selectedClass} setPoints={this.setPoints} slope1={this.state.slopes.length > 0 ? this.state.slopes[this.state.slopes.length-1][0] : null} slope2={this.state.slopes.length > 0 ? this.state.slopes[this.state.slopes.length-1][1] : null} />
+            <MainGraph algorithmType={this.state.algorithmType} finalWeights={this.state.finalWeights} finalTheta={this.state.finalTheta} trained={this.state.trained} reset={this.state.reset} converged={this.state.converged} finalEpochs={this.state.finalEpochs} selectedClass={this.state.selectedClass} setPoints={this.setPoints} slope1={this.state.slopes.length > 0 ? this.state.slopes[this.state.slopes.length-1][0] : null} slope2={this.state.slopes.length > 0 ? this.state.slopes[this.state.slopes.length-1][1] : null} />
+            <InfoPanel algorithmType={this.state.algorithmType} response={this.state.response} errors={this.state.errors} converged={this.state.converged} finalEpochs={this.state.finalEpochs}/>
             <ErrorGraph errors={this.state.errors} />
           </div>
           <div className="container-right">
-            <ControlPanel trained={this.state.trained} initialize={this.initialize} onEpochsInput={this.onEpochsInput} onRateInput={this.onRateInput} epochsInput={this.state.maxEpochs} rateInput={this.state.learningRate} resetData={this.resetData} setClass={this.setClass} sendPoints={this.sendPoints} />
+            <ControlPanel algorithmType={this.state.algorithmType} trained={this.state.trained} initialize={this.initialize} onEpochsInput={this.onEpochsInput} onRateInput={this.onRateInput} epochsInput={this.state.maxEpochs} rateInput={this.state.learningRate} resetData={this.resetData} setClass={this.setClass} sendPoints={this.sendPoints} sendPointsAdaline={this.sendPointsAdaline} />
           </div>
         </div>
       </Fragment>

@@ -31,13 +31,13 @@ class ControlPanel extends Component {
           <div className="class1">
             <p>Clase 1</p>
             <div ref={(redClass) => {this.redClass = redClass}} className="class red active" onClick={this.setActive} >
-              <img className="class-image red" width="150" height="150" src={rectangle}></img>
+              <img className="class-image red" width="150" height="150" src={rectangle} alt="red ball"></img>
             </div>
           </div>
           <div className="class2">
             <p>Clase 2</p>
             <div ref={(blueClass) => {this.blueClass = blueClass}} className="class blue" onClick={this.setActive} >
-              <img className="class-image blue" width="150" height="150" src={circle}></img>
+              <img className="class-image blue" width="150" height="150" src={circle} alt="blue ball"></img>
             </div>
           </div>
         </div>
@@ -57,7 +57,8 @@ class ControlPanel extends Component {
           <input onClick={this.props.resetData} className="button-resetear" type="submit" value="Resetear"></input>
           </div>
           <div className="inicializar-container">
-            <input onClick={this.props.sendPoints} className="button-entrenar" type="submit" value="Entrenar"></input>
+            <input onClick={this.props.sendPoints} className="button-entrenar" type="submit" value="Entrenar Perceptron"></input>
+            <input onClick={this.props.sendPointsAdaline} className="button-entrenar" type="submit" value="Entrenar Adaline"></input>
           </div>
         </div>
       </div>
