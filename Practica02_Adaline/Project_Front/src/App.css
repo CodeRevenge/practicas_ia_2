@@ -149,7 +149,7 @@ code {
   
   .buttons-container input {
     border-radius: 10px;
-    margin: auto;
+    margin: 5px auto 5px auto;
   }
   
   .buttons-container input:hover {
@@ -190,7 +190,7 @@ code {
   .button-entrenar {
     background-color: #5863f8;
     color: white;
-    font-size: 26.4px;
+    font-size: 20px;
     font-family: 'Darker Grotesque', sans-serif;
     font-weight: 100;
     display: block;
