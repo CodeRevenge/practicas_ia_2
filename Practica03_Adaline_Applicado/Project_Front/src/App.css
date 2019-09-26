@@ -1,0 +1,387 @@
+@import url('https://fonts.googleapis.com/css?family=Darker+Grotesque:300,400,500&display=swap');
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.wrapper {
+  text-align: center;
+  font-family: 'Darker Grotesque', sans-serif;
+  height: 100%;
+  width: 100%;
+}
+
+.active {
+  border: 2px solid black !important;
+}
+
+
+@media (min-width: 1025px) and (max-width: 1280px) { 
+  .navbar {
+    width: 100%;
+    height: 80px;
+    background-color: #16bac5;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .navbar p {
+    font-size: 16.5px;
+    margin: 0 0 0 5.2vw;
+    font-weight: 400;
+    color: white;
+  }
+  
+  .main-container {
+    width: 100%;
+    height: 633px;
+    background-color: #efe9f4;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .container-left {
+    height: auto;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .container-right {
+    height: auto;
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .main-graph {
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 653px;
+    height: 380px;
+  }
+  
+  .error-graph {
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 653px;
+    height: 250;
+  }
+  
+  .control-panel {
+    border: 1px solid black;
+    background-color: white;
+    width: 435px;
+    height: 567px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  
+  .classes-container, .inputs-container {
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    height: 20%;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .class {
+    border: 1px solid black;
+    height: 105px;
+    width: 105px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .class img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .class:hover {
+    cursor: pointer;
+    border: 2px solid black;
+  }
+  
+  
+  .inputs-container input {
+    font-family: 'Darker Grotesque', sans-serif;
+    height: 33px;
+    font-size: 26.4px;
+    width: 118px;
+    text-align: center;
+  }
+  
+  .buttons-container {
+    height: 30%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .buttons-container input {
+    border-radius: 10px;
+    margin: auto;
+  }
+  
+  .buttons-container input:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+  
+  .set-buttons-container, .inicializar-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .inicializar-container {
+    width: 120%;
+  }
+  
+  .button-inicializar, .button-resetear {
+    padding: 6px;
+    width: 40%;
+    height: 52.8px;
+    color: white;
+    font-size: 26.4px;
+    font-family: 'Darker Grotesque', sans-serif;
+    font-weight: 100;
+  }
+  
+  .button-inicializar {
+    background-color: #a5e164;
+    box-shadow: none;
+    border: none;
+  }
+  
+  .button-resetear {
+    background-color: #f74646;
+    border: none;
+  }
+  
+  .button-entrenar {
+    background-color: #5863f8;
+    color: white;
+    font-size: 26.4px;
+    font-family: 'Darker Grotesque', sans-serif;
+    font-weight: 100;
+    max-width: 180px;
+  }
+  
+  .button-entrenar {
+    padding: 10px;
+    width: 80%;
+    height: 52.8px; 
+    border: none;
+  }
+
+  .adaline {
+    background-color: #9d58f8;
+  }
+}
+
+@media (min-width: 1281px) { 
+  .navbar {
+    width: 100%;
+    height: 120px;
+    min-height: 60px;
+    background-color: #16bac5;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .navbar p {
+    font-size: 25px;
+    margin: 0 0 0 5.2vw;
+    font-weight: 400;
+    color: white;
+  }
+  
+  .main-container {
+    width: 100%;
+    height: 960px;
+    background-color: #efe9f4;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .container-left {
+    height: auto;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .container-right {
+    height: auto;
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .main-graph {
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 990px;
+    height: 576px;
+  }
+  
+  .error-graph {
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 990px;
+    height: 215px;
+  }
+  
+  .control-panel {
+    border: 1px solid black;
+    background-color: white;
+    width: 660px;
+    height: 860px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  
+  .classes-container, .inputs-container {
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    height: 20%;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .class {
+    border: 1px solid black;
+    height: 160px;
+    width: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .class:hover {
+    cursor: pointer;
+    border: 2px solid black;
+  }
+  
+  
+  .inputs-container input {
+    font-family: 'Darker Grotesque', sans-serif;
+    height: 50px;
+    font-size: 40px;
+    width: 180px;
+    text-align: center;
+  }
+  
+  .buttons-container {
+    height: 30%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .buttons-container input {
+    border-radius: 10px;
+    margin: auto;
+  }
+  
+  .buttons-container input:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+  
+  .set-buttons-container, .inicializar-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .inicializar-container {
+    width: 120%;
+  }
+  
+  .button-inicializar, .button-resetear {
+    padding: 10px;
+    width: 40%;
+    height: 80px;
+    color: white;
+    font-size: 40px;
+    font-family: 'Darker Grotesque', sans-serif;
+    font-weight: 100;
+  }
+  
+  .button-inicializar {
+    background-color: #a5e164;
+    box-shadow: none;
+    border: none;
+  }
+  
+  .button-resetear {
+    background-color: #f74646;
+    border: none;
+  }
+  
+  .button-entrenar {
+    background-color: #5863f8;
+    color: white;
+    font-size: 40px;
+    font-family: 'Darker Grotesque', sans-serif;
+    font-weight: 100;
+    max-width: 250px;
+  }
+  
+  .button-entrenar {
+    padding: 10px;
+    width: 80%;
+    height: 80px; 
+    border: none;
+  }
+
+  .adaline {
+    background-color: #9d58f8;
+  }
+}
