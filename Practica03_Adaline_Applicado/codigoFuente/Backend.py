@@ -36,7 +36,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow, MplWidget):
         # self.lineaErrores[1] = np.append(self.lineaErrores[1][1:],0.0)
         # grafica.cargarGrafica(self.ERROR_MAX, self.lineaErrores[0], self.lineaErrores[1], grafica.linea, False)
 
+    def normalizarDatos(self):
+        self.datos = self.datos.applymap(self.normalizar)
 
+    def normalizar(self, dato):
+        if dato >= 2:
+                dato = 1
+        else:
+            dato = 0
 
     def leerArchivo(self):
         mensaje = QtWidgets.QMessageBox()

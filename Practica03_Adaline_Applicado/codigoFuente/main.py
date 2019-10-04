@@ -4,6 +4,7 @@ def main():
     app = QtWidgets.QApplication([])
     window = MainWindow()
     if window.leerArchivo():
+        window.normalizarDatos()
         window.show()
         app.exec_()
 
