@@ -29,6 +29,14 @@ Para que los cambios en el editor de interfaces surta efecto, es necesario ejecu
 pyuic5 -x Interface_MLP.ui -o Interface_MLP.py
 ```
 
+#### Convertir cambios en los recursos
+
+En dado caso de haber hecho modifiaciones en los recursos de la interfaz, es necesario ejecutar el siguiente comando:
+
+```
+pyrcc5 recursos.qrc -o recursos_rc.py
+```
+
 ### Cambios de funcionalidades
 
 Para agregar funcionalidades en el programa es necesario trabajar sobre el archivo `Interface_MLP.py` en la clase `MainWindow`
