@@ -79,10 +79,11 @@ class Points_Input(QWidget):
         self.ax.tick_params(axis='y', colors='#b1b1b1')
 
     def clearPlot(self):
-        plt.cla()
+        plt.clf()
         self.init_graph()
         self.rojos = []
         self.azules = []
         self.linea = False
         self.x = np.arange(0,11)
         self.y = self.x
+        self.canvas.draw()

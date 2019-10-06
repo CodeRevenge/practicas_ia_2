@@ -7,3 +7,5 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
 
         self.setupUi(self)
+
+        self.btn_clean_input_graph.clicked.connect(self.input_graph.clearPlot)

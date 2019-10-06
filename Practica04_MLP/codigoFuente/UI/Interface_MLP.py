@@ -118,7 +118,7 @@ class Ui_MainWindow(object):
 "    border-style: solid;\n"
 "    border-radius: 6;\n"
 "    padding: 3px;\n"
-"    font-size: 12px;\n"
+"    font: 10pt \"MS Shell Dlg 2\";\n"
 "    padding-left: 5px;\n"
 "    padding-right: 5px;\n"
 "}\n"
@@ -496,11 +496,9 @@ class Ui_MainWindow(object):
 "\n"
 "QPushButton:disabled\n"
 "{\n"
-"    text-size: 18px;\n"
 "    color:rgb(98, 98, 98);\n"
-"    border-round:5px;\n"
+"    border-radius:5px;\n"
 "    border: 1px solid rgb(65, 65, 65);\n"
-"    \n"
 "    background-color: rgb(66, 66, 66);\n"
 "}")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -679,18 +677,26 @@ class Ui_MainWindow(object):
         self.classes_cout.setObjectName("classes_cout")
         self.btn_generate_classes = QtWidgets.QPushButton(self.control_box)
         self.btn_generate_classes.setGeometry(QtCore.QRect(10, 260, 151, 31))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.btn_generate_classes.setFont(font)
         self.btn_generate_classes.setObjectName("btn_generate_classes")
         self.btn_train = QtWidgets.QPushButton(self.control_box)
         self.btn_train.setEnabled(False)
         self.btn_train.setGeometry(QtCore.QRect(10, 510, 531, 51))
         font = QtGui.QFont()
-        font.setPointSize(-1)
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
         self.btn_train.setFont(font)
         self.btn_train.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
-        self.btn_train.setStyleSheet("QPushButton\n"
-"{\n"
-"    text-size: 18px;\n"
-"}")
+        self.btn_train.setStyleSheet("font: 12pt \"MS Shell Dlg 2\";")
         self.btn_train.setObjectName("btn_train")
         self.label_5 = QtWidgets.QLabel(self.control_box)
         self.label_5.setGeometry(QtCore.QRect(10, 300, 151, 41))
@@ -699,6 +705,7 @@ class Ui_MainWindow(object):
         font.setBold(False)
         font.setWeight(50)
         self.label_5.setFont(font)
+        self.label_5.setStyleSheet("")
         self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         self.label_5.setObjectName("label_5")
         self.layer_count = QtWidgets.QSpinBox(self.control_box)
@@ -836,8 +843,10 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Ratio de aprendizaje:"))
         self.learning_rate.setToolTip(_translate("MainWindow", "<html><head/><body><p>Ratio de aprendizaje entre 1 y 0.</p></body></html>"))
         self.min_error.setToolTip(_translate("MainWindow", "<html><head/><body><p>El error mínimo mientras más pequeño mejor para el entrenamiento.</p></body></html>"))
+        self.label_2.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:9pt;\">Especifique el error mínimo.</span></p></body></html>"))
         self.label_2.setText(_translate("MainWindow", "Error mínimo:"))
         self.max_ephocs.setToolTip(_translate("MainWindow", "<html><head/><body><p>Cantidad de épocas entre 0 y 999999.</p></body></html>"))
+        self.label_3.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:9pt;\">Especifique el número de épocas máximas.</span></p></body></html>"))
         self.label_3.setText(_translate("MainWindow", "Épocas máximas:"))
         self.classes_box.setTitle(_translate("MainWindow", "Clases"))
         self.pushButton.setText(_translate("MainWindow", "Clase #1"))
@@ -846,6 +855,7 @@ class Ui_MainWindow(object):
         self.label_4.setToolTip(_translate("MainWindow", "<html><head/><body><p>Especifique el ratio de aprendizaje para el MLP.</p></body></html>"))
         self.label_4.setText(_translate("MainWindow", "Número de clases"))
         self.btn_generate_classes.setText(_translate("MainWindow", "Generar clases"))
+        self.btn_train.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt;\">Primero debe ingresar al menos 3 puntos de diferentes clases para activar el entrenamiento del MLP.</span></p></body></html>"))
         self.btn_train.setText(_translate("MainWindow", "Entrenar MLP"))
         self.label_5.setToolTip(_translate("MainWindow", "<html><head/><body><p>Especifique el ratio de aprendizaje para el MLP.</p></body></html>"))
         self.label_5.setText(_translate("MainWindow", "Número de capas"))

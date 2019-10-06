@@ -123,7 +123,7 @@ QPushButton
     border-style: solid;
     border-radius: 6;
     padding: 3px;
-    font-size: 12px;
+    font: 10pt &quot;MS Shell Dlg 2&quot;;
     padding-left: 5px;
     padding-right: 5px;
 }
@@ -501,11 +501,9 @@ QDoubleSpinBox:!focus:hover , QSpinBox:!focus:hover
 
 QPushButton:disabled
 {
-	text-size: 18px;
 	color:rgb(98, 98, 98);
-	border-round:5px;
+	border-radius:5px;
 	border: 1px solid rgb(65, 65, 65);
-	
 	background-color: rgb(66, 66, 66);
 }</string>
   </property>
@@ -728,6 +726,9 @@ QPushButton:disabled
        <bold>false</bold>
       </font>
      </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Especifique el error mínimo.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="text">
       <string>Error mínimo:</string>
      </property>
@@ -789,6 +790,9 @@ QPushButton:disabled
        <weight>50</weight>
        <bold>false</bold>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Especifique el número de épocas máximas.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Épocas máximas:</string>
@@ -998,6 +1002,15 @@ QPushButton:focus
        <height>31</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Generar clases</string>
      </property>
@@ -1016,17 +1029,21 @@ QPushButton:focus
      </property>
      <property name="font">
       <font>
-       <pointsize>-1</pointsize>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="cursor">
       <cursorShape>OpenHandCursor</cursorShape>
      </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Primero debe ingresar al menos 3 puntos de diferentes clases para activar el entrenamiento del MLP.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton
-{
-	text-size: 18px;
-}</string>
+      <string notr="true">font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
      </property>
      <property name="text">
       <string>Entrenar MLP</string>
@@ -1050,6 +1067,9 @@ QPushButton:focus
      </property>
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Especifique el ratio de aprendizaje para el MLP.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>Número de capas</string>
