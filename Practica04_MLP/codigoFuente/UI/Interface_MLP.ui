@@ -17,8 +17,8 @@
    <string>MultiLayer Adaline</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="recursos/recursos.qrc">
-    <normaloff>:/iconos/inteligencia-artificial.svg</normaloff>:/iconos/inteligencia-artificial.svg</iconset>
+   <iconset resource="resources/resources.qrc">
+    <normaloff>:/icons/icons/inteligencia-artificial.svg</normaloff>:/icons/icons/inteligencia-artificial.svg</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">QToolTip
@@ -497,22 +497,32 @@ QDoubleSpinBox:focus , QSpinBox:focus
 QDoubleSpinBox:!focus:hover , QSpinBox:!focus:hover
 {
 	border: 1px solid #7e7e7e;
+}
+
+QPushButton:disabled
+{
+	text-size: 18px;
+	color:rgb(98, 98, 98);
+	border-round:5px;
+	border: 1px solid rgb(65, 65, 65);
+	
+	background-color: rgb(66, 66, 66);
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="input_box">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
       <width>481</width>
-      <height>361</height>
+      <height>401</height>
      </rect>
     </property>
     <property name="title">
      <string>Entrada de puntos</string>
     </property>
-    <widget class="Points_Input" name="widget" native="true">
+    <widget class="Points_Input" name="input_graph" native="true">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -521,32 +531,51 @@ QDoubleSpinBox:!focus:hover , QSpinBox:!focus:hover
        <height>331</height>
       </rect>
      </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">padding: 0px;</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_clean_input_graph">
+     <property name="geometry">
+      <rect>
+       <x>165</x>
+       <y>360</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Limpiar gráfica</string>
+     </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_2">
+   <widget class="QGroupBox" name="error_box">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>380</y>
+      <y>420</y>
       <width>481</width>
-      <height>231</height>
+      <height>191</height>
      </rect>
     </property>
     <property name="title">
      <string>Errores</string>
     </property>
-    <widget class="Error_Graph" name="widget_2" native="true">
+    <widget class="Error_Graph" name="error_graph" native="true">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
        <width>461</width>
-       <height>201</height>
+       <height>161</height>
       </rect>
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_3">
+   <widget class="QGroupBox" name="control_box">
     <property name="geometry">
      <rect>
       <x>510</x>
@@ -768,7 +797,7 @@ QDoubleSpinBox:!focus:hover , QSpinBox:!focus:hover
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QGroupBox" name="groupBox_4">
+    <widget class="QGroupBox" name="classes_box">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -997,16 +1026,6 @@ QPushButton:focus
       <string notr="true">QPushButton
 {
 	text-size: 18px;
-}
-
-QPushButton:disabled
-{
-	text-size: 18px;
-	color:rgb(98, 98, 98);
-	border-round:5px;
-	border: 1px solid rgb(65, 65, 65);
-	
-	background-color: rgb(66, 66, 66);
 }</string>
      </property>
      <property name="text">
@@ -1088,7 +1107,7 @@ QPushButton:disabled
       <string>Generar capas</string>
      </property>
     </widget>
-    <widget class="QGroupBox" name="groupBox_5">
+    <widget class="QGroupBox" name="neurons_box">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -1328,7 +1347,7 @@ QPushButton:disabled
     <widget class="QPushButton" name="pushButton_5">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>440</y>
        <width>51</width>
        <height>51</height>
@@ -1341,7 +1360,7 @@ QPushButton:disabled
     <widget class="QPushButton" name="pushButton_6">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>70</x>
        <y>440</y>
        <width>51</width>
        <height>51</height>
@@ -1354,7 +1373,7 @@ QPushButton:disabled
     <widget class="QPushButton" name="pushButton_7">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>130</x>
        <y>440</y>
        <width>51</width>
        <height>51</height>
@@ -1365,6 +1384,9 @@ QPushButton:disabled
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_8">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>210</x>
@@ -1378,6 +1400,9 @@ QPushButton:disabled
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_9">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>210</x>
@@ -1400,7 +1425,7 @@ QPushButton:disabled
       </rect>
      </property>
      <property name="value">
-      <number>24</number>
+      <number>0</number>
      </property>
     </widget>
    </widget>
@@ -1410,18 +1435,18 @@ QPushButton:disabled
   <customwidget>
    <class>Error_Graph</class>
    <extends>QWidget</extends>
-   <header location="global">error_graph.h</header>
+   <header>UI/external_widgets/error_graph.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>Points_Input</class>
    <extends>QWidget</extends>
-   <header location="global">points_input.h</header>
+   <header>UI/external_widgets/points_input.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="recursos/recursos.qrc"/>
+  <include location="resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

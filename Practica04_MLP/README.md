@@ -26,7 +26,7 @@ En el terminal ejecutar `designer` y abrir el archivo Interface_MLP.ui
 Para que los cambios en el editor de interfaces surta efecto, es necesario ejecutar el siguiente comando que transformara el archivo `Interface_MLP.ui` en un archivo `Interface_MLP.py`
 
 ```
-pyuic5 -x Interface_MLP.ui -o Interface_MLP.py
+pyuic5 -x UI\Interface_MLP.ui -o UI\Interface_MLP.py --import-from UI.resources
 ```
 
 #### Convertir cambios en los recursos
@@ -34,7 +34,7 @@ pyuic5 -x Interface_MLP.ui -o Interface_MLP.py
 En dado caso de haber hecho modifiaciones en los recursos de la interfaz, es necesario ejecutar el siguiente comando:
 
 ```
-pyrcc5 recursos.qrc -o recursos_rc.py
+pyrcc5 UI\resources\resources.qrc -o UI\resources\resources_rc.py
 ```
 
 ### Cambios de funcionalidades

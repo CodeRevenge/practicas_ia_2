@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Interface_MLP.ui'
+# Form implementation generated from reading ui file 'UI\Interface_MLP.ui'
 #
 # Created by: PyQt5 UI code generator 5.9.2
 #
@@ -14,7 +14,7 @@ class Ui_MainWindow(object):
         MainWindow.setEnabled(True)
         MainWindow.resize(1079, 622)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/iconos/inteligencia-artificial.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/inteligencia-artificial.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet("QToolTip\n"
 "{\n"
@@ -492,25 +492,40 @@ class Ui_MainWindow(object):
 "QDoubleSpinBox:!focus:hover , QSpinBox:!focus:hover\n"
 "{\n"
 "    border: 1px solid #7e7e7e;\n"
+"}\n"
+"\n"
+"QPushButton:disabled\n"
+"{\n"
+"    text-size: 18px;\n"
+"    color:rgb(98, 98, 98);\n"
+"    border-round:5px;\n"
+"    border: 1px solid rgb(65, 65, 65);\n"
+"    \n"
+"    background-color: rgb(66, 66, 66);\n"
 "}")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox.setGeometry(QtCore.QRect(10, 10, 481, 361))
-        self.groupBox.setObjectName("groupBox")
-        self.widget = Points_Input(self.groupBox)
-        self.widget.setGeometry(QtCore.QRect(10, 20, 461, 331))
-        self.widget.setObjectName("widget")
-        self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_2.setGeometry(QtCore.QRect(10, 380, 481, 231))
-        self.groupBox_2.setObjectName("groupBox_2")
-        self.widget_2 = Error_Graph(self.groupBox_2)
-        self.widget_2.setGeometry(QtCore.QRect(10, 20, 461, 201))
-        self.widget_2.setObjectName("widget_2")
-        self.groupBox_3 = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_3.setGeometry(QtCore.QRect(510, 10, 551, 601))
-        self.groupBox_3.setObjectName("groupBox_3")
-        self.label = QtWidgets.QLabel(self.groupBox_3)
+        self.input_box = QtWidgets.QGroupBox(self.centralwidget)
+        self.input_box.setGeometry(QtCore.QRect(10, 10, 481, 401))
+        self.input_box.setObjectName("input_box")
+        self.input_graph = Points_Input(self.input_box)
+        self.input_graph.setGeometry(QtCore.QRect(10, 20, 461, 331))
+        self.input_graph.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.input_graph.setStyleSheet("padding: 0px;")
+        self.input_graph.setObjectName("input_graph")
+        self.btn_clean_input_graph = QtWidgets.QPushButton(self.input_box)
+        self.btn_clean_input_graph.setGeometry(QtCore.QRect(165, 360, 151, 31))
+        self.btn_clean_input_graph.setObjectName("btn_clean_input_graph")
+        self.error_box = QtWidgets.QGroupBox(self.centralwidget)
+        self.error_box.setGeometry(QtCore.QRect(10, 420, 481, 191))
+        self.error_box.setObjectName("error_box")
+        self.error_graph = Error_Graph(self.error_box)
+        self.error_graph.setGeometry(QtCore.QRect(10, 20, 461, 161))
+        self.error_graph.setObjectName("error_graph")
+        self.control_box = QtWidgets.QGroupBox(self.centralwidget)
+        self.control_box.setGeometry(QtCore.QRect(510, 10, 551, 601))
+        self.control_box.setObjectName("control_box")
+        self.label = QtWidgets.QLabel(self.control_box)
         self.label.setGeometry(QtCore.QRect(10, 20, 241, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -519,7 +534,7 @@ class Ui_MainWindow(object):
         self.label.setFont(font)
         self.label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label.setObjectName("label")
-        self.learning_rate = QtWidgets.QDoubleSpinBox(self.groupBox_3)
+        self.learning_rate = QtWidgets.QDoubleSpinBox(self.control_box)
         self.learning_rate.setGeometry(QtCore.QRect(300, 20, 241, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -536,7 +551,7 @@ class Ui_MainWindow(object):
         self.learning_rate.setSingleStep(0.01)
         self.learning_rate.setProperty("value", 0.5)
         self.learning_rate.setObjectName("learning_rate")
-        self.min_error = QtWidgets.QDoubleSpinBox(self.groupBox_3)
+        self.min_error = QtWidgets.QDoubleSpinBox(self.control_box)
         self.min_error.setGeometry(QtCore.QRect(300, 70, 241, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -552,7 +567,7 @@ class Ui_MainWindow(object):
         self.min_error.setSingleStep(0.01)
         self.min_error.setProperty("value", 0.02)
         self.min_error.setObjectName("min_error")
-        self.label_2 = QtWidgets.QLabel(self.groupBox_3)
+        self.label_2 = QtWidgets.QLabel(self.control_box)
         self.label_2.setGeometry(QtCore.QRect(10, 70, 241, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -561,7 +576,7 @@ class Ui_MainWindow(object):
         self.label_2.setFont(font)
         self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName("label_2")
-        self.max_ephocs = QtWidgets.QSpinBox(self.groupBox_3)
+        self.max_ephocs = QtWidgets.QSpinBox(self.control_box)
         self.max_ephocs.setGeometry(QtCore.QRect(300, 120, 241, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -574,7 +589,7 @@ class Ui_MainWindow(object):
         self.max_ephocs.setMaximum(999999999)
         self.max_ephocs.setProperty("value", 2000)
         self.max_ephocs.setObjectName("max_ephocs")
-        self.label_3 = QtWidgets.QLabel(self.groupBox_3)
+        self.label_3 = QtWidgets.QLabel(self.control_box)
         self.label_3.setGeometry(QtCore.QRect(10, 120, 241, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -583,10 +598,10 @@ class Ui_MainWindow(object):
         self.label_3.setFont(font)
         self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_3.setObjectName("label_3")
-        self.groupBox_4 = QtWidgets.QGroupBox(self.groupBox_3)
-        self.groupBox_4.setGeometry(QtCore.QRect(170, 170, 371, 121))
-        self.groupBox_4.setObjectName("groupBox_4")
-        self.scrollArea = QtWidgets.QScrollArea(self.groupBox_4)
+        self.classes_box = QtWidgets.QGroupBox(self.control_box)
+        self.classes_box.setGeometry(QtCore.QRect(170, 170, 371, 121))
+        self.classes_box.setObjectName("classes_box")
+        self.scrollArea = QtWidgets.QScrollArea(self.classes_box)
         self.scrollArea.setGeometry(QtCore.QRect(10, 20, 351, 91))
         self.scrollArea.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -640,7 +655,7 @@ class Ui_MainWindow(object):
 "}")
         self.pushButton_4.setObjectName("pushButton_4")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.label_4 = QtWidgets.QLabel(self.groupBox_3)
+        self.label_4 = QtWidgets.QLabel(self.control_box)
         self.label_4.setGeometry(QtCore.QRect(10, 170, 151, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -649,7 +664,7 @@ class Ui_MainWindow(object):
         self.label_4.setFont(font)
         self.label_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label_4.setObjectName("label_4")
-        self.classes_cout = QtWidgets.QSpinBox(self.groupBox_3)
+        self.classes_cout = QtWidgets.QSpinBox(self.control_box)
         self.classes_cout.setGeometry(QtCore.QRect(10, 210, 151, 31))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -662,10 +677,10 @@ class Ui_MainWindow(object):
         self.classes_cout.setMaximum(50)
         self.classes_cout.setProperty("value", 3)
         self.classes_cout.setObjectName("classes_cout")
-        self.btn_generate_classes = QtWidgets.QPushButton(self.groupBox_3)
+        self.btn_generate_classes = QtWidgets.QPushButton(self.control_box)
         self.btn_generate_classes.setGeometry(QtCore.QRect(10, 260, 151, 31))
         self.btn_generate_classes.setObjectName("btn_generate_classes")
-        self.btn_train = QtWidgets.QPushButton(self.groupBox_3)
+        self.btn_train = QtWidgets.QPushButton(self.control_box)
         self.btn_train.setEnabled(False)
         self.btn_train.setGeometry(QtCore.QRect(10, 510, 531, 51))
         font = QtGui.QFont()
@@ -675,19 +690,9 @@ class Ui_MainWindow(object):
         self.btn_train.setStyleSheet("QPushButton\n"
 "{\n"
 "    text-size: 18px;\n"
-"}\n"
-"\n"
-"QPushButton:disabled\n"
-"{\n"
-"    text-size: 18px;\n"
-"    color:rgb(98, 98, 98);\n"
-"    border-round:5px;\n"
-"    border: 1px solid rgb(65, 65, 65);\n"
-"    \n"
-"    background-color: rgb(66, 66, 66);\n"
 "}")
         self.btn_train.setObjectName("btn_train")
-        self.label_5 = QtWidgets.QLabel(self.groupBox_3)
+        self.label_5 = QtWidgets.QLabel(self.control_box)
         self.label_5.setGeometry(QtCore.QRect(10, 300, 151, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -696,7 +701,7 @@ class Ui_MainWindow(object):
         self.label_5.setFont(font)
         self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         self.label_5.setObjectName("label_5")
-        self.layer_count = QtWidgets.QSpinBox(self.groupBox_3)
+        self.layer_count = QtWidgets.QSpinBox(self.control_box)
         self.layer_count.setGeometry(QtCore.QRect(10, 340, 151, 31))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -709,13 +714,13 @@ class Ui_MainWindow(object):
         self.layer_count.setMaximum(50)
         self.layer_count.setProperty("value", 3)
         self.layer_count.setObjectName("layer_count")
-        self.btn_generate_classes_2 = QtWidgets.QPushButton(self.groupBox_3)
+        self.btn_generate_classes_2 = QtWidgets.QPushButton(self.control_box)
         self.btn_generate_classes_2.setGeometry(QtCore.QRect(10, 390, 151, 31))
         self.btn_generate_classes_2.setObjectName("btn_generate_classes_2")
-        self.groupBox_5 = QtWidgets.QGroupBox(self.groupBox_3)
-        self.groupBox_5.setGeometry(QtCore.QRect(170, 300, 371, 121))
-        self.groupBox_5.setObjectName("groupBox_5")
-        self.scrollArea_2 = QtWidgets.QScrollArea(self.groupBox_5)
+        self.neurons_box = QtWidgets.QGroupBox(self.control_box)
+        self.neurons_box.setGeometry(QtCore.QRect(170, 300, 371, 121))
+        self.neurons_box.setObjectName("neurons_box")
+        self.scrollArea_2 = QtWidgets.QScrollArea(self.neurons_box)
         self.scrollArea_2.setGeometry(QtCore.QRect(10, 20, 351, 91))
         self.scrollArea_2.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.scrollArea_2.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -794,24 +799,26 @@ class Ui_MainWindow(object):
         self.layer_count_4.setProperty("value", 1)
         self.layer_count_4.setObjectName("layer_count_4")
         self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
-        self.pushButton_5 = QtWidgets.QPushButton(self.groupBox_3)
-        self.pushButton_5.setGeometry(QtCore.QRect(20, 440, 51, 51))
+        self.pushButton_5 = QtWidgets.QPushButton(self.control_box)
+        self.pushButton_5.setGeometry(QtCore.QRect(10, 440, 51, 51))
         self.pushButton_5.setObjectName("pushButton_5")
-        self.pushButton_6 = QtWidgets.QPushButton(self.groupBox_3)
-        self.pushButton_6.setGeometry(QtCore.QRect(80, 440, 51, 51))
+        self.pushButton_6 = QtWidgets.QPushButton(self.control_box)
+        self.pushButton_6.setGeometry(QtCore.QRect(70, 440, 51, 51))
         self.pushButton_6.setObjectName("pushButton_6")
-        self.pushButton_7 = QtWidgets.QPushButton(self.groupBox_3)
-        self.pushButton_7.setGeometry(QtCore.QRect(140, 440, 51, 51))
+        self.pushButton_7 = QtWidgets.QPushButton(self.control_box)
+        self.pushButton_7.setGeometry(QtCore.QRect(130, 440, 51, 51))
         self.pushButton_7.setObjectName("pushButton_7")
-        self.pushButton_8 = QtWidgets.QPushButton(self.groupBox_3)
+        self.pushButton_8 = QtWidgets.QPushButton(self.control_box)
+        self.pushButton_8.setEnabled(False)
         self.pushButton_8.setGeometry(QtCore.QRect(210, 440, 161, 21))
         self.pushButton_8.setObjectName("pushButton_8")
-        self.pushButton_9 = QtWidgets.QPushButton(self.groupBox_3)
+        self.pushButton_9 = QtWidgets.QPushButton(self.control_box)
+        self.pushButton_9.setEnabled(False)
         self.pushButton_9.setGeometry(QtCore.QRect(210, 470, 161, 21))
         self.pushButton_9.setObjectName("pushButton_9")
-        self.progressBar = QtWidgets.QProgressBar(self.groupBox_3)
+        self.progressBar = QtWidgets.QProgressBar(self.control_box)
         self.progressBar.setGeometry(QtCore.QRect(10, 570, 531, 23))
-        self.progressBar.setProperty("value", 24)
+        self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -821,9 +828,10 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MultiLayer Adaline"))
-        self.groupBox.setTitle(_translate("MainWindow", "Entrada de puntos"))
-        self.groupBox_2.setTitle(_translate("MainWindow", "Errores"))
-        self.groupBox_3.setTitle(_translate("MainWindow", "Controles"))
+        self.input_box.setTitle(_translate("MainWindow", "Entrada de puntos"))
+        self.btn_clean_input_graph.setText(_translate("MainWindow", "Limpiar gráfica"))
+        self.error_box.setTitle(_translate("MainWindow", "Errores"))
+        self.control_box.setTitle(_translate("MainWindow", "Controles"))
         self.label.setToolTip(_translate("MainWindow", "<html><head/><body><p>Especifique el ratio de aprendizaje para el MLP.</p></body></html>"))
         self.label.setText(_translate("MainWindow", "Ratio de aprendizaje:"))
         self.learning_rate.setToolTip(_translate("MainWindow", "<html><head/><body><p>Ratio de aprendizaje entre 1 y 0.</p></body></html>"))
@@ -831,7 +839,7 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Error mínimo:"))
         self.max_ephocs.setToolTip(_translate("MainWindow", "<html><head/><body><p>Cantidad de épocas entre 0 y 999999.</p></body></html>"))
         self.label_3.setText(_translate("MainWindow", "Épocas máximas:"))
-        self.groupBox_4.setTitle(_translate("MainWindow", "Clases"))
+        self.classes_box.setTitle(_translate("MainWindow", "Clases"))
         self.pushButton.setText(_translate("MainWindow", "Clase #1"))
         self.pushButton_3.setText(_translate("MainWindow", "Clase #2"))
         self.pushButton_4.setText(_translate("MainWindow", "Clase #3"))
@@ -842,7 +850,7 @@ class Ui_MainWindow(object):
         self.label_5.setToolTip(_translate("MainWindow", "<html><head/><body><p>Especifique el ratio de aprendizaje para el MLP.</p></body></html>"))
         self.label_5.setText(_translate("MainWindow", "Número de capas"))
         self.btn_generate_classes_2.setText(_translate("MainWindow", "Generar capas"))
-        self.groupBox_5.setTitle(_translate("MainWindow", "Neuronas por capa"))
+        self.neurons_box.setTitle(_translate("MainWindow", "Neuronas por capa"))
         self.label_6.setToolTip(_translate("MainWindow", "<html><head/><body><p>Especifique el ratio de aprendizaje para el MLP.</p></body></html>"))
         self.label_6.setText(_translate("MainWindow", "Capa #1"))
         self.label_7.setToolTip(_translate("MainWindow", "<html><head/><body><p>Especifique el ratio de aprendizaje para el MLP.</p></body></html>"))
@@ -855,9 +863,9 @@ class Ui_MainWindow(object):
         self.pushButton_8.setText(_translate("MainWindow", "Visualizar lineas"))
         self.pushButton_9.setText(_translate("MainWindow", "Visualizar planos"))
 
-from error_graph import Error_Graph
-from points_input import Points_Input
-import recursos_rc
+from UI.external_widgets.error_graph import Error_Graph
+from UI.external_widgets.points_input import Points_Input
+from UI.resources import resources_rc
 
 if __name__ == "__main__":
     import sys

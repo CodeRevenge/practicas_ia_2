@@ -1,6 +1,0 @@
-<RCC>
-  <qresource prefix="iconos">
-    <file>resources/inteligencia-artificial.svg</file>
-    <file>resources/inteligencia-artificial_2.svg</file>
-  </qresource>
-</RCC>
