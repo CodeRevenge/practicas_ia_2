@@ -17,6 +17,7 @@ class Points_Input(QWidget):
         QWidget.__init__(self, parent) 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
+        
 
         # Creating de graph
         self.fig = plt.figure(tight_layout=True)
@@ -27,36 +28,29 @@ class Points_Input(QWidget):
          
         self.init_graph()
 
-        self.rojos = []
-        self.azules = []
-        self.linea = False
-        self.x = np.arange(0,11)
-        self.y = self.x
+        self.classes = []
+        self.selected_class = []
+        self.points = {}
         
         self.canvas.draw()
     
     def onclick(self, event):
-        if self.linea:
-            d = (event.xdata - 0)*(11-0) - (event.ydata-0)*(11-0)
-            if d < 0:
-                plt.scatter(event.xdata, event.ydata, s=10, marker='o', c='b')
+        if self.selected_class:
+            plt.scatter(event.xdata, event.ydata, s=10, marker='o', c=self.selected_class[1])
+            
+            if self.selected_class[0] in self.points.keys():
+                self.points.get(self.selected_class[0]).append([event.xdata, event.ydata])
             else:
-                plt.scatter(event.xdata, event.ydata, s=10, marker='o', c='r')
-        else:
-            if int(event.button) == 1:
-                plt.scatter(event.xdata, event.ydata, s=10, marker='o', c='b')
-                self.azules.append([event.xdata, event.ydata])
-            elif int(event.button) == 3:
-                plt.scatter(event.xdata, event.ydata, s=10, marker='o', c='r')
-                self.rojos.append([event.xdata, event.ydata])
-            else:
-                self.clearPlot()
-                # plt.plot(self.x,self.y, c='g')
-                # plt.fill_between(self.x, self.y, np.max(self.y), color='#539ecd')
-                # plt.fill_between(self.x, self.y, color='#e89a7d')
-                # plt.scatter(np.array(self.azules)[:,0],np.array(self.azules)[:,1], marker='o', c='b', s=10)
-                # plt.scatter(np.array(self.rojos)[:,0],np.array(self.rojos)[:,1], marker='o', c='r', s=10)
-                # self.linea = True
+                self.points[self.selected_class[0]] = [[event.xdata, event.ydata]]
+
+        self.canvas.draw()
+
+    def update_scatter_colors(self):
+        self.clearPlot()
+        for _class in self.points.items():
+            points = _class[1]
+            for point in points:
+                plt.scatter(point[0], point[1], s=10, marker='o', c=self.classes[int(_class[0])-1][1])
 
         self.canvas.draw()
 
