@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1079</width>
+    <width>1074</width>
     <height>622</height>
    </rect>
   </property>
@@ -801,136 +801,6 @@ QPushButton:disabled
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QGroupBox" name="classes_box">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>170</y>
-       <width>371</width>
-       <height>121</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Clases</string>
-     </property>
-     <widget class="QScrollArea" name="scrollArea">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>351</width>
-        <height>91</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="verticalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOff</enum>
-      </property>
-      <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAsNeeded</enum>
-      </property>
-      <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustToContents</enum>
-      </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>349</width>
-         <height>89</height>
-        </rect>
-       </property>
-       <widget class="QPushButton" name="pushButton">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>71</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton
-{
-	background-color:rgb(200, 14, 1);
-}
-
-QPushButton:focus
-{
-	border: 3px solid  rgb(255, 85, 0);
-}
-
-</string>
-        </property>
-        <property name="text">
-         <string>Clase #1</string>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_3">
-        <property name="geometry">
-         <rect>
-          <x>140</x>
-          <y>10</y>
-          <width>71</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton
-{
-	background-color:rgb(93, 64, 255);
-	color:rgb(167, 167, 167);
-}
-
-QPushButton:focus
-{
-	border: 3px solid  rgb(255, 85, 0);
-}</string>
-        </property>
-        <property name="text">
-         <string>Clase #2</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_4">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>10</y>
-          <width>81</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton
-{
-	background-color: rgb(36, 255, 21);
-	color:rgb(0, 0, 0);
-}
-
-QPushButton:focus
-{
-	border: 3px solid  rgb(255, 85, 0);
-}</string>
-        </property>
-        <property name="text">
-         <string>Clase #3</string>
-        </property>
-       </widget>
-      </widget>
-     </widget>
-    </widget>
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
@@ -987,7 +857,7 @@ QPushButton:focus
       <number>3</number>
      </property>
      <property name="maximum">
-      <number>50</number>
+      <number>10</number>
      </property>
      <property name="value">
       <number>3</number>
@@ -1108,13 +978,13 @@ QPushButton:focus
       <number>3</number>
      </property>
      <property name="maximum">
-      <number>50</number>
+      <number>10</number>
      </property>
      <property name="value">
       <number>3</number>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_generate_classes_2">
+    <widget class="QPushButton" name="btn_generate_layers">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -1364,7 +1234,7 @@ QPushButton:focus
       </widget>
      </widget>
     </widget>
-    <widget class="QPushButton" name="pushButton_5">
+    <widget class="QPushButton" name="btn_dona">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -1377,7 +1247,7 @@ QPushButton:focus
       <string>Dona</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_6">
+    <widget class="QPushButton" name="btn_x">
      <property name="geometry">
       <rect>
        <x>70</x>
@@ -1390,7 +1260,7 @@ QPushButton:focus
       <string>Equis</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_7">
+    <widget class="QPushButton" name="btn_map">
      <property name="geometry">
       <rect>
        <x>130</x>
@@ -1403,7 +1273,7 @@ QPushButton:focus
       <string>Mapa</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_8">
+    <widget class="QPushButton" name="btn_plot_lines">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -1419,7 +1289,7 @@ QPushButton:focus
       <string>Visualizar lineas</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_9">
+    <widget class="QPushButton" name="btn_plot_areas">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -1448,6 +1318,65 @@ QPushButton:focus
       <number>0</number>
      </property>
     </widget>
+    <widget class="QGroupBox" name="classes_box">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>180</y>
+       <width>371</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Clases</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QScrollArea" name="scrollArea">
+        <property name="styleSheet">
+         <string notr="true">border: 1px solid #323232</string>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="classes_area">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>349</width>
+           <height>76</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <zorder>label</zorder>
+    <zorder>learning_rate</zorder>
+    <zorder>min_error</zorder>
+    <zorder>label_2</zorder>
+    <zorder>max_ephocs</zorder>
+    <zorder>label_3</zorder>
+    <zorder>label_4</zorder>
+    <zorder>btn_generate_classes</zorder>
+    <zorder>btn_train</zorder>
+    <zorder>label_5</zorder>
+    <zorder>btn_generate_layers</zorder>
+    <zorder>neurons_box</zorder>
+    <zorder>btn_dona</zorder>
+    <zorder>btn_x</zorder>
+    <zorder>btn_map</zorder>
+    <zorder>btn_plot_lines</zorder>
+    <zorder>btn_plot_areas</zorder>
+    <zorder>progressBar</zorder>
+    <zorder>classes_box</zorder>
+    <zorder>classes_cout</zorder>
+    <zorder>layer_count</zorder>
    </widget>
   </widget>
  </widget>
