@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1268</width>
-    <height>666</height>
+    <width>1271</width>
+    <height>657</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -566,9 +566,9 @@ QPushButton:disabled
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
-       <width>461</width>
-       <height>161</height>
+       <y>15</y>
+       <width>661</width>
+       <height>170</height>
       </rect>
      </property>
     </widget>
@@ -1053,7 +1053,7 @@ QPushButton:disabled
       </item>
      </layout>
     </widget>
-    <widget class="QPushButton" name="btn_dona">
+    <widget class="QPushButton" name="btn_donut">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -1187,7 +1187,7 @@ QPushButton:disabled
     <zorder>label_5</zorder>
     <zorder>btn_generate_layers</zorder>
     <zorder>neurons_box</zorder>
-    <zorder>btn_dona</zorder>
+    <zorder>btn_donut</zorder>
     <zorder>btn_x</zorder>
     <zorder>btn_map</zorder>
     <zorder>btn_plot_lines</zorder>

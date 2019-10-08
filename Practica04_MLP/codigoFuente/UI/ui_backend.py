@@ -28,6 +28,8 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
 
         self.input_graph.onclick
 
+        self.temp_error = []
+
     def generate_layers(self):
         for i in reversed(range(self.layers_layout.count())): 
             self.layers_layout.itemAt(i).widget().deleteLater()

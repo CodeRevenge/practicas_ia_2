@@ -1,11 +1,11 @@
 # ------------------------------------------------------
-# -------------------- mplwidget.py --------------------
+# -------------------- points_input.py --------------------
 # ------------------------------------------------------
 import sys
 from PyQt5.QtWidgets import  QVBoxLayout, QWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 import matplotlib.pylab as plt
-from matplotlib.figure import Figure
+# from matplotlib.figure import Figure
 import numpy as np
 from collections import deque
 import matplotlib.animation as animation
@@ -17,10 +17,12 @@ class Points_Input(QWidget):
         QWidget.__init__(self, parent) 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
+        self.layout.setContentsMargins(0,0,0,0)
         
 
         # Creating de graph
-        self.fig = plt.figure(tight_layout=True)
+        self.fig = plt.figure(2)
+        self.ax = plt.subplot()
         self.canvas = FigureCanvas(self.fig)  
         self.canvas.setFocus()
         self.canvas.mpl_connect('button_press_event', self.onclick)
@@ -35,6 +37,7 @@ class Points_Input(QWidget):
         self.canvas.draw()
     
     def onclick(self, event):
+        plt.figure(2)
         if self.selected_class:
             plt.scatter(event.xdata, event.ydata, s=10, marker='o', c=self.selected_class[1])
             
@@ -46,6 +49,7 @@ class Points_Input(QWidget):
         self.canvas.draw()
 
     def update_scatter_colors(self):
+        plt.figure(2)
         self.clearPlot()
         for _class in self.points.items():
             points = _class[1]
@@ -55,8 +59,9 @@ class Points_Input(QWidget):
         self.canvas.draw()
 
     def init_graph(self):
+        plt.figure(2)
+        self.ax = plt.gca()
         self.fig.set_facecolor('#323232')
-        self.ax = self.fig.add_subplot(111)
         self.ax.grid(zorder=0)
         self.ax.set_axisbelow(True)
         self.ax.set_xlim([-5, 5])
@@ -73,11 +78,7 @@ class Points_Input(QWidget):
         self.ax.tick_params(axis='y', colors='#b1b1b1')
 
     def clearPlot(self):
+        plt.figure(2)
         plt.clf()
         self.init_graph()
-        self.rojos = []
-        self.azules = []
-        self.linea = False
-        self.x = np.arange(0,11)
-        self.y = self.x
         self.canvas.draw()
