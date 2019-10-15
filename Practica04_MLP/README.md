@@ -39,14 +39,14 @@ pyrcc5 UI\resources\resources.qrc -o UI\resources\resources_rc.py
 
 ### Cambios de funcionalidades
 
-Para agregar funcionalidades en el programa es necesario trabajar sobre el archivo `Interface_MLP.py` en la clase `MainWindow`
+Para agregar funcionalidades en el programa es necesario trabajar sobre el archivo `ui_backend.py` en la clase `MainWindow`
 
 ### Ejecutar programa
 
 Para la ejecución del programa se debe hacer en la shell el siguiente comando
 
 ```
-python "Main_MLP.py"
+python "__main__.py"
 ```
 
 
