@@ -18,6 +18,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.btn_generate_classes.clicked.connect(self.generate_classes)
         self.btn_generate_layers.clicked.connect(self.generate_layers)
         self.btn_donut.clicked.connect(self.set_donut)
+        self.btn_train.clicked.connect(self.train_mlp)
 
         self.classes_layout = QHBoxLayout()
         self.classes_area.setLayout(self.classes_layout)
@@ -139,6 +140,24 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
 
     def activate_train(self):
         self.btn_train.setEnabled(True)
+    
+    def convert_dict_to_inputs(self, dictionary):
+        inputs = []
+        for key in list(dictionary):
+            for point in dictionary[key]:
+                inputs.append([point[0],point[1], int(key)])
+        return inputs
+
+    def get_architecture(self):
+        architecture = []
+        for i in range(self.layers_layout.count()): 
+            architecture.append(int(self.layers_layout.itemAt(i).widget().findChildren(QSpinBox)[0].value()))
+        return architecture
 
     def train_mlp(self):
-        pass
+        self._classes_count = len(self.input_graph.points.keys())
+        self._inputs = self.convert_dict_to_inputs(self.input_graph.points)
+        self._architecture = self.get_architecture()
+        self._learning_rate = float(self.learning_rate.value())
+        self._min_error = float(self.min_error.value())
+        self._max_ephocs = int(self.max_ephocs.value())
