@@ -6,6 +6,8 @@ from UI.external_widgets.error_graph import Error_Graph
 from UI.external_widgets.points_input import Points_Input
 import numpy as np
 from matplotlib import colors as mcolors
+from Algorithms.MultiLayerAdaline import MLP
+from Algorithms.ann import NeuralNetwork
 
 class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph):
     def __init__(self, *args, **kwargs):
@@ -59,6 +61,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
             self.input_graph.classes.append([button.objectName()[-1], button.palette().color(QtGui.QPalette.Background).name()])
 
         self.btn_train.setEnabled(False)
+        self.error_graph.clear_graph()
 
     def class_button(self, index, color):
         button = QPushButton("Clase #{}".format(index))
@@ -135,6 +138,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
     def set_donut(self):
         self.input_graph.set_donut()
         self.activate_train()
+        self.error_graph.clear_graph()
     
     def set_map(self):
         if self.classes_cout.value() != 5:
@@ -142,10 +146,12 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
             self.generate_classes()
         self.input_graph.set_map()
         self.activate_train()
+        self.error_graph.clear_graph()
 
     def set_xor(self):
         self.input_graph.set_xor()
         self.activate_train()
+        self.error_graph.clear_graph()
 
     def validate_activation(self):
         print("OK")
@@ -185,11 +191,16 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         # Integer with the count of max ephocs
         self._max_ephocs = int(self.max_ephocs.value())
 
-        print("Classes count: {} \nArchitecture: {} \nLearning rate: {} \nMin error: {} \nMax ephocs: {}".format(self._classes_count, self._architecture, self._learning_rate, self._min_error, self._max_ephocs))
+        # print("Classes count: {} \nArchitecture: {} \nLearning rate: {} \nMin error: {} \nMax ephocs: {}".format(self._classes_count, self._architecture, self._learning_rate, self._min_error, self._max_ephocs))
 
         """ Here is where the MLP must be instantiated"""
 
+        mlp = MLP(self._classes_count, self._inputs, self._architecture, self._learning_rate, self._min_error, self._max_ephocs)
+        mlp.train(self.progressBar)
 
 
         """ End of MLP algorithm """
+
+        self.progressBar.setValue(100)
+        self.error_graph.graph_errors(mlp.errors)
         self.btn_plot_lines.setEnabled(True)

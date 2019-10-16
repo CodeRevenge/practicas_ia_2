@@ -82,12 +82,28 @@ class Error_Graph(QWidget):
         self.set_title(error, len(self.error_points))
         self.canvas.draw()
 
-    def graph_errors(self, errors):
-        self.error_points = list.copy(errors)
+
+    def clear_graph(self):
         plt.figure(1)
+        plt.clf()
+        self.init_graph()
+        self.canvas.draw()
+    
+
+    def graph_errors(self, errors):
+        if type(errors) == np.ndarray:
+            self.error_points = errors.copy()
+        else:
+            self.error_points = list.copy(errors)
+        plt.figure(1)
+        plt.tight_layout()
         self.ax = plt.gca()
         self.ax.cla()
         self.ax.grid(zorder=0)
-        self.ax.plot(self.error_points)
-        self.set_title(self.error_points[-1], len(self.error_points))
+        self.ax.plot(self.error_points, c='red')
+        try:
+            self.set_title(self.error_points[-1], len(self.error_points))
+        except IndexError:
+            self.set_title(0, len(self.error_points))
+
         self.canvas.draw()
