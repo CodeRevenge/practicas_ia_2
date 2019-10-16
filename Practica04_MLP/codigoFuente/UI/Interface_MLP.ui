@@ -895,9 +895,9 @@ QPushButton:disabled
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>550</y>
+       <y>530</y>
        <width>531</width>
-       <height>51</height>
+       <height>71</height>
       </rect>
      </property>
      <property name="font">
@@ -1058,8 +1058,8 @@ QPushButton:disabled
       <rect>
        <x>10</x>
        <y>440</y>
-       <width>51</width>
-       <height>51</height>
+       <width>71</width>
+       <height>71</height>
       </rect>
      </property>
      <property name="text">
@@ -1069,10 +1069,10 @@ QPushButton:disabled
     <widget class="QPushButton" name="btn_x">
      <property name="geometry">
       <rect>
-       <x>70</x>
+       <x>100</x>
        <y>440</y>
-       <width>51</width>
-       <height>51</height>
+       <width>71</width>
+       <height>71</height>
       </rect>
      </property>
      <property name="text">
@@ -1082,10 +1082,10 @@ QPushButton:disabled
     <widget class="QPushButton" name="btn_map">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>190</x>
        <y>440</y>
-       <width>51</width>
-       <height>51</height>
+       <width>71</width>
+       <height>71</height>
       </rect>
      </property>
      <property name="text">
@@ -1098,30 +1098,14 @@ QPushButton:disabled
      </property>
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>370</x>
        <y>440</y>
-       <width>161</width>
-       <height>21</height>
+       <width>171</width>
+       <height>71</height>
       </rect>
      </property>
      <property name="text">
       <string>Visualizar lineas</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_plot_areas">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>470</y>
-       <width>161</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Visualizar planos</string>
      </property>
     </widget>
     <widget class="QProgressBar" name="progressBar">
@@ -1191,7 +1175,6 @@ QPushButton:disabled
     <zorder>btn_x</zorder>
     <zorder>btn_map</zorder>
     <zorder>btn_plot_lines</zorder>
-    <zorder>btn_plot_areas</zorder>
     <zorder>progressBar</zorder>
     <zorder>classes_box</zorder>
     <zorder>classes_cout</zorder>

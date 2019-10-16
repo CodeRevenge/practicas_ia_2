@@ -15,6 +15,7 @@ from matplotlib.ticker import FuncFormatter
 class Points_Input(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self, parent) 
+        self.TRAIN_BUTTON = 0
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0,0,0,0)
@@ -47,6 +48,9 @@ class Points_Input(QWidget):
                 self.points[self.selected_class[0]] = [[event.xdata, event.ydata]]
 
         self.canvas.draw()
+
+        if len(self.points.keys()) >= 3:
+            self.TRAIN_BUTTON.setEnabled(True)
 
     def update_scatter_colors(self):
         plt.figure(2)

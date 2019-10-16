@@ -31,6 +31,8 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
 
         self.temp_error = []
 
+        self.input_graph.TRAIN_BUTTON = self.btn_train
+
     def generate_layers(self):
         for i in reversed(range(self.layers_layout.count())): 
             self.layers_layout.itemAt(i).widget().deleteLater()
@@ -51,6 +53,8 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
             button = self.class_button(i, np.random.choice(list(self.colors.values())))
             self.classes_layout.addWidget(button)
             self.input_graph.classes.append([button.objectName()[-1], button.palette().color(QtGui.QPalette.Background).name()])
+
+        self.btn_train.setEnabled(False)
 
     def class_button(self, index, color):
         button = QPushButton("Clase #{}".format(index))
@@ -122,6 +126,19 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.input_graph.clearPlot()
         self.input_graph.points.clear()
         self.input_graph.selected_class.clear()
+        self.btn_train.setEnabled(False)
 
     def set_donut(self):
         self.input_graph.set_donut()
+        self.activate_train()
+
+    def validate_activation(self):
+        print("OK")
+        if len(self.input_graph.points.keys()) >= 3:
+            self.activate_train()
+
+    def activate_train(self):
+        self.btn_train.setEnabled(True)
+
+    def train_mlp(self):
+        pass
