@@ -507,7 +507,7 @@ class Ui_MainWindow(object):
         self.input_box.setGeometry(QtCore.QRect(10, 10, 681, 441))
         self.input_box.setObjectName("input_box")
         self.input_graph = Points_Input(self.input_box)
-        self.input_graph.setGeometry(QtCore.QRect(10, 20, 661, 401))
+        self.input_graph.setGeometry(QtCore.QRect(10, 20, 661, 381))
         self.input_graph.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.input_graph.setStyleSheet("padding: 0px;")
         self.input_graph.setObjectName("input_graph")

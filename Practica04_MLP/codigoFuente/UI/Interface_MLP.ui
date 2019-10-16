@@ -526,7 +526,7 @@ QPushButton:disabled
        <x>10</x>
        <y>20</y>
        <width>661</width>
-       <height>401</height>
+       <height>381</height>
       </rect>
      </property>
      <property name="layoutDirection">

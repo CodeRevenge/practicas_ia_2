@@ -17,6 +17,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.btn_clean_input_graph.clicked.connect(self.clear_points)
         self.btn_generate_classes.clicked.connect(self.generate_classes)
         self.btn_generate_layers.clicked.connect(self.generate_layers)
+        self.btn_donut.clicked.connect(self.set_donut)
 
         self.classes_layout = QHBoxLayout()
         self.classes_area.setLayout(self.classes_layout)
@@ -121,3 +122,6 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.input_graph.clearPlot()
         self.input_graph.points.clear()
         self.input_graph.selected_class.clear()
+
+    def set_donut(self):
+        self.input_graph.set_donut()

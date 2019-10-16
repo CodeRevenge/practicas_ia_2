@@ -60,6 +60,7 @@ class Points_Input(QWidget):
 
     def init_graph(self):
         plt.figure(2)
+        plt.tight_layout()
         self.ax = plt.gca()
         self.fig.set_facecolor('#323232')
         self.ax.grid(zorder=0)
@@ -81,4 +82,47 @@ class Points_Input(QWidget):
         plt.figure(2)
         plt.clf()
         self.init_graph()
+        self.canvas.draw()
+
+    def set_donut(self):
+        self.selected_class.clear()
+        self.points.clear()
+        self.clearPlot()
+
+        SIZE = 10
+
+        class_a = np.linspace(2.5,4.5,8)
+        class_b = np.linspace(1.5,2,4)
+        class_c = np.linspace(.2,1,5)
+
+        theta = np.linspace(0, 2*np.pi, 60)
+        for rad in class_a:
+            for t in theta:
+                x1 = rad*np.cos(t)
+                x2 = rad*np.sin(t)
+                self.ax.scatter(x1, x2, s=SIZE, c=self.classes[0][1])           
+                if self.classes[0][0] in self.points.keys():
+                    self.points.get(self.classes[0][0]).append([x1, x2])
+                else:
+                    self.points[self.classes[0][0]] = [[x1, x2]]
+        theta = np.linspace(0, 2*np.pi, 30)
+        for rad in class_b:
+            for t in theta:
+                x1 = rad*np.cos(t)
+                x2 = rad*np.sin(t)
+                self.ax.scatter(x1, x2, s=SIZE, c=self.classes[1][1])
+                if self.classes[1][0] in self.points.keys():
+                    self.points.get(self.classes[1][0]).append([x1, x2])
+                else:
+                    self.points[self.classes[1][0]] = [[x1, x2]]
+        theta = np.linspace(0, 2*np.pi, 10)
+        for rad in class_c:
+            for t in theta:
+                x1 = rad*np.cos(t)
+                x2 = rad*np.sin(t)
+                self.ax.scatter(x1, x2, s=SIZE, c=self.classes[2][1])
+                if self.classes[2][0] in self.points.keys():
+                    self.points.get(self.classes[2][0]).append([x1, x2])
+                else:
+                    self.points[self.classes[2][0]] = [[x1, x2]]
         self.canvas.draw()
