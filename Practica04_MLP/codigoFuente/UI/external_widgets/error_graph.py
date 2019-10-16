@@ -43,6 +43,7 @@ class Error_Graph(QWidget):
 
     def init_graph(self, x_max = 2000, y_max = 15):
         plt.figure(1)
+        plt.tight_layout()
         self.ax = plt.gca()
         self.figure.set_facecolor('#323232')
         self.ax.grid(zorder=0)

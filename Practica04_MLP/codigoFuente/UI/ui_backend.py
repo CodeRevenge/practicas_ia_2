@@ -18,6 +18,9 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.btn_generate_classes.clicked.connect(self.generate_classes)
         self.btn_generate_layers.clicked.connect(self.generate_layers)
         self.btn_donut.clicked.connect(self.set_donut)
+        self.btn_map.clicked.connect(self.set_map)
+        self.btn_xor.clicked.connect(self.set_xor)
+        self.btn_plot_lines.clicked.connect(self.get_lines)
         self.btn_train.clicked.connect(self.train_mlp)
 
         self.classes_layout = QHBoxLayout()
@@ -132,6 +135,17 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
     def set_donut(self):
         self.input_graph.set_donut()
         self.activate_train()
+    
+    def set_map(self):
+        if self.classes_cout.value() != 5:
+            self.classes_cout.setValue(5)
+            self.generate_classes()
+        self.input_graph.set_map()
+        self.activate_train()
+
+    def set_xor(self):
+        self.input_graph.set_xor()
+        self.activate_train()
 
     def validate_activation(self):
         print("OK")
@@ -154,10 +168,28 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
             architecture.append(int(self.layers_layout.itemAt(i).widget().findChildren(QSpinBox)[0].value()))
         return architecture
 
+    def get_lines(self):
+        pass
+
     def train_mlp(self):
+        # Integer with the count of classes
         self._classes_count = len(self.input_graph.points.keys())
+        # List of Lists with all the inputs with the form [[x,y,class],...]
         self._inputs = self.convert_dict_to_inputs(self.input_graph.points)
+        # List of Integers with the architecture with the form [layer_1_count, layer_2_count, ...]
         self._architecture = self.get_architecture()
+        # Integer with the learning rate
         self._learning_rate = float(self.learning_rate.value())
+        # Integer with the min error
         self._min_error = float(self.min_error.value())
+        # Integer with the count of max ephocs
         self._max_ephocs = int(self.max_ephocs.value())
+
+        print("Classes count: {} \nArchitecture: {} \nLearning rate: {} \nMin error: {} \nMax ephocs: {}".format(self._classes_count, self._architecture, self._learning_rate, self._min_error, self._max_ephocs))
+
+        """ Here is where the MLP must be instantiated"""
+
+
+
+        """ End of MLP algorithm """
+        self.btn_plot_lines.setEnabled(True)

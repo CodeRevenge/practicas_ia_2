@@ -568,7 +568,7 @@ QPushButton:disabled
        <x>10</x>
        <y>15</y>
        <width>661</width>
-       <height>170</height>
+       <height>171</height>
       </rect>
      </property>
     </widget>
@@ -1066,7 +1066,7 @@ QPushButton:disabled
       <string>Dona</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_x">
+    <widget class="QPushButton" name="btn_xor">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -1076,7 +1076,7 @@ QPushButton:disabled
       </rect>
      </property>
      <property name="text">
-      <string>Equis</string>
+      <string>XOR</string>
      </property>
     </widget>
     <widget class="QPushButton" name="btn_map">
@@ -1172,7 +1172,7 @@ QPushButton:disabled
     <zorder>btn_generate_layers</zorder>
     <zorder>neurons_box</zorder>
     <zorder>btn_donut</zorder>
-    <zorder>btn_x</zorder>
+    <zorder>btn_xor</zorder>
     <zorder>btn_map</zorder>
     <zorder>btn_plot_lines</zorder>
     <zorder>progressBar</zorder>
