@@ -48,11 +48,11 @@ class NeuronLayer:
             print('  Bias:', self.bias)
 
 class NeuralNetwork:
-    def __init__(self, inputs, layers_structure, bias, target, learning_rate):        
-        self.input_layer = inputs
+    def __init__(self, layers_structure, bias, learning_rate):        
+        self.input_layer = [1,2]
         self.hidden_layers = []
         self.output_layer = None
-        self.target = target
+        self.target = []
         self.learning_rate = learning_rate
 
         self.output = []
@@ -192,28 +192,34 @@ class NeuralNetwork:
         self.output_layer.inspect()
         # print('------')
 
+def train(all_inputs, all_targets, min_error, max_epochs):
+    acumulated_error = 999
+    acumulated_outputs = []
+    epochs = 0
+    while acumulated_error > min_error and epochs < max_epochs:
+        for inputs, targets in zip(all_inputs, all_targets):
+            NN.input_layer = inputs
+            NN.target = targets 
+
+            # Every forward appends a new output
+            # Which is used to calculate the acumulated error after each input
+            acumulated_outputs.append(NN.forward())
+            NN.backprop()
+            
+        # Get acumulated error
+        acumulated_error = np.sum(abs((np.array(all_targets) - np.array(acumulated_outputs))))
+        print("Acumulated error", acumulated_error)
+        acumulated_outputs = []
+        epochs += 1
+
+NN = NeuralNetwork(layers_structure=[2,4], bias=[0.35], learning_rate = 0.5)
+
 all_inputs = [[1,1],[2,2],[4,4]]
 all_targets = [[1,0,0,0],[0,1,0,0],[0,0,0,1]]
+min_error = 0.984321
+max_epochs = 7124
 
-NN = NeuralNetwork(inputs=[3, 5], layers_structure=[2,4], bias=[0.35, .6], target=[0, 1, 0], learning_rate = 0.5)
-
-acumulated_error = 10
-acumulated_outputs = []
-
-while acumulated_error > 1.53:
-    # NN.globalError = 10  
-    for inputs, targets in zip(all_inputs, all_targets):
-        NN.input_layer = inputs
-        NN.target = targets 
-
-        acumulated_outputs.append(NN.forward())
-
-        NN.backprop()
-        # NN.calculateGlobalError()
-    # Get acumulated error
-    acumulated_error = np.sum(abs((np.array(all_targets) - np.array(acumulated_outputs))))
-    print("Acumulated error", acumulated_error)
-    acumulated_outputs = []
+train(all_inputs=all_inputs, all_targets=all_targets, min_error=min_error, max_epochs=max_epochs)  
 
 print("---------------")
 #Test 1
