@@ -101,12 +101,12 @@ class NeuralNetwork:
         previous_layer_outputs = []
         layer_output = []
         for layer_index, layer in enumerate(self.hidden_layers):
+            previous_layer_outputs = layer_output
+            layer_output = []
             for neuron in layer.neurons:
                 if layer_index == 0:
                     neuron.calculate_net(self.input_layer)
                 else:
-                    previous_layer_outputs = layer_output
-                    layer_output = []
                     neuron.calculate_net(previous_layer_outputs)
 
                 layer_output.append(neuron.calculate_output())
@@ -142,16 +142,18 @@ class NeuralNetwork:
             for neuron_index, neuron in enumerate(layer.neurons):
                 for weight_index, weight in enumerate(neuron.weights):
                     # Layer n-1
+                    # La primera parte de tres, es el delta de la neurona siguiente por el peso que las conecta
                     error_wtr_output = 0 
+                    
                     if layer_index == 0:
                         for next_neuron in self.output_layer.neurons:
-                            # La primera parte de tres, es el delta de la neurona siguiente por el peso que las conecta
                             error_wtr_output += next_neuron.delta * next_neuron.weights[neuron_index]
-                            # # print("next_neuron Delta: {}, Weight: {}".format(next_neuron.delta, next_neuron.weights[neuron_index]))
-                        # print(error_wtr_output)
+                            # print("next_neuron Delta: {}, Weight: {}".format(next_neuron.delta, next_neuron.weights[neuron_index]))
                     else:
                         # Other hidden layers
-                        return # print("Other hidden layers")
+                        for next_neuron in self.hidden_layers[layer_index-1].neurons:
+                            error_wtr_output += next_neuron.delta * next_neuron.weights[neuron_index]
+                            # print("next_neuron Delta: {}, Weight: {}".format(next_neuron.delta, next_neuron.weights[neuron_index]))
 
                     delta = error_wtr_output * sigmoidPrime(neuron.net)
                     neuron.delta = delta
@@ -159,11 +161,12 @@ class NeuralNetwork:
                     weight_cost = delta * weight_input
                     # print("WEIGHT COST: ", weight_cost)
                     hidden_layers_new_weights.append((weight-self.learning_rate*weight_cost))
+                    neuron.bias = neuron.bias - self.learning_rate * delta
 
         # print(hidden_layers_new_weights)
         # print(output_layer_new_weights)
 
-                # Set new weights
+        # Set new weights
         i = 0
         for layer in self.hidden_layers:
             for neuron in layer.neurons:
