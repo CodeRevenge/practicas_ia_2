@@ -993,7 +993,7 @@ QPushButton:disabled
       <bool>true</bool>
      </property>
      <property name="minimum">
-      <number>3</number>
+      <number>2</number>
      </property>
      <property name="maximum">
       <number>10</number>
@@ -1110,9 +1110,9 @@ QPushButton:disabled
      </property>
      <property name="geometry">
       <rect>
-       <x>370</x>
+       <x>430</x>
        <y>440</y>
-       <width>171</width>
+       <width>111</width>
        <height>71</height>
       </rect>
      </property>
@@ -1171,6 +1171,22 @@ QPushButton:disabled
       </item>
      </layout>
     </widget>
+    <widget class="QPushButton" name="btn_plot_planes">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>440</y>
+       <width>111</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Visualizar plano</string>
+     </property>
+    </widget>
     <zorder>label</zorder>
     <zorder>learning_rate</zorder>
     <zorder>min_error</zorder>
@@ -1191,6 +1207,7 @@ QPushButton:disabled
     <zorder>classes_box</zorder>
     <zorder>classes_cout</zorder>
     <zorder>layer_count</zorder>
+    <zorder>btn_plot_planes</zorder>
    </widget>
   </widget>
  </widget>

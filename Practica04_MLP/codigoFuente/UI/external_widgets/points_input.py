@@ -11,7 +11,7 @@ import numpy as np
 class Points_Input(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self, parent) 
-        self.TRAIN_BUTTON = 0
+        self.TRAIN_BUTTON = QWidget
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0,0,0,0)
@@ -43,7 +43,7 @@ class Points_Input(QWidget):
             self.algorithm.input_layer = [event.xdata, event.ydata]
             class_output = self.algorithm.forward()
             class_type = self.class_type(class_output)
-            self.ax.scatter(event.xdata, event.ydata, s=10, c=self.classes[class_type-1][1], marker='o')
+            self.ax.scatter(event.xdata, event.ydata, s=10, c=self.classes[class_type][1], marker='o')
         elif self.selected_class:
             plt.scatter(event.xdata, event.ydata, s=10, marker='o', c=self.selected_class[1])
             
@@ -251,6 +251,21 @@ class Points_Input(QWidget):
             color = np.random.choice(colors)
             colors.pop(colors.index(color))
             self.colors_class.append(color)
+
+
+    def show_lines(self, init_layer):
+        neurons_count = len(init_layer)
+
+        self.clearPlot()
+        self.fig.clf()
+
+        self.fig = plt.figure(2)
+        self.fig.add_subplot(221)   #top left
+        self.fig.add_subplot(222)   #top right
+        self.fig.add_subplot(223)   #bottom left
+        self.fig.add_subplot(224)   #bottom right 
+        self.canvas.draw()
+
 
 
 

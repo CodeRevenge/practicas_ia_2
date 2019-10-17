@@ -196,8 +196,8 @@ class NeuralNetwork:
         # print('------')
 
 def train(all_inputs, all_targets, min_error, max_epochs, NN, progress_bar):
-    print(all_inputs)
-    print(all_targets)
+    # print(all_inputs)
+    # print(all_targets)
     acumulated_error = 999
     acumulated_outputs = []
     progress = 80 / max_epochs
@@ -217,7 +217,7 @@ def train(all_inputs, all_targets, min_error, max_epochs, NN, progress_bar):
         # Get acumulated error
         acumulated_error = np.sum(abs((np.array(all_targets) - np.array(acumulated_outputs))))
         errors.append(acumulated_error)
-        print("Acumulated error", acumulated_error)
+        # print("Acumulated error", acumulated_error)
         acumulated_outputs = []
         epochs += 1
         progress_count += progress

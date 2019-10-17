@@ -662,7 +662,7 @@ class Ui_MainWindow(object):
         self.layer_count.setAlignment(QtCore.Qt.AlignCenter)
         self.layer_count.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         self.layer_count.setKeyboardTracking(True)
-        self.layer_count.setMinimum(3)
+        self.layer_count.setMinimum(2)
         self.layer_count.setMaximum(10)
         self.layer_count.setProperty("value", 3)
         self.layer_count.setObjectName("layer_count")
@@ -699,7 +699,7 @@ class Ui_MainWindow(object):
         self.btn_map.setObjectName("btn_map")
         self.btn_plot_lines = QtWidgets.QPushButton(self.control_box)
         self.btn_plot_lines.setEnabled(False)
-        self.btn_plot_lines.setGeometry(QtCore.QRect(370, 440, 171, 71))
+        self.btn_plot_lines.setGeometry(QtCore.QRect(430, 440, 111, 71))
         self.btn_plot_lines.setObjectName("btn_plot_lines")
         self.progressBar = QtWidgets.QProgressBar(self.control_box)
         self.progressBar.setGeometry(QtCore.QRect(10, 610, 531, 23))
@@ -720,6 +720,10 @@ class Ui_MainWindow(object):
         self.classes_area.setObjectName("classes_area")
         self.scrollArea.setWidget(self.classes_area)
         self.gridLayout.addWidget(self.scrollArea, 0, 0, 1, 1)
+        self.btn_plot_planes = QtWidgets.QPushButton(self.control_box)
+        self.btn_plot_planes.setEnabled(False)
+        self.btn_plot_planes.setGeometry(QtCore.QRect(310, 440, 111, 71))
+        self.btn_plot_planes.setObjectName("btn_plot_planes")
         self.label.raise_()
         self.learning_rate.raise_()
         self.min_error.raise_()
@@ -740,6 +744,7 @@ class Ui_MainWindow(object):
         self.classes_box.raise_()
         self.classes_cout.raise_()
         self.layer_count.raise_()
+        self.btn_plot_planes.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -777,6 +782,7 @@ class Ui_MainWindow(object):
         self.btn_map.setText(_translate("MainWindow", "Mapa"))
         self.btn_plot_lines.setText(_translate("MainWindow", "Visualizar lineas"))
         self.classes_box.setTitle(_translate("MainWindow", "Clases"))
+        self.btn_plot_planes.setText(_translate("MainWindow", "Visualizar plano"))
 
 from UI.external_widgets.error_graph import Error_Graph
 from UI.external_widgets.points_input import Points_Input

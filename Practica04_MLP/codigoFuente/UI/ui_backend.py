@@ -2,6 +2,7 @@ from UI.Interface_MLP import QtWidgets, Ui_MainWindow, QtCore
 from PyQt5.QtCore import QEvent, Qt
 from PyQt5.QtWidgets import QScrollArea, QVBoxLayout, QGroupBox, QLabel, QPushButton, QHBoxLayout, QColorDialog, QSpinBox,QWidget
 from PyQt5 import QtGui
+import matplotlib.pyplot as plt
 from UI.external_widgets.error_graph import Error_Graph
 from UI.external_widgets.points_input import Points_Input
 import numpy as np
@@ -24,6 +25,8 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.btn_xor.clicked.connect(self.set_xor)
         self.btn_plot_lines.clicked.connect(self.get_lines)
         self.btn_train.clicked.connect(self.train_mlp)
+        self.btn_plot_lines.clicked.connect(self.show_lines)
+        self.btn_plot_planes.clicked.connect(self.show_planes)
 
         self.classes_layout = QHBoxLayout()
         self.classes_area.setLayout(self.classes_layout)
@@ -96,7 +99,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.input_graph.classes[int(button.objectName()[-1])-1] = [button.objectName()[-1], button.palette().color(QtGui.QPalette.Background).name()]
         self.input_graph.update_scatter_colors()
 
-    def layer_widget(self, index, value = 1):
+    def layer_widget(self, index, value = 2):
         widget = QWidget()
         widget.setFixedHeight(51)
         widget.setFixedWidth(71)
@@ -124,12 +127,14 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         input_spin.setAlignment(QtCore.Qt.AlignCenter)
         input_spin.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         input_spin.setKeyboardTracking(True)
+        input_spin.setMaximum(10)
+        input_spin.setMinimum(1)
         if index == 1:
             input_spin.setProperty("value", 2)
             input_spin.lineEdit().setReadOnly(True)
         else:
             input_spin.setProperty("value", value)
-        if value > 1:
+        if value > 2:
             input_spin.lineEdit().setReadOnly(True)
         input_spin.setObjectName("neuron_layer_" + str(index))
         input_spin.setStyleSheet("QSpinBox { border: 1px solid #b1b1b1; background-color: #323232; border-radius: 5px;} QSpinBox:focus{ border: 2px solid #ffaa00;background-color: #4d4d4d;}QSpinBox:!focus:hover{ border: 1px solid #7e7e7e;}")
@@ -207,12 +212,22 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         # print("Classes count: {} \nArchitecture: {} \nLearning rate: {} \nMin error: {} \nMax ephocs: {}".format(self._classes_count, self._architecture, self._learning_rate, self._min_error, self._max_ephocs))
 
         """ Here is where the MLP must be instantiated"""
-        ann = ANN.NeuralNetwork(layers_structure= self._architecture, bias= [0.35], learning_rate= self._learning_rate)
-        errors = ANN.train(all_inputs= self._inputs, all_targets= self._targets, min_error= self._min_error, max_epochs= self._max_ephocs, NN=ann, progress_bar= self.progressBar)
+        self.ann = ANN.NeuralNetwork(layers_structure= self._architecture, bias= [0.35], learning_rate= self._learning_rate)
+        errors = ANN.train(all_inputs= self._inputs, all_targets= self._targets, min_error= self._min_error, max_epochs= self._max_ephocs, NN=self.ann, progress_bar= self.progressBar)
 
         """ End of MLP algorithm """
 
         self.progressBar.setValue(80)
-        self.input_graph.fill_plot(ann, self.progressBar)
+        self.input_graph.fill_plot(self.ann, self.progressBar)
         self.error_graph.graph_errors(errors)
+        self.btn_plot_lines.setEnabled(True)
+
+    def show_lines(self):
+        self.input_graph.show_lines(self.ann.hidden_layers[0].neurons)
+        self.btn_plot_plane.setEnabled(True)
+        self.btn_plot_lines.setEnabled(False)
+
+    def show_planes(self):
+        self.input_graph.update_scatter_colors()
+        self.btn_plot_planes.setEnabled(True)
         self.btn_plot_lines.setEnabled(True)
