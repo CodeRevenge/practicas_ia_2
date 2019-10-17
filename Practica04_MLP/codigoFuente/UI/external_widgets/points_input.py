@@ -30,12 +30,20 @@ class Points_Input(QWidget):
         self.classes = []
         self.selected_class = []
         self.points = {}
+
+        self.plane = []
+        self.maped = True
         
         self.canvas.draw()
     
     def onclick(self, event):
         plt.figure(2)
-        if self.selected_class:
+
+        if self.maped:
+            class_output = algorithm([event.xdata, event.ydata])
+            class_type = self.class_type(class_output)
+            self.ax.scatter(j, i, s=10, c=self.classes[class_type-1][1], marker='o')
+        elif self.selected_class:
             plt.scatter(event.xdata, event.ydata, s=10, marker='o', c=self.selected_class[1])
             
             if self.selected_class[0] in self.points.keys():
@@ -50,6 +58,7 @@ class Points_Input(QWidget):
 
     def update_scatter_colors(self):
         plt.figure(2)
+        self.ax = plt.gca()
         self.clearPlot()
         for _class in self.points.items():
             points = _class[1]
@@ -79,6 +88,7 @@ class Points_Input(QWidget):
         self.ax.tick_params(axis='y', colors='#b1b1b1')
 
     def clearPlot(self):
+        self.maped = False
         plt.figure(2)
         plt.clf()
         self.init_graph()
@@ -192,3 +202,51 @@ class Points_Input(QWidget):
         self.points = xor
 
         self.canvas.draw()
+
+    def fill_plot(self, algorithm, progress_bar, size = 30, dpi = 40):
+        self.algorithm = algorithm
+        self.clearPlot()
+        self.init_graph()
+        self.colors_class_type(len(self.classes))
+
+        progress = 20 / dpi
+        progress_count = 80
+
+        x = list(np.linspace(-5+size*0.005,5-size*0.005,dpi))
+        y = list(np.linspace(-5+size*0.005,5-size*0.005,dpi))
+
+        for ind, i in enumerate(y):
+            self.plane.append([])
+            for j in x:
+                class_output = algorithm([j,i])
+                class_type = self.class_type(class_output)
+                self.plane[ind].append(class_type)
+                self.ax.scatter(j, i, s=size, c=self.colors_class[class_type], marker='s')
+            progress_count += progress
+            progress_bar.setValue(progress_count)
+
+        for _class in self.points.items():
+            points = _class[1]
+            for point in points:
+                plt.scatter(point[0], point[1], s=10, marker='o', c=self.classes[int(_class[0])-1][1])
+
+        self.canvas.draw()
+        self.maped = True
+
+    def normalize_class(self, class_vector):
+        normalized_class = list(np.zeros(len(class_vector),dtype=np.int32))
+        normalized_class[class_vector.index(max(class_vector))] = 1
+        return normalized_class
+
+    def class_type(self, class_vector):
+        return class_vector.index(max(class_vector))
+
+    def colors_class_type(self, classes_count):
+        colors = ['red', 'black', 'darkgreen', 'navy', 'orange', 'yellowgreen', 'fuchsia', 'gold', 'cyan', 'pink', 'brown']
+        self.colors_class = []
+        for i in range(classes_count):
+            self.colors_class.append(np.random.choice(colors))
+
+
+
+        

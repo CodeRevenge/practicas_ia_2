@@ -7,7 +7,7 @@ from UI.external_widgets.points_input import Points_Input
 import numpy as np
 from matplotlib import colors as mcolors
 from Algorithms.MultiLayerAdaline import MLP
-from Algorithms.ann import NeuralNetwork
+from Algorithms.ann_working import NeuralNetwork
 
 class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph):
     def __init__(self, *args, **kwargs):
@@ -128,6 +128,8 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
             input_spin.lineEdit().setReadOnly(True)
         else:
             input_spin.setProperty("value", value)
+        if value > 1:
+            input_spin.lineEdit().setReadOnly(True)
         input_spin.setObjectName("neuron_layer_" + str(index))
         input_spin.setStyleSheet("QSpinBox { border: 1px solid #b1b1b1; background-color: #323232; border-radius: 5px;} QSpinBox:focus{ border: 2px solid #ffaa00;background-color: #4d4d4d;}QSpinBox:!focus:hover{ border: 1px solid #7e7e7e;}")
 
@@ -171,7 +173,10 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         for key in list(dictionary):
             for point in dictionary[key]:
                 self._inputs.append([point[0],point[1]])
-                self._targets.append(int(key))
+                highest_class = int(max(list(dictionary)))
+                target = np.zeros(highest_class, dtype=np.int32)
+                target[int(key)-1]=1
+                self._targets.append(list(target))
 
     def get_architecture(self):
         architecture = []
@@ -201,11 +206,11 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
 
         """ Here is where the MLP must be instantiated"""
 
-        ann = NeuralNetwork(inputs=self._inputs, layers_structure=self._architecture, bias=[0.70], targets=self._targets, learning_rate=self._learning_rate, min_error = self._min_error, max_epochs = self._max_ephocs)
+        ann = NeuralNetwork(inputs= self._inputs, layers_structure= self._architecture, bias= [0.70], targets= self._targets, learning_rate= self._learning_rate, min_error= self._min_error, max_epochs= self._max_ephocs)
         ann.train(self.progressBar)
 
         """ End of MLP algorithm """
 
-        self.progressBar.setValue(100)
+        self.progressBar.setValue(80)
         self.error_graph.graph_errors(mlp.errors)
         self.btn_plot_lines.setEnabled(True)

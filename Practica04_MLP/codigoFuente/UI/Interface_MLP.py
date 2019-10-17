@@ -561,7 +561,7 @@ class Ui_MainWindow(object):
         self.min_error.setPrefix("")
         self.min_error.setDecimals(6)
         self.min_error.setMinimum(1e-06)
-        self.min_error.setMaximum(0.999999)
+        self.min_error.setMaximum(10.0)
         self.min_error.setSingleStep(0.01)
         self.min_error.setProperty("value", 0.02)
         self.min_error.setObjectName("min_error")

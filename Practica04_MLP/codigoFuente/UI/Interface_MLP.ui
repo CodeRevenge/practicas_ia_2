@@ -701,7 +701,7 @@ QPushButton:disabled
       <double>0.000001000000000</double>
      </property>
      <property name="maximum">
-      <double>0.999999000000000</double>
+      <double>10.000000000000000</double>
      </property>
      <property name="singleStep">
       <double>0.010000000000000</double>
