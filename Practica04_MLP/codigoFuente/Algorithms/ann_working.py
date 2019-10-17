@@ -75,12 +75,10 @@ class NeuralNetwork:
         self.init_weights()
 
     def init_weights(self):
-        weight = .15
         # From inputs to first hidden layer
         for hidden_neuron in self.hidden_layers[0].neurons:
             for input in self.input_layer:
-                hidden_neuron.weights.append(weight)
-                weight+=.05
+                hidden_neuron.weights.append(random.random())
         # From hidden layers to hidden layers
         if len(self.hidden_layers) > 1:
             # Start iterating from 2nd hidden layer
@@ -90,11 +88,9 @@ class NeuralNetwork:
                     for previous_layer_neuron in self.hidden_layers[previous_hidden_layer_index].neurons:
                             hidden_neuron.weights.append(random.random())
         # From last hidden layer to output layer
-        weight = .40
         for output_neuron in self.output_layer.neurons:
             for neuron in self.hidden_layers[-1].neurons:
-                output_neuron.weights.append(weight)
-                weight+=.05
+                output_neuron.weights.append(random.random())
 
     def forward(self):
         self.output = []
