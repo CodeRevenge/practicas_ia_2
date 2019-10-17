@@ -206,7 +206,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
 
         """ Here is where the MLP must be instantiated"""
 
-        ann = ANN.NeuralNetwork(layers_structure= self._architecture, bias= [0.70], learning_rate= self._learning_rate)
+        ann = ANN.NeuralNetwork(layers_structure= self._architecture, bias= [0.35], learning_rate= self._learning_rate)
         errors = ANN.train(all_inputs= self._inputs, all_targets= self._targets, min_error= self._min_error, max_epochs= self._max_ephocs, NN=ann, progress_bar= self.progressBar)
 
         """ End of MLP algorithm """

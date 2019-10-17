@@ -60,7 +60,8 @@ class Points_Input(QWidget):
     def update_scatter_colors(self):
         plt.figure(2)
         self.ax = plt.gca()
-        self.clearPlot()
+        if not self.maped:
+            self.clearPlot()
         for _class in self.points.items():
             points = _class[1]
             for point in points:
@@ -70,7 +71,7 @@ class Points_Input(QWidget):
 
     def init_graph(self):
         plt.figure(2)
-        plt.tight_layout()
+        # plt.tight_layout()
         self.ax = plt.gca()
         self.fig.set_facecolor('#323232')
         self.ax.grid(zorder=0)
@@ -246,8 +247,10 @@ class Points_Input(QWidget):
     def colors_class_type(self, classes_count):
         colors = ['red', 'black', 'darkgreen', 'navy', 'orange', 'yellowgreen', 'fuchsia', 'gold', 'cyan', 'pink', 'brown']
         self.colors_class = []
-        for i in range(classes_count):
-            self.colors_class.append(np.random.choice(colors))
+        for _ in range(classes_count):
+            color = np.random.choice(colors)
+            colors.pop(colors.index(color))
+            self.colors_class.append(color)
 
 
 

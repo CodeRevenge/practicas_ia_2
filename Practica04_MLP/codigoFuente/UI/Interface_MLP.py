@@ -13,6 +13,8 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(1271, 657)
+        MainWindow.setMinimumSize(QtCore.QSize(1271, 657))
+        MainWindow.setMaximumSize(QtCore.QSize(1271, 657))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/icons/inteligencia-artificial.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
