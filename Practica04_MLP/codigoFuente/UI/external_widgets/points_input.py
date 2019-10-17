@@ -216,6 +216,7 @@ class Points_Input(QWidget):
 
         x = list(np.linspace(-5+size*0.005,5-size*0.005,dpi))
         y = list(np.linspace(-5+size*0.005,5-size*0.005,dpi))
+        self.plane.clear()
 
         for ind, i in enumerate(y):
             self.plane.append([])
@@ -256,15 +257,69 @@ class Points_Input(QWidget):
     def show_lines(self, init_layer):
         neurons_count = len(init_layer)
 
-        self.clearPlot()
-        self.fig.clf()
+        plt.figure(2)
+        plt.clf()
+        # self.init_graph()
+        # plt.tight_layout()
 
         self.fig = plt.figure(2)
-        self.fig.add_subplot(221)   #top left
-        self.fig.add_subplot(222)   #top right
-        self.fig.add_subplot(223)   #bottom left
-        self.fig.add_subplot(224)   #bottom right 
+        ax1 = self.fig.add_subplot(121)   #top left
+        self.init_lines(self.fig, ax1)
+        ax1.plot(init_layer[0].weights[0], init_layer[0].weights[1])
+        # ax1.fill_between(init_layer[0].weights[0], init_layer[0].weights[1], np.max(init_layer[0].weights[1]), color='#539ecd')
+        # ax1.fill_between(init_layer[0].weights[0], init_layer[0].weights[1], color='#e89a7d')
+        for _class in self.points.items():
+            points = _class[1]
+            for point in points:
+                ax1.scatter(point[0], point[1], s=5, marker='o', c=self.classes[int(_class[0])-1][1])
+
+        ax2 = self.fig.add_subplot(122)   #top right
+        self.init_lines(self.fig, ax2)
+        ax2.plot(init_layer[1].weights[0], init_layer[1].weights[1])
+        for _class in self.points.items():
+            points = _class[1]
+            for point in points:
+                ax2.scatter(point[0], point[1], s=5, marker='o', c=self.classes[int(_class[0])-1][1])
+
         self.canvas.draw()
+
+    def show_planes(self, size = 30, dpi = 40):
+        self.figure = plt.figure(2)
+        plt.clf()
+        self.init_graph()
+        self.ax = plt.gca()
+
+        x = list(np.linspace(-5+size*0.005,5-size*0.005,dpi))
+        y = list(np.linspace(-5+size*0.005,5-size*0.005,dpi))
+
+        for ind_y, i in enumerate(y):
+            for ind_x, j in enumerate(x):
+                class_type = self.plane[ind_y][ind_x]
+                self.ax.scatter(j, i, s=size, c=self.colors_class[class_type], marker='s')
+
+        for _class in self.points.items():
+            points = _class[1]
+            for point in points:
+                plt.scatter(point[0], point[1], s=10, marker='o', c=self.classes[int(_class[0])-1][1])
+
+        self.canvas.draw()
+
+    def init_lines(self, fig, ax):
+        fig.set_facecolor('#323232')
+        ax.grid(zorder=0)
+        ax.set_axisbelow(True)
+        ax.set_xlim([-5, 5])
+        ax.set_ylim([-5, 5])
+        ax.set_xticks(range(-5,6))
+        ax.set_yticks(range(-5,6))
+        ax.axhline(y=0, color='#323232')
+        ax.axvline(x=0, color='#323232')
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+        ax.spines['left'].set_visible(False)
+        ax.tick_params(axis='x', colors='#b1b1b1')
+        ax.tick_params(axis='y', colors='#b1b1b1')
 
 
 

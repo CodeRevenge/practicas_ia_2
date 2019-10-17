@@ -587,7 +587,7 @@ class Ui_MainWindow(object):
         self.max_ephocs.setKeyboardTracking(True)
         self.max_ephocs.setMinimum(1)
         self.max_ephocs.setMaximum(999999999)
-        self.max_ephocs.setProperty("value", 2000)
+        self.max_ephocs.setProperty("value", 5000)
         self.max_ephocs.setObjectName("max_ephocs")
         self.label_3 = QtWidgets.QLabel(self.control_box)
         self.label_3.setGeometry(QtCore.QRect(10, 120, 241, 41))

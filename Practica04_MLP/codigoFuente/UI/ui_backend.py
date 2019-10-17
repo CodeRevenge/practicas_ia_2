@@ -142,6 +142,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         return widget
 
     def clear_points(self):
+        self.disable_show_btn()
         self.input_graph.clearPlot()
         self.input_graph.points.clear()
         self.input_graph.selected_class.clear()
@@ -149,11 +150,13 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.btn_train.setEnabled(False)
 
     def set_donut(self):
+        self.disable_show_btn()
         self.input_graph.set_donut()
         self.activate_train()
         self.error_graph.clear_graph()
     
     def set_map(self):
+        self.disable_show_btn()
         if self.classes_cout.value() != 5:
             self.classes_cout.setValue(5)
             self.generate_classes()
@@ -162,6 +165,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.error_graph.clear_graph()
 
     def set_xor(self):
+        self.disable_show_btn()
         self.input_graph.set_xor()
         self.activate_train()
         self.error_graph.clear_graph()
@@ -195,6 +199,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         pass
 
     def train_mlp(self):
+        self.disable_show_btn()
         # Integer with the count of classes
         self._classes_count = len(self.input_graph.points.keys())
         # List of Lists with all the inputs with the form [[x,y,class],...]
@@ -224,10 +229,16 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
 
     def show_lines(self):
         self.input_graph.show_lines(self.ann.hidden_layers[0].neurons)
-        self.btn_plot_plane.setEnabled(True)
+        self.btn_plot_planes.setEnabled(True)
         self.btn_plot_lines.setEnabled(False)
 
     def show_planes(self):
-        self.input_graph.update_scatter_colors()
-        self.btn_plot_planes.setEnabled(True)
+        self.input_graph.show_planes()
+        self.btn_plot_planes.setEnabled(False)
         self.btn_plot_lines.setEnabled(True)
+
+    def disable_show_btn(self):
+        self.btn_plot_planes.setEnabled(False)
+        self.btn_plot_lines.setEnabled(False)
+
+    
