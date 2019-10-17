@@ -7,7 +7,6 @@ def sigmoid(z):
 def sigmoidPrime(z):
     return np.exp(-z)/((1+np.exp(-z))**2)
 
-
 class Neuron:
     def __init__(self, bias):
         self.bias = bias
@@ -19,7 +18,6 @@ class Neuron:
         self.delta = 0
     
     def calculate_net(self, inputs):
-        # print("NET: {} o {} + {}".format(inputs, self.weights, self.bias))
         self.inputs = inputs
         self.net = np.dot(self.weights, inputs) + self.bias
         return self.net
@@ -67,7 +65,7 @@ class NeuralNetwork:
         # One bias for each layer
         else:
             if len(bias) != len(layers_structure):
-                return # print("Bias array length must be 1 or equal to structure length ({})".format(len(layers_structure)))
+                return print("Bias array length must be 1 or equal to structure length ({})".format(len(layers_structure)))
             for num_neurons, layer_bias in zip(layers_structure[0:-1], bias[0:-1]):
                 self.hidden_layers.append(NeuronLayer(num_neurons, layer_bias))
             self.output_layer = NeuronLayer(layers_structure[-1], bias[-1])
