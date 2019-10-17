@@ -192,10 +192,13 @@ class NeuralNetwork:
         self.output_layer.inspect()
         # print('------')
 
-def train(all_inputs, all_targets, min_error, max_epochs):
+def train(all_inputs, all_targets, min_error, max_epochs, NN, progress_bar):
     acumulated_error = 999
     acumulated_outputs = []
+    progress = 80 / max_epochs
+    progress_count = 0
     epochs = 0
+    errors = []
     while acumulated_error > min_error and epochs < max_epochs:
         for inputs, targets in zip(all_inputs, all_targets):
             NN.input_layer = inputs
@@ -208,28 +211,34 @@ def train(all_inputs, all_targets, min_error, max_epochs):
             
         # Get acumulated error
         acumulated_error = np.sum(abs((np.array(all_targets) - np.array(acumulated_outputs))))
-        print("Acumulated error", acumulated_error)
+        errors.append(acumulated_error)
+        # print("Acumulated error", acumulated_error)
         acumulated_outputs = []
         epochs += 1
+        progress_count += progress
+        progress_bar.setValue(progress_count)
 
-NN = NeuralNetwork(layers_structure=[2,4], bias=[0.35], learning_rate = 0.5)
+    return errors
+        
 
-all_inputs = [[1,1],[2,2],[4,4]]
-all_targets = [[1,0,0,0],[0,1,0,0],[0,0,0,1]]
-min_error = 0.984321
-max_epochs = 7124
+# NN = NeuralNetwork(layers_structure=[2,4], bias=[0.35], learning_rate = 0.5)
 
-train(all_inputs=all_inputs, all_targets=all_targets, min_error=min_error, max_epochs=max_epochs)  
+# all_inputs = [[1,1],[2,2],[4,4]]
+# all_targets = [[1,0,0,0],[0,1,0,0],[0,0,0,1]]
+# min_error = 0.984321
+# max_epochs = 7124
 
-print("---------------")
-#Test 1
-NN.input_layer = [1,1]
-print(NN.forward())
+# train(all_inputs=all_inputs, all_targets=all_targets, min_error=min_error, max_epochs=max_epochs)  
 
-#Test 2
-NN.input_layer = [2,2]
-print(NN.forward())
+# print("---------------")
+# #Test 1
+# NN.input_layer = [1,1]
+# print(NN.forward())
 
-#Test 3
-NN.input_layer = [3,3]
-print(NN.forward())
+# #Test 2
+# NN.input_layer = [2,2]
+# print(NN.forward())
+
+# #Test 3
+# NN.input_layer = [3,3]
+# print(NN.forward())
