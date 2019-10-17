@@ -123,7 +123,11 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         input_spin.setAlignment(QtCore.Qt.AlignCenter)
         input_spin.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         input_spin.setKeyboardTracking(True)
-        input_spin.setProperty("value", value)
+        if index == 1:
+            input_spin.setProperty("value", 2)
+            input_spin.lineEdit().setReadOnly(True)
+        else:
+            input_spin.setProperty("value", value)
         input_spin.setObjectName("neuron_layer_" + str(index))
         input_spin.setStyleSheet("QSpinBox { border: 1px solid #b1b1b1; background-color: #323232; border-radius: 5px;} QSpinBox:focus{ border: 2px solid #ffaa00;background-color: #4d4d4d;}QSpinBox:!focus:hover{ border: 1px solid #7e7e7e;}")
 
@@ -162,11 +166,12 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.btn_train.setEnabled(True)
     
     def convert_dict_to_inputs(self, dictionary):
-        inputs = []
+        self._inputs = []
+        self._targets = []
         for key in list(dictionary):
             for point in dictionary[key]:
-                inputs.append([point[0],point[1], int(key)])
-        return inputs
+                self._inputs.append([point[0],point[1]])
+                self._targets.append(int(key))
 
     def get_architecture(self):
         architecture = []
@@ -181,9 +186,10 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         # Integer with the count of classes
         self._classes_count = len(self.input_graph.points.keys())
         # List of Lists with all the inputs with the form [[x,y,class],...]
-        self._inputs = self.convert_dict_to_inputs(self.input_graph.points)
+        self.convert_dict_to_inputs(self.input_graph.points)
         # List of Integers with the architecture with the form [layer_1_count, layer_2_count, ...]
         self._architecture = self.get_architecture()
+        self._architecture.pop(0)
         # Integer with the learning rate
         self._learning_rate = float(self.learning_rate.value())
         # Integer with the min error
@@ -195,9 +201,8 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
 
         """ Here is where the MLP must be instantiated"""
 
-        mlp = MLP(self._classes_count, self._inputs, self._architecture, self._learning_rate, self._min_error, self._max_ephocs)
-        mlp.train(self.progressBar)
-
+        ann = NeuralNetwork(inputs=self._inputs, layers_structure=self._architecture, bias=[0.70], targets=self._targets, learning_rate=self._learning_rate, min_error = self._min_error, max_epochs = self._max_ephocs)
+        ann.train(self.progressBar)
 
         """ End of MLP algorithm """
 
