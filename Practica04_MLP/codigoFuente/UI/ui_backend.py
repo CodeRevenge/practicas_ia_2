@@ -212,5 +212,6 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         """ End of MLP algorithm """
 
         self.progressBar.setValue(80)
+        self.input_graph.fill_plot(ann, self.progressBar)
         self.error_graph.graph_errors(errors)
         self.btn_plot_lines.setEnabled(True)
