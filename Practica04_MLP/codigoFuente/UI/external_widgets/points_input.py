@@ -256,6 +256,7 @@ class Points_Input(QWidget):
 
     def show_lines(self, init_layer):
         neurons_count = len(init_layer)
+        
 
         plt.figure(2)
         plt.clf()
@@ -265,7 +266,13 @@ class Points_Input(QWidget):
         self.fig = plt.figure(2)
         ax1 = self.fig.add_subplot(121)   #top left
         self.init_lines(self.fig, ax1)
-        ax1.plot(init_layer[0].weights[0], init_layer[0].weights[1])
+        tetha = init_layer[0].bias
+        w1 = init_layer[0].weights[0]
+        w2 = init_layer[0].weights[1]
+        y = [(-(tetha/w1)/(tetha/w2))*-5+(-tetha/w1),(-(tetha/w1)/(tetha/w2))*5+(-tetha/w1)]
+        x = [-5,5]
+        ax1.plot(x,y, c='blue')
+        # ax1.plot(5,y[1], c='blue')
         # ax1.fill_between(init_layer[0].weights[0], init_layer[0].weights[1], np.max(init_layer[0].weights[1]), color='#539ecd')
         # ax1.fill_between(init_layer[0].weights[0], init_layer[0].weights[1], color='#e89a7d')
         for _class in self.points.items():
@@ -275,7 +282,12 @@ class Points_Input(QWidget):
 
         ax2 = self.fig.add_subplot(122)   #top right
         self.init_lines(self.fig, ax2)
-        ax2.plot(init_layer[1].weights[0], init_layer[1].weights[1])
+        tetha = init_layer[1].bias
+        w1 = init_layer[1].weights[0]
+        w2 = init_layer[1].weights[1]
+        y = [(-(tetha/w1)/(tetha/w2))*-5+(-tetha/w1),(-(tetha/w1)/(tetha/w2))*5+(-tetha/w1)]
+        x = [-5,5]
+        ax2.plot(x,y, c='blue')
         for _class in self.points.items():
             points = _class[1]
             for point in points:
