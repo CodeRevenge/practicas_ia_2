@@ -61,6 +61,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
             self.input_graph.classes.append([button.objectName()[-1], button.palette().color(QtGui.QPalette.Background).name()])
 
         self.btn_train.setEnabled(False)
+        self.generate_layers()
         self.error_graph.clear_graph()
 
     def class_button(self, index, color):
@@ -139,6 +140,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.input_graph.clearPlot()
         self.input_graph.points.clear()
         self.input_graph.selected_class.clear()
+        self.error_graph.clear_graph()
         self.btn_train.setEnabled(False)
 
     def set_donut(self):
