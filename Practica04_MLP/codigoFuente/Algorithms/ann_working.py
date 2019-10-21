@@ -147,7 +147,7 @@ class NeuralNetwork:
                             # print("next_neuron Delta: {}, Weight: {}".format(next_neuron.delta, next_neuron.weights[neuron_index]))
                     else:
                         # Other hidden layers
-                        for next_neuron in self.hidden_layers[layer_index-1].neurons:
+                        for next_neuron in list(reversed(self.hidden_layers))[layer_index-1].neurons:
                             error_wtr_output += next_neuron.delta * next_neuron.weights[neuron_index]
                             # print("next_neuron Delta: {}, Weight: {}".format(next_neuron.delta, next_neuron.weights[neuron_index]))
 
