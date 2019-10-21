@@ -273,8 +273,8 @@ class Points_Input(QWidget):
         x = [-5,5]
         ax1.plot(x,y, c='blue')
         # ax1.plot(5,y[1], c='blue')
-        # ax1.fill_between(init_layer[0].weights[0], init_layer[0].weights[1], np.max(init_layer[0].weights[1]), color='#539ecd')
-        # ax1.fill_between(init_layer[0].weights[0], init_layer[0].weights[1], color='#e89a7d')
+        ax1.fill_between(x, y, np.max(y), color='#539ecd')
+        ax1.fill_between(x, y, color='#e89a7d')
         for _class in self.points.items():
             points = _class[1]
             for point in points:
