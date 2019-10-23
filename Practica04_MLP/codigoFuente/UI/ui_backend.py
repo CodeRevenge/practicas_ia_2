@@ -127,7 +127,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         input_spin.setAlignment(QtCore.Qt.AlignCenter)
         input_spin.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         input_spin.setKeyboardTracking(True)
-        input_spin.setMaximum(10)
+        input_spin.setMaximum(100)
         input_spin.setMinimum(1)
         if index == 1:
             input_spin.setProperty("value", 2)

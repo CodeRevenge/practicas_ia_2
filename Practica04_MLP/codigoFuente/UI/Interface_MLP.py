@@ -616,7 +616,7 @@ class Ui_MainWindow(object):
         self.classes_cout.setAlignment(QtCore.Qt.AlignCenter)
         self.classes_cout.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         self.classes_cout.setKeyboardTracking(True)
-        self.classes_cout.setMinimum(3)
+        self.classes_cout.setMinimum(2)
         self.classes_cout.setMaximum(10)
         self.classes_cout.setProperty("value", 3)
         self.classes_cout.setObjectName("classes_cout")

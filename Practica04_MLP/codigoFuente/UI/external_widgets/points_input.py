@@ -27,6 +27,8 @@ class Points_Input(QWidget):
          
         self.init_graph()
 
+        self.MIN_CLASSES = 2
+
         self.classes = []
         self.selected_class = []
         self.points = {}
@@ -54,7 +56,7 @@ class Points_Input(QWidget):
 
         self.canvas.draw()
 
-        if len(self.points.keys()) >= 3:
+        if len(self.points.keys()) >= self.MIN_CLASSES:
             self.TRAIN_BUTTON.setEnabled(True)
 
     def update_scatter_colors(self):
@@ -255,43 +257,31 @@ class Points_Input(QWidget):
 
 
     def show_lines(self, init_layer):
-        neurons_count = len(init_layer)
-        
-
+    
         plt.figure(2)
         plt.clf()
-        # self.init_graph()
-        # plt.tight_layout()
+        plt.tight_layout()
 
         self.fig = plt.figure(2)
-        ax1 = self.fig.add_subplot(121)   #top left
-        self.init_lines(self.fig, ax1)
-        tetha = init_layer[0].bias
-        w1 = init_layer[0].weights[0]
-        w2 = init_layer[0].weights[1]
-        y = [(-(tetha/w1)/(tetha/w2))*-5+(-tetha/w1),(-(tetha/w1)/(tetha/w2))*5+(-tetha/w1)]
-        x = [-5,5]
-        ax1.plot(x,y, c='blue')
-        # ax1.plot(5,y[1], c='blue')
-        ax1.fill_between(x, y, np.max(y), color='#539ecd')
-        ax1.fill_between(x, y, color='#e89a7d')
-        for _class in self.points.items():
-            points = _class[1]
-            for point in points:
-                ax1.scatter(point[0], point[1], s=5, marker='o', c=self.classes[int(_class[0])-1][1])
+        self.ax = plt.gca()
+        self.init_lines(self.fig, self.ax)
 
-        ax2 = self.fig.add_subplot(122)   #top right
-        self.init_lines(self.fig, ax2)
-        tetha = init_layer[1].bias
-        w1 = init_layer[1].weights[0]
-        w2 = init_layer[1].weights[1]
-        y = [(-(tetha/w1)/(tetha/w2))*-5+(-tetha/w1),(-(tetha/w1)/(tetha/w2))*5+(-tetha/w1)]
-        x = [-5,5]
-        ax2.plot(x,y, c='blue')
+        for index, neuron in enumerate(init_layer, start=1):
+            tetha = neuron.bias
+            w1 = neuron.weights[0]
+            w2 = neuron.weights[1]
+            y = [(-(tetha/w1)/(tetha/w2))*-5+(-tetha/w1),(-(tetha/w1)/(tetha/w2))*5+(-tetha/w1)]
+            x = [-5,5]
+            line, = self.ax.plot(x,y)
+            line.set_label('Neurona {}'.format(index))
+        
+        self.ax.legend()
+
         for _class in self.points.items():
             points = _class[1]
             for point in points:
-                ax2.scatter(point[0], point[1], s=5, marker='o', c=self.classes[int(_class[0])-1][1])
+                self.ax.scatter(point[0], point[1], s=5, marker='o', c=self.classes[int(_class[0])-1][1])
+
 
         self.canvas.draw()
 
