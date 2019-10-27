@@ -872,7 +872,7 @@ QPushButton:disabled
       <number>2</number>
      </property>
      <property name="maximum">
-      <number>10</number>
+      <number>100</number>
      </property>
      <property name="value">
       <number>3</number>
@@ -925,7 +925,7 @@ QPushButton:disabled
       <cursorShape>OpenHandCursor</cursorShape>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Primero debe ingresar al menos 3 puntos de diferentes clases para activar el entrenamiento del MLP.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Primero debe ingresar al menos 2 puntos de diferentes clases para activar el entrenamiento del MLP.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
@@ -996,7 +996,7 @@ QPushButton:disabled
       <number>2</number>
      </property>
      <property name="maximum">
-      <number>10</number>
+      <number>100</number>
      </property>
      <property name="value">
       <number>3</number>

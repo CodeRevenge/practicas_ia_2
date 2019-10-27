@@ -1,3 +1,5 @@
+from PyQt5.QtCore import QThread, pyqtSignal
+import time
 import random
 import numpy as np
 
@@ -191,36 +193,49 @@ class NeuralNetwork:
         self.output_layer.inspect()
         # print('------')
 
-def train(all_inputs, all_targets, min_error, max_epochs, NN, progress_bar):
-    # print(all_inputs)
-    # print(all_targets)
-    acumulated_error = 999
-    acumulated_outputs = []
-    progress = 80 / max_epochs
-    progress_count = 0
-    epochs = 0
-    errors = []
-    while acumulated_error > min_error and epochs < max_epochs:
-        for inputs, targets in zip(all_inputs, all_targets):
-            NN.input_layer = inputs
-            NN.target = targets 
+class TRAIN(QThread):
+    countChanged = pyqtSignal(int)
+    def __init__(self, all_inputs, all_targets, min_error, max_epochs, NN,):
+        super(QThread, self).__init__()
+        self.all_inputs = all_inputs
+        self.all_targets = all_targets
+        self.min_error = min_error
+        self.max_epochs = max_epochs
+        self.NN = NN
 
-            # Every forward appends a new output
-            # Which is used to calculate the acumulated error after each input
-            acumulated_outputs.append(NN.forward())
-            NN.backprop()
-            
-        # Get acumulated error
-        acumulated_error = np.sum(abs((np.array(all_targets) - np.array(acumulated_outputs))))
-        errors.append(acumulated_error)
-        # print("Acumulated error", acumulated_error)
-        acumulated_outputs = []
-        epochs += 1
-        progress_count += progress
-        progress_bar.setValue(progress_count)
-
-    return errors
+    def run(self):
+        self.train()
         
+    def train(self):
+        # print(all_inputs)
+        # print(all_targets)
+        progress = 80 / self.max_epochs
+        progress_count = 0
+
+        acumulated_error = 999
+        acumulated_outputs = []
+        epochs = 0
+        self.errors = []
+        while acumulated_error > self.min_error and epochs < self.max_epochs:
+            for inputs, targets in zip(self.all_inputs, self.all_targets):
+                self.NN.input_layer = inputs
+                self.NN.target = targets 
+
+                # Every forward appends a new output
+                # Which is used to calculate the acumulated error after each input
+                acumulated_outputs.append(self.NN.forward())
+                self.NN.backprop()
+                
+            # Get acumulated error
+            acumulated_error = np.sum(abs((np.array(self.all_targets) - np.array(acumulated_outputs))))
+            self.errors.append(acumulated_error)
+            # print("Acumulated error", acumulated_error)
+            acumulated_outputs = []
+            epochs += 1
+            progress_count += progress
+            if int(progress_count) % 10:
+                # time.sleep(0.001)
+                self.countChanged.emit(progress_count)
 
 # NN = NeuralNetwork(layers_structure=[2,4], bias=[0.35], learning_rate = 0.5)
 

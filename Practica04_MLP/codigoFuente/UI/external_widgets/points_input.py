@@ -208,9 +208,13 @@ class Points_Input(QWidget):
         self.canvas.draw()
 
     def fill_plot(self, algorithm, progress_bar, size = 30, dpi = 40):
+        self.maped = False
         self.algorithm = algorithm
-        self.clearPlot()
+
+        self.figure = plt.figure(2)
+        plt.clf()
         self.init_graph()
+        self.ax = plt.gca()
         self.colors_class_type(len(self.classes))
 
         progress = 20 / dpi

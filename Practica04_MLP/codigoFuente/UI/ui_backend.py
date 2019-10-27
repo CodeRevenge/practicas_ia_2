@@ -1,5 +1,5 @@
 from UI.Interface_MLP import QtWidgets, Ui_MainWindow, QtCore
-from PyQt5.QtCore import QEvent, Qt
+from PyQt5.QtCore import QEvent, Qt, QThread
 from PyQt5.QtWidgets import QScrollArea, QVBoxLayout, QGroupBox, QLabel, QPushButton, QHBoxLayout, QColorDialog, QSpinBox,QWidget
 from PyQt5 import QtGui
 import matplotlib.pyplot as plt
@@ -7,6 +7,7 @@ from UI.external_widgets.error_graph import Error_Graph
 from UI.external_widgets.points_input import Points_Input
 import numpy as np
 from matplotlib import colors as mcolors
+import threading
 from Algorithms.MultiLayerAdaline import MLP
 import Algorithms.ann_working as ANN
 
@@ -213,19 +214,31 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self._min_error = float(self.min_error.value())
         # Integer with the count of max ephocs
         self._max_ephocs = int(self.max_ephocs.value())
-
+        
+        self.disable_all()
+        
         # print("Classes count: {} \nArchitecture: {} \nLearning rate: {} \nMin error: {} \nMax ephocs: {}".format(self._classes_count, self._architecture, self._learning_rate, self._min_error, self._max_ephocs))
 
         """ Here is where the MLP must be instantiated"""
+        self.hilo = threading.Thread(target=self.ejecute_algorithm)
+        self.hilo.start()
+
+    def ejecute_algorithm(self):
         self.ann = ANN.NeuralNetwork(layers_structure= self._architecture, bias= [0.35], learning_rate= self._learning_rate)
-        errors = ANN.train(all_inputs= self._inputs, all_targets= self._targets, min_error= self._min_error, max_epochs= self._max_ephocs, NN=self.ann, progress_bar= self.progressBar)
+        self.train = ANN.TRAIN(all_inputs= self._inputs, all_targets= self._targets, min_error= self._min_error, max_epochs= self._max_ephocs, NN=self.ann)
+        self.train.countChanged.connect(self.onCountChanged)
+        self.train.finished.connect(self.onFinished)
+        self.train.start()
 
-        """ End of MLP algorithm """
+    def onCountChanged(self, value):
+        self.progressBar.setValue(value)
 
+    def onFinished(self):
         self.progressBar.setValue(80)
         self.input_graph.fill_plot(self.ann, self.progressBar)
-        self.error_graph.graph_errors(errors)
+        self.error_graph.graph_errors(self.train.errors)
         self.btn_plot_lines.setEnabled(True)
+        self.enable_all()
 
     def show_lines(self):
         self.input_graph.show_lines(self.ann.hidden_layers[0].neurons)
@@ -241,4 +254,26 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.btn_plot_planes.setEnabled(False)
         self.btn_plot_lines.setEnabled(False)
 
+    def disable_all(self):
+        self.btn_clean_input_graph.setEnabled(False)
+        self.btn_generate_classes.setEnabled(False)
+        self.btn_generate_layers.setEnabled(False)
+        self.btn_donut.setEnabled(False)
+        self.btn_map.setEnabled(False)
+        self.btn_xor.setEnabled(False)
+        self.btn_train.setEnabled(False)
+        self.btn_plot_lines.setEnabled(False)
+        self.btn_plot_planes.setEnabled(False)
+        self.input_graph.setEnabled(False)
+
+    def enable_all(self):
+        self.btn_clean_input_graph.setEnabled(True)
+        self.btn_generate_classes.setEnabled(True)
+        self.btn_generate_layers.setEnabled(True)
+        self.btn_donut.setEnabled(True)
+        self.btn_map.setEnabled(True)
+        self.btn_xor.setEnabled(True)
+        self.btn_train.setEnabled(True)
+        self.btn_plot_lines.setEnabled(True)
+        self.input_graph.setEnabled(True)
     
