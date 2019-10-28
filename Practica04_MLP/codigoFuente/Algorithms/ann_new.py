@@ -116,9 +116,6 @@ class NeuralNetwork(QThread):
     def updateWeights(self, weight_deltas):
         self.structure = self.structure - self.learning_rate * weight_deltas
 
-    def run(self):
-        self.train()
-
     def train(self):
         progress = 80 / self.max_epochs
         progress_count = 0
@@ -150,3 +147,7 @@ class NeuralNetwork(QThread):
             if int(progress_count) % 10:
                 # time.sleep(0.001)
                 self.countChanged.emit(progress_count)
+
+
+    def run(self):
+        self.train()

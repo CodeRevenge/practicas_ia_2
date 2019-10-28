@@ -249,7 +249,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.enable_all()
 
     def show_lines(self):
-        self.input_graph.show_lines(self.ann.hidden_layers[0].neurons)
+        self.input_graph.show_lines(list(self.train.structure[0]), list(self.train.bias[0]))
         self.btn_plot_planes.setEnabled(True)
         self.btn_plot_lines.setEnabled(False)
 

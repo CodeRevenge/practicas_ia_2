@@ -272,7 +272,7 @@ class Points_Input(QWidget):
             self.colors_class.append(color)
 
 
-    def show_lines(self, init_layer):
+    def show_lines(self, init_layer, bias):
     
         plt.figure(2)
         plt.clf()
@@ -282,14 +282,13 @@ class Points_Input(QWidget):
         self.ax = plt.gca()
         self.init_lines(self.fig, self.ax)
 
-        for index, neuron in enumerate(init_layer, start=1):
-            tetha = neuron.bias
-            w1 = neuron.weights[0]
-            w2 = neuron.weights[1]
+        for index, (neuron, tetha) in enumerate(zip(init_layer,bias)):
+            w1 = neuron[0]
+            w2 = neuron[1]
             y = [(-(tetha/w1)/(tetha/w2))*-5+(-tetha/w1),(-(tetha/w1)/(tetha/w2))*5+(-tetha/w1)]
             x = [-5,5]
             line, = self.ax.plot(x,y)
-            line.set_label('Neurona {}'.format(index))
+            line.set_label('Neurona {}'.format(index+1))
         
         self.ax.legend()
 
