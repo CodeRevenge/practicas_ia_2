@@ -105,9 +105,9 @@ class Points_Input(QWidget):
 
         SIZE = 10
 
-        class_a = np.linspace(2.5,4.5,8)
-        class_b = np.linspace(1.5,2,4)
-        class_c = np.linspace(.2,1,5)
+        class_a = np.linspace(3,3.5,1)
+        class_b = np.linspace(1.5,2,2)
+        class_c = np.linspace(1,1.5,1)
 
         theta = np.linspace(0, 2*np.pi, 60)
         for rad in class_a:

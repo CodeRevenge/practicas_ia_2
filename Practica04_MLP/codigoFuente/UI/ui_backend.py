@@ -216,6 +216,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self._max_ephocs = int(self.max_ephocs.value())
         
         self.disable_all()
+        self.progressBar.setValue(0)
         
         # print("Classes count: {} \nArchitecture: {} \nLearning rate: {} \nMin error: {} \nMax ephocs: {}".format(self._classes_count, self._architecture, self._learning_rate, self._min_error, self._max_ephocs))
 
