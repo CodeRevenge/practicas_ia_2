@@ -12,6 +12,7 @@ class Points_Input(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self, parent) 
         self.TRAIN_BUTTON = QWidget
+        self.update_last_layer_input = lambda x:x
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0,0,0,0)
@@ -53,6 +54,12 @@ class Points_Input(QWidget):
                 self.points.get(self.selected_class[0]).append([event.xdata, event.ydata])
             else:
                 self.points[self.selected_class[0]] = [[event.xdata, event.ydata]]
+                classes = len(self.points.keys())
+                if classes > 2:
+                    try:
+                        self.update_last_layer_input(classes)
+                    except AttributeError:
+                        pass
 
         self.canvas.draw()
 
@@ -141,6 +148,8 @@ class Points_Input(QWidget):
                     self.points[self.classes[2][0]] = [[x1, x2]]
         self.canvas.draw()
 
+        self.update_last_layer_input(3)
+
     def set_map(self):
         self.selected_class.clear()
         self.points.clear()
@@ -177,6 +186,8 @@ class Points_Input(QWidget):
 
         self.canvas.draw()
 
+        self.update_last_layer_input(5)
+
     def set_xor(self):
         self.selected_class.clear()
         self.points.clear()
@@ -207,6 +218,8 @@ class Points_Input(QWidget):
 
         self.canvas.draw()
 
+        self.update_last_layer_input(3)
+
     def fill_plot(self, algorithm, progress_bar, size = 30, dpi = 40):
         self.maped = False
         self.algorithm = algorithm
@@ -227,9 +240,8 @@ class Points_Input(QWidget):
         for ind, i in enumerate(y):
             self.plane.append([])
             for j in x:
-                self.algorithm.input_layer = [j,i]
-                class_output = self.algorithm.forward()
-                class_type = self.class_type(class_output)
+                class_output = self.algorithm.forwardPropagation([j,i])
+                class_type = self.class_type(list(class_output))
                 self.plane[ind].append(class_type)
                 self.ax.scatter(j, i, s=size, c=self.colors_class[class_type], marker='s')
             progress_count += progress

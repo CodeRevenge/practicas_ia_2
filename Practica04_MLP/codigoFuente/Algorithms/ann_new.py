@@ -1,4 +1,5 @@
 import numpy as np
+from PyQt5.QtCore import QThread, pyqtSignal
 from progress.bar import Bar
 
 def sigmoid(Z):
@@ -7,8 +8,10 @@ def sigmoid(Z):
 def sigmoidPrime(out):
     return out * (1-out)
 
-class NeuralNetwork:
+class NeuralNetwork(QThread):
+    countChanged = pyqtSignal(int)
     def __init__(self, inputs, targets, learning_rate, structure, max_epochs, min_error, bias=np.random.rand()):
+        super(QThread, self).__init__()
         self.inputs = inputs
         self.targets = targets
         self.learning_rate = learning_rate
@@ -113,26 +116,37 @@ class NeuralNetwork:
     def updateWeights(self, weight_deltas):
         self.structure = self.structure - self.learning_rate * weight_deltas
 
+    def run(self):
+        self.train()
+
     def train(self):
+        progress = 80 / self.max_epochs
+        progress_count = 0
         
         acumulated_error = 999
         acumulated_outputs = []
         epochs = 0
 
-        print(len(self.inputs))
-
+        # print(len(self.inputs))
+        self.errors = []
         while acumulated_error > self.min_error and epochs < self.max_epochs:
-            with Bar("Inputs: ", max=len(self.inputs)) as bar:
-                for idx, (inputs, targets)in enumerate(zip(self.inputs, self.targets)):
-                    forward = self.forwardPropagation(inputs)
-                    acumulated_outputs.append(forward)
-                    weight_deltas = self.backwardPropagation(targets)
-                    self.updateWeights(weight_deltas)
-                    bar.next()
-                bar.finish()
+            # with Bar("Inputs: ", max=len(self.inputs)) as bar:
+            for idx, (inputs, targets)in enumerate(zip(self.inputs, self.targets)):
+                forward = self.forwardPropagation(inputs)
+                acumulated_outputs.append(forward)
+                weight_deltas = self.backwardPropagation(targets)
+                self.updateWeights(weight_deltas)
+                    # bar.next()
+                # bar.finish()
 
-            print(np.sum(abs((np.array(self.targets) - np.array(acumulated_outputs)))))
+            # print(np.sum(abs((np.array(self.targets) - np.array(acumulated_outputs)))))
             acumulated_error = (np.sum(abs((np.array(self.targets) - np.array(acumulated_outputs))))) * 100 / (len(self.targets) * len(self.targets[0]))
-            print("Epoch: {} - Acumulated error: [{}] // Precision: {}%".format(epochs+1, acumulated_error, 100-acumulated_error))
+            # print("Epoch: {} - Acumulated error: [{}] // Precision: {}%".format(epochs+1, acumulated_error, 100-acumulated_error))
             acumulated_outputs = []
+            self.errors.append(acumulated_error)
             epochs += 1
+
+            progress_count += progress
+            if int(progress_count) % 10:
+                # time.sleep(0.001)
+                self.countChanged.emit(progress_count)

@@ -9,7 +9,7 @@ import numpy as np
 from matplotlib import colors as mcolors
 import threading
 from Algorithms.MultiLayerAdaline import MLP
-import Algorithms.ann as ANN
+from Algorithms.ann_new import NeuralNetwork
 
 class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph):
     def __init__(self, *args, **kwargs):
@@ -24,7 +24,6 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.btn_donut.clicked.connect(self.set_donut)
         self.btn_map.clicked.connect(self.set_map)
         self.btn_xor.clicked.connect(self.set_xor)
-        self.btn_plot_lines.clicked.connect(self.get_lines)
         self.btn_train.clicked.connect(self.train_mlp)
         self.btn_plot_lines.clicked.connect(self.show_lines)
         self.btn_plot_planes.clicked.connect(self.show_planes)
@@ -42,6 +41,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.temp_error = []
 
         self.input_graph.TRAIN_BUTTON = self.btn_train
+        self.input_graph.update_last_layer_input = self.update_last_layer
 
     def generate_layers(self):
         for i in reversed(range(self.layers_layout.count())): 
@@ -49,7 +49,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
 
         for i in range(1, int(self.layer_count.value())+1):
             if i == int(self.layer_count.value()):
-                self.layers_layout.addWidget(self.layer_widget(i,int(self.classes_cout.value())))
+                self.layers_layout.addWidget(self.layer_widget(i,setReadOnly=True))
             else:
                 self.layers_layout.addWidget(self.layer_widget(i))            
 
@@ -100,7 +100,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.input_graph.classes[int(button.objectName()[-1])-1] = [button.objectName()[-1], button.palette().color(QtGui.QPalette.Background).name()]
         self.input_graph.update_scatter_colors()
 
-    def layer_widget(self, index, value = 2):
+    def layer_widget(self, index, value = 2, setReadOnly = False):
         widget = QWidget()
         widget.setFixedHeight(51)
         widget.setFixedWidth(71)
@@ -135,7 +135,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
             input_spin.lineEdit().setReadOnly(True)
         else:
             input_spin.setProperty("value", value)
-        if value > 2:
+        if setReadOnly:
             input_spin.lineEdit().setReadOnly(True)
         input_spin.setObjectName("neuron_layer_" + str(index))
         input_spin.setStyleSheet("QSpinBox { border: 1px solid #b1b1b1; background-color: #323232; border-radius: 5px;} QSpinBox:focus{ border: 2px solid #ffaa00;background-color: #4d4d4d;}QSpinBox:!focus:hover{ border: 1px solid #7e7e7e;}")
@@ -149,6 +149,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.input_graph.selected_class.clear()
         self.error_graph.clear_graph()
         self.btn_train.setEnabled(False)
+        self.update_last_layer(2)
 
     def set_donut(self):
         self.disable_show_btn()
@@ -186,7 +187,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
             for point in dictionary[key]:
                 self._inputs.append([point[0],point[1]])
                 highest_class = int(max(list(dictionary)))
-                target = np.zeros(highest_class, dtype=np.int32)
+                target = list(np.zeros(highest_class, dtype=np.int32))
                 target[int(key)-1]=1
                 self._targets.append(list(target))
 
@@ -194,10 +195,13 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         architecture = []
         for i in range(self.layers_layout.count()): 
             architecture.append(int(self.layers_layout.itemAt(i).widget().findChildren(QSpinBox)[0].value()))
-        return architecture
+        return tuple(architecture)
 
-    def get_lines(self):
-        pass
+    def update_last_layer(self, value):
+        for i in range(self.layers_layout.count()): 
+            if i == self.layers_layout.count() -1:
+                self.layers_layout.itemAt(i).widget().findChildren(QSpinBox)[0].setProperty("value", value)
+
 
     def train_mlp(self):
         self.disable_show_btn()
@@ -205,9 +209,9 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self._classes_count = len(self.input_graph.points.keys())
         # List of Lists with all the inputs with the form [[x,y,class],...]
         self.convert_dict_to_inputs(self.input_graph.points)
-        # List of Integers with the architecture with the form [layer_1_count, layer_2_count, ...]
-        self._architecture = self.get_architecture()
-        self._architecture.pop(0)
+        # Tuple of Integers with the architecture with the form [layer_1_count, layer_2_count, ...]
+        self._structure = self.get_architecture()
+        # self._architecture.pop(0)
         # Integer with the learning rate
         self._learning_rate = float(self.learning_rate.value())
         # Integer with the min error
@@ -225,8 +229,11 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.hilo.start()
 
     def ejecute_algorithm(self):
-        self.ann = ANN.NeuralNetwork(layers_structure= self._architecture, bias= [0.35], learning_rate= self._learning_rate)
-        self.train = ANN.TRAIN(all_inputs= self._inputs, all_targets= self._targets, min_error= self._min_error, max_epochs= self._max_ephocs, NN=self.ann)
+        # self.ann = (layers_structure= self._architecture, bias= [0.35], learning_rate= self._learning_rate)
+        # self.train = ANN.TRAIN(all_inputs= self._inputs, all_targets= self._targets, min_error= self._min_error, max_epochs= self._max_ephocs, NN=self.ann)
+
+        self.train = NeuralNetwork(inputs= self._inputs, targets= self._targets, learning_rate= self._learning_rate,
+                                    structure=self._structure, max_epochs= self._max_ephocs, min_error= self._min_error, bias = 0.38)
         self.train.countChanged.connect(self.onCountChanged)
         self.train.finished.connect(self.onFinished)
         self.train.start()
@@ -236,7 +243,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
 
     def onFinished(self):
         self.progressBar.setValue(80)
-        self.input_graph.fill_plot(self.ann, self.progressBar)
+        self.input_graph.fill_plot(self.train, self.progressBar)
         self.error_graph.graph_errors(self.train.errors)
         self.btn_plot_lines.setEnabled(True)
         self.enable_all()
