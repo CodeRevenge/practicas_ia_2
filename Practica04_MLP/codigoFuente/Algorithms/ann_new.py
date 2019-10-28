@@ -8,10 +8,14 @@ def sigmoidPrime(out):
     return out * (1-out)
 
 class NeuralNetwork:
-    def __init__(self, inputs, learning_rate, structure, bias=np.random.rand()):
+    def __init__(self, inputs, targets, learning_rate, structure, max_epochs, min_error, bias=np.random.rand()):
         self.inputs = inputs
+        self.targets = targets
         self.learning_rate = learning_rate
         self.structure, self.bias = self.setWeights(inputs, structure, bias)
+
+        self.max_epochs = max_epochs
+        self.min_error = min_error
 
         # Outputs will be stored in here for backprop calculations
         self.outputs = []
@@ -109,17 +113,17 @@ class NeuralNetwork:
     def updateWeights(self, weight_deltas):
         self.structure = self.structure - self.learning_rate * weight_deltas
 
-    def train(self, training_inputs, training_targets, max_epochs, min_error):
+    def train(self):
         
         acumulated_error = 999
         acumulated_outputs = []
         epochs = 0
 
-        print(len(training_inputs))
+        print(len(self.inputs))
 
-        while acumulated_error > min_error and epochs < max_epochs:
-            with Bar("Inputs: ", max=len(training_inputs)) as bar:
-                for idx, (inputs, targets)in enumerate(zip(training_inputs, training_targets)):
+        while acumulated_error > self.min_error and epochs < self.max_epochs:
+            with Bar("Inputs: ", max=len(self.inputs)) as bar:
+                for idx, (inputs, targets)in enumerate(zip(self.inputs, self.targets)):
                     forward = self.forwardPropagation(inputs)
                     acumulated_outputs.append(forward)
                     weight_deltas = self.backwardPropagation(targets)
@@ -127,8 +131,8 @@ class NeuralNetwork:
                     bar.next()
                 bar.finish()
 
-            print(np.sum(abs((np.array(training_targets) - np.array(acumulated_outputs)))))
-            acumulated_error = (np.sum(abs((np.array(training_targets) - np.array(acumulated_outputs))))) * 100 / (len(training_targets) * len(training_targets[0]))
+            print(np.sum(abs((np.array(self.targets) - np.array(acumulated_outputs)))))
+            acumulated_error = (np.sum(abs((np.array(self.targets) - np.array(acumulated_outputs))))) * 100 / (len(self.targets) * len(self.targets[0]))
             print("Epoch: {} - Acumulated error: [{}] // Precision: {}%".format(epochs+1, acumulated_error, 100-acumulated_error))
             acumulated_outputs = []
             epochs += 1

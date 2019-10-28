@@ -10,8 +10,8 @@ structure = (len(inputs[0]), 8, len(targets[0]))
 
 start = timer()
 
-NN = NeuralNetwork(inputs=inputs, learning_rate=learning_rate, structure=structure,  bias=.35)
-NN.train(training_inputs=inputs, training_targets=targets, max_epochs=10000, min_error=5)
+NN = NeuralNetwork(inputs=inputs, targets=targets, learning_rate=learning_rate, structure=structure, bias=.35, max_epochs=10000, min_error=5)
+NN.train()
 
 def getBiggestIndex(array):
     return list(array).index(max(array))
