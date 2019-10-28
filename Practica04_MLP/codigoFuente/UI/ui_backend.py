@@ -9,7 +9,7 @@ import numpy as np
 from matplotlib import colors as mcolors
 import threading
 from Algorithms.MultiLayerAdaline import MLP
-import Algorithms.ann_working as ANN
+import Algorithms.ann as ANN
 
 class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph):
     def __init__(self, *args, **kwargs):

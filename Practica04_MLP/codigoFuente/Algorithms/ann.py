@@ -1,3 +1,5 @@
+from PyQt5.QtCore import QThread, pyqtSignal
+import time
 import random
 import numpy as np
 
@@ -22,12 +24,10 @@ class Neuron:
         # print("NET: {} o {} + {}".format(inputs, self.weights, self.bias))
         self.inputs = inputs
         self.net = np.dot(self.weights, inputs) + self.bias
-        # print("net", self.net)
         return self.net
     
     def calculate_output(self):
         self.output = sigmoid(self.net)
-        # print("output", self.output)
         return self.output
     
 
@@ -50,20 +50,15 @@ class NeuronLayer:
             print('  Bias:', self.bias)
 
 class NeuralNetwork:
-    def __init__(self, inputs, layers_structure, bias, targets, learning_rate, min_error, max_epochs):  
-        self.inputs = inputs
-        self.min_error = min_error
-        self.max_epochs = max_epochs
-
-        self.input_layer = []
+    def __init__(self, layers_structure, bias, learning_rate):        
+        self.input_layer = [1,2]
         self.hidden_layers = []
         self.output_layer = None
-        self.targets = targets
         self.target = []
         self.learning_rate = learning_rate
 
         self.output = []
-        self.globalError = 1000
+        self.globalError = 10
 
         # One bias for all network
         if len(bias) == 1:
@@ -74,8 +69,7 @@ class NeuralNetwork:
         # One bias for each layer
         else:
             if len(bias) != len(layers_structure):
-                # return print("Bias array length must be 1 or equal to structure length ({})".format(len(layers_structure)))
-                pass
+                return # print("Bias array length must be 1 or equal to structure length ({})".format(len(layers_structure)))
             for num_neurons, layer_bias in zip(layers_structure[0:-1], bias[0:-1]):
                 self.hidden_layers.append(NeuronLayer(num_neurons, layer_bias))
             self.output_layer = NeuronLayer(layers_structure[-1], bias[-1])
@@ -85,7 +79,7 @@ class NeuralNetwork:
     def init_weights(self):
         # From inputs to first hidden layer
         for hidden_neuron in self.hidden_layers[0].neurons:
-            for input in np.zeros(len(self.inputs[0])):
+            for input in self.input_layer:
                 hidden_neuron.weights.append(random.random())
         # From hidden layers to hidden layers
         if len(self.hidden_layers) > 1:
@@ -100,19 +94,16 @@ class NeuralNetwork:
             for neuron in self.hidden_layers[-1].neurons:
                 output_neuron.weights.append(random.random())
 
-    def forward(self, test_input=None):
-        input_layer = test_input if test_input else self.input_layer
-        # print("Input: ", input_layer)
+    def forward(self):
         self.output = []
         previous_layer_outputs = []
         layer_output = []
         for layer_index, layer in enumerate(self.hidden_layers):
             previous_layer_outputs = layer_output
             layer_output = []
-
             for neuron in layer.neurons:
                 if layer_index == 0:
-                    neuron.calculate_net(input_layer)
+                    neuron.calculate_net(self.input_layer)
                 else:
                     neuron.calculate_net(previous_layer_outputs)
 
@@ -121,18 +112,24 @@ class NeuralNetwork:
         for neuron in self.output_layer.neurons:
             neuron.calculate_net(layer_output)
             self.output.append(neuron.calculate_output())
+        
+        return self.output
+        # print("Output:", self.output)
     
     def calculateGlobalError(self):
         # print("Error: Target ({}) - Output ({})".format(self.target, self.output))
         self.globalError = np.sum(0.5 * (np.array(self.target) - np.array(self.output)) ** 2 )
+        # self.globalError = abs(np.sum(np.array(self.target) - np.array(self.output)))
+        # print("Error: ", self.globalError)
 
     def backprop(self):
         output_layer_new_weights = []
         hidden_layers_new_weights = []
         # Start with the output layer deltas
-        for neuron in self.output_layer.neurons:
+
+        for neuron, target in zip(self.output_layer.neurons, self.target):
             for input_, weight in zip(neuron.inputs, neuron.weights):
-                delta = (neuron.output - self.target) * (sigmoidPrime(neuron.net))
+                delta = (neuron.output - target) * (sigmoidPrime(neuron.net))
                 neuron.delta = delta
                 weight_cost = delta * input_
                 # Update and save new weight
@@ -152,7 +149,7 @@ class NeuralNetwork:
                             # print("next_neuron Delta: {}, Weight: {}".format(next_neuron.delta, next_neuron.weights[neuron_index]))
                     else:
                         # Other hidden layers
-                        for next_neuron in self.hidden_layers[layer_index-1].neurons:
+                        for next_neuron in list(reversed(self.hidden_layers))[layer_index-1].neurons:
                             error_wtr_output += next_neuron.delta * next_neuron.weights[neuron_index]
                             # print("next_neuron Delta: {}, Weight: {}".format(next_neuron.delta, next_neuron.weights[neuron_index]))
 
@@ -182,37 +179,82 @@ class NeuralNetwork:
                     neuron.weights[weight_index] = output_layer_new_weights[i]
                     i += 1
 
-    def train(self, progress_bar):
-        epochs = 0
-        progress = 100 / self.max_epochs
-        progress_count = 0
-        for input, target in zip(self.inputs, self.targets):
-            self.globalError = 1000
-            self.input_layer = input
-            self.target = target
-            while self.globalError > self.min_error and epochs < self.max_epochs:
-                self.forward()
-                self.calculateGlobalError()
-                self.backprop()
-                epochs += 1 
-                progress_count += progress
-                progress_bar.setValue(progress_count)
-                # print("Epoch {}: {}".format(epochs, self.globalError))
-
     def inspect(self):
-        print('------')
-        print('* Inputs: {}'.format(self.input_layer))
-        print('------\n')
-        print('* Hidden Layers')
+        # print('------')
+        # print('* Inputs: {}'.format(self.input_layer))
+        # print('------\n')
+        # print('* Hidden Layers')
         for index, hidden_layer in enumerate(self.hidden_layers):
-            print('Hidden Layer #{}:'.format(index+1))
+            # print('Hidden Layer #{}:'.format(index+1))
             hidden_layer.inspect()
-            print('\n')
-        print('------')
-        print('* Output Layer')
+            # print('\n')
+        # print('------')
+        # print('* Output Layer')
         self.output_layer.inspect()
-        print('------')
+        # print('------')
 
-# NN = NeuralNetwork(inputs=[[1,1],[2,2],[3,3]], layers_structure=[2,2,1], bias=[0.70], targets=[1, 2, 3], learning_rate = 0.8, min_error = 0.01, max_epochs = 1000000)
-# NN.train()
-# NN.forward(test_input=[1,1])
+class TRAIN(QThread):
+    countChanged = pyqtSignal(int)
+    def __init__(self, all_inputs, all_targets, min_error, max_epochs, NN,):
+        super(QThread, self).__init__()
+        self.all_inputs = all_inputs
+        self.all_targets = all_targets
+        self.min_error = min_error
+        self.max_epochs = max_epochs
+        self.NN = NN
+
+    def run(self):
+        self.train()
+        
+    def train(self):
+        # print(all_inputs)
+        # print(all_targets)
+        progress = 80 / self.max_epochs
+        progress_count = 0
+
+        acumulated_error = 999
+        acumulated_outputs = []
+        epochs = 0
+        self.errors = []
+        while acumulated_error > self.min_error and epochs < self.max_epochs:
+            for inputs, targets in zip(self.all_inputs, self.all_targets):
+                self.NN.input_layer = inputs
+                self.NN.target = targets 
+
+                # Every forward appends a new output
+                # Which is used to calculate the acumulated error after each input
+                acumulated_outputs.append(self.NN.forward())
+                self.NN.backprop()
+                
+            # Get acumulated error
+            acumulated_error = np.sum(abs((np.array(self.all_targets) - np.array(acumulated_outputs))))
+            self.errors.append(acumulated_error)
+            # print("Acumulated error", acumulated_error)
+            acumulated_outputs = []
+            epochs += 1
+            progress_count += progress
+            if int(progress_count) % 10:
+                # time.sleep(0.001)
+                self.countChanged.emit(progress_count)
+
+# NN = NeuralNetwork(layers_structure=[2,4], bias=[0.35], learning_rate = 0.5)
+
+# all_inputs = [[1,1],[2,2],[4,4]]
+# all_targets = [[1,0,0,0],[0,1,0,0],[0,0,0,1]]
+# min_error = 0.984321
+# max_epochs = 7124
+
+# train(all_inputs=all_inputs, all_targets=all_targets, min_error=min_error, max_epochs=max_epochs)  
+
+# print("---------------")
+# #Test 1
+# NN.input_layer = [1,1]
+# print(NN.forward())
+
+# #Test 2
+# NN.input_layer = [2,2]
+# print(NN.forward())
+
+# #Test 3
+# NN.input_layer = [3,3]
+# print(NN.forward())
