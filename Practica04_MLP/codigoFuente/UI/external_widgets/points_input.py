@@ -43,9 +43,8 @@ class Points_Input(QWidget):
         plt.figure(2)
 
         if self.maped:
-            self.algorithm.input_layer = [event.xdata, event.ydata]
-            class_output = self.algorithm.forward()
-            class_type = self.class_type(class_output)
+            class_output = self.algorithm.forwardPropagation([event.xdata, event.ydata])
+            class_type = self.class_type(list(class_output))
             self.ax.scatter(event.xdata, event.ydata, s=10, c=self.classes[class_type][1], marker='o')
         elif self.selected_class:
             plt.scatter(event.xdata, event.ydata, s=10, marker='o', c=self.selected_class[1])
