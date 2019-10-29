@@ -51,7 +51,9 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
             if i == int(self.layer_count.value()):
                 self.layers_layout.addWidget(self.layer_widget(i,setReadOnly=True))
             else:
-                self.layers_layout.addWidget(self.layer_widget(i))            
+                self.layers_layout.addWidget(self.layer_widget(i))
+
+        self.update_last_layer(len(self.input_graph.points.keys()))          
 
     def generate_classes(self):
         self.clear_points()
