@@ -232,6 +232,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         # self.ann = (layers_structure= self._architecture, bias= [0.35], learning_rate= self._learning_rate)
         # self.train = ANN.TRAIN(all_inputs= self._inputs, all_targets= self._targets, min_error= self._min_error, max_epochs= self._max_ephocs, NN=self.ann)
 
+        print(self._structure)
         self.train = NeuralNetwork(inputs= self._inputs, targets= self._targets, learning_rate= self._learning_rate,
                                     structure=self._structure, max_epochs= self._max_ephocs, min_error= self._min_error, bias = 0.38)
         self.train.countChanged.connect(self.onCountChanged)

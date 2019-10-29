@@ -39,7 +39,12 @@ class NeuralNetwork(QThread):
             biasMatrix.append(np.array(biasLayer))
             weightsMatrix.append(np.array(layer))
 
-        return np.array(weightsMatrix), np.array(biasMatrix)
+        try:
+            weightsMatrix = np.array(weightsMatrix)
+        except ValueError:
+            weightsMatrix += weightsMatrix + [1]
+            weightsMatrix = np.array(weightsMatrix)[:-1]
+        return weightsMatrix, np.array(biasMatrix)
 
     def forwardPropagation(self, inputs):
         # The first "outputs" are actually the inputs, used in the last layer for backprop
@@ -111,7 +116,14 @@ class NeuralNetwork(QThread):
 
         # Clean epoch outputs
         self.outputs = []
-        return np.array(network_chains[::-1])
+
+        try:
+            network_chains = np.array(network_chains)
+        except ValueError:
+            network_chains += network_chains + [1]
+            network_chains = np.array(network_chains)[:-1]
+
+        return network_chains[::-1]
     
     def updateWeights(self, weight_deltas):
         self.structure = self.structure - self.learning_rate * weight_deltas
