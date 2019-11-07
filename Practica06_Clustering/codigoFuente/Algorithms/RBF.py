@@ -1,111 +1,114 @@
-from PyQt5.QtCore import QThread, pyqtSignal
-import time
-import random
 import numpy as np
-from numpy import linalg as la
 import matplotlib.pyplot as plt
 
-class RBF(QThread):
-    countChanged = pyqtSignal(int)
-    def __init__(self, inputs = None, clusters_count= 5):
-        super(QThread, self).__init__()
 
-        if inputs is None:
-            raise Exception('There is no inputs')
+class RBF(object):
+    """Implementation of a Radial Basis Function Network"""
+    def __init__(self, hidden_neurons=2, learning_rate=0.01, max_ephochs=100, min_error = 0.01):
+        self.hidden_neurons = hidden_neurons
+        self.learning_rate = learning_rate
+        self.max_ephochs = max_ephochs
+        self.min_eror = min_error
+ 
+        self.w = np.random.randn(hidden_neurons)
+        self.bias = np.random.randn(1)
 
-        if clusters_count > len(inputs):
-            raise Exception('The algorithm need at least the same number of inputs and clusters')
+        self.errors = []
 
-        self.DIMENSIONS = len(inputs[0])
+    def fit(self, X, y):
 
-        self.inputs = np.array(inputs, dtype=np.float64)
-        self.clusters_count = clusters_count
+        self.centroids, self.std_dev = self.kmeans(X, self.hidden_neurons)
 
+        # training
+        acumulated_error = 999
+        errors = []
+        ephoc = 0
+        while ephoc < self.max_ephochs:
+            for i in range(X.shape[0]):
+                outputs_rbf = np.array([self.gaussian(X[i], c, s) for c, s, in zip(self.centroids, self.std_dev)])
+                net = outputs_rbf.T.dot(self.w) + self.bias
 
-        self.clusters = []
-        self.hidden_neurons = []
-
-        self.isConverged = [False]*self.clusters_count
-
-    def run(self):
-        # range_inp = np.arange(len(self.inputs))
-        # self.centroids = self.inputs[np.random.choice(range_inp,\
-        #     self.clusters_count, replace=False)].copy()
-        self.centroids = self.inputs[:self.clusters_count].copy()
-        self.clusters = [[] for _ in self.centroids]
-
-        while not all(self.isConverged):
-
-
-            for pattern in self.inputs:
-                menor = self.centroids[0]
-                indx = 0
-                for index, centroid in enumerate(self.centroids):
-                    if la.norm(pattern.T - centroid)**2 < la.norm(pattern.T - menor)**2:
-                        menor = centroid
-                        indx = index
-                if not self.isConverged[indx]:
-                    self.clusters[indx].append(pattern)
-
-            plot_centroids(self.clusters, self.centroids)
-
-            for index, cluster in enumerate(self.clusters):
-                mean = np.mean(cluster, axis= 0, dtype=np.float64)
-                if (abs(mean - self.centroids[index]) <= 1e-10).all():
-                    self.isConverged[index] = True
-                else:
-                    self.centroids[index] = mean
-                    self.isConverged[index] = False
-                    self.clusters[index] = []
-
-        # plot_centroids(self.clusters, self.centroids)
-        for index, cluster in enumerate(self.clusters):
-            # if self.DIMENSIONS > 1:
-            #     cov_matx = np.cov([np.array(cluster)[:,0], np.array(cluster)[:,1]])
-            # else:
-            #     cov_matx = np.std(cluster)
-            
-            # gaussian = np.exp(-0.5((cluster-self.centroids[index]).T * la.inv(cov_matx) * (cluster-self.centroids[index]))) \
-            #     / (2 * np.pi())**(self.DIMENSIONS/2) * np.fabs(cov_matx)**(1/2)
-
-            std_dev = np.std(cluster)
-
-            gaussian = np.exp((-la.norm(pattern.T - self.centroids[index])**2) / 2 * std_dev**2)
-
-            self.hidden_neurons.append(gaussian)
-
-            print(1)
-
-                
-
-def plot_centroids(clusters, centroids):
-    a = np.array(sum(clusters,[]))
-    centroids = np.array(centroids)
-    plt.xlim(-5,5)
-    plt.ylim(-5,5)
-    plt.scatter(a[:,0],a[:,1], c='r', s=15)
-    plt.scatter(centroids[:,0],centroids[:,1], c='b', s=20)
-    for index, cluster in enumerate(clusters):
-        for pattern in cluster:
-            plt.plot([pattern[0],centroids[index][0]], [pattern[1], centroids[index][1]], c='b')
-    plt.axis(True)
-
-    plt.show()
     
+                error = -(y[i] - net).flatten()
+                errors.append(error)
+    
+                self.w = self.w - self.learning_rate * error * outputs_rbf
+                self.bias = self.bias - self.learning_rate * error
+            acumulated_error = np.sum(errors)/len(y)
+            self.errors.append(acumulated_error)
+            ephoc += 1
+
+    def predict(self, X):
+        y_pred = []
+        for i in range(X.shape[0]):
+            outputs_rbf = np.array([self.gaussian(X[i], c, s) for c, s, in zip(self.centroids, self.std_dev)])
+            net = outputs_rbf.T.dot(self.w) + self.bias
+            y_pred.append(net)
+        return np.array(y_pred)
+
+    def gaussian(self, x, c, s):
+        return np.exp(-1 / (2 * s**2) * (x-c)**2)
+
+    def kmeans(self, X, hidden_neurons):
+
+        clusters = np.random.choice(np.squeeze(X), size=hidden_neurons)
+        prev_clusters = clusters.copy()
+        std_dev = np.zeros(hidden_neurons)
+        converged = False
+
+        while not converged:
+
+            distances = np.squeeze(np.abs(X[:, np.newaxis] - clusters[np.newaxis, :]))
+
+            closestCluster = np.argmin(distances, axis=1)
+
+            for i in range(hidden_neurons):
+                pointsForCluster = X[closestCluster == i]
+                if len(pointsForCluster) > 0:
+                    clusters[i] = np.mean(pointsForCluster, axis=0)
+
+            converged = np.linalg.norm(clusters - prev_clusters) < 1e-6
+            prev_clusters = clusters.copy()
+
+        distances = np.squeeze(np.abs(X[:, np.newaxis] - clusters[np.newaxis, :]))
+        closestCluster = np.argmin(distances, axis=1)
+
+        clustersWithNoPoints = []
+        for i in range(hidden_neurons):
+            pointsForCluster = X[closestCluster == i]
+            if len(pointsForCluster) < 2:
+                clustersWithNoPoints.append(i)
+                continue
+            else:
+                std_dev[i] = np.std(X[closestCluster == i])
+
+        if len(clustersWithNoPoints) > 0:
+            pointsToAverage = []
+            for i in range(hidden_neurons):
+                if i not in clustersWithNoPoints:
+                    pointsToAverage.append(X[closestCluster == i])
+            pointsToAverage = np.concatenate(pointsToAverage).ravel()
+            std_dev[clustersWithNoPoints] = np.mean(np.std(pointsToAverage))
+
+        return clusters, std_dev
+
+
 if __name__ == "__main__":
-    try:
-        # inputs = np.random.randint(-5,5,(8,2))
-        inputs = [[-2,3],[-2,1],[-3,2],[2,-2],[3,-2],[3,-1],[-3,-3],[-2,-2],[-4,-1],[2,3],[3,2],[4,3],[-3.16,3.43],[-4.34,-2.87],[4.13,-2.16],[2.87,4.23]]
-        random.shuffle(inputs)
-        print(inputs)
-        rbf = RBF(inputs,4)
-        rbf.run()
-        print(rbf.clusters)
-        print(rbf.centroids)
-
-        plot_centroids(rbf.clusters, rbf.centroids)
-
-    except KeyboardInterrupt:
-        print('The execution was interrupted')
-        
-        
+    # sample inputs and add noise
+    NUM_SAMPLES = 100
+    X = np.random.uniform(0., 1., NUM_SAMPLES)
+    X = np.sort(X, axis=0)
+    noise = np.random.uniform(-0.1, 0.1, NUM_SAMPLES)
+    y = np.sin(2 * np.pi * X)  + noise
+    
+    rbfnet = RBF(learning_rate=1e-2, hidden_neurons=2)
+    rbfnet.fit(X, y)
+    
+    y_pred = rbfnet.predict(X)
+    
+    plt.plot(X, y, '-o', label='true')
+    plt.plot(X, y_pred, '-o', label='RBF-Net')
+    plt.legend()
+    
+    plt.tight_layout()
+    plt.show()

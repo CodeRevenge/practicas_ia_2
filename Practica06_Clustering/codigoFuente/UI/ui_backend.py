@@ -1,28 +1,21 @@
 from UI.Interface_RBF import QtWidgets, Ui_MainWindow, QtCore
-from PyQt5.QtCore import QEvent, Qt, QThread
-from PyQt5.QtWidgets import QScrollArea, QVBoxLayout, QGroupBox, QLabel, QPushButton, QHBoxLayout, QColorDialog, QSpinBox,QWidget
 from PyQt5 import QtGui
 import matplotlib.pyplot as plt
 from UI.external_widgets.error_graph import Error_Graph
 from UI.external_widgets.points_input import Points_Input
 import numpy as np
-from matplotlib import colors as mcolors
-import threading
-from Algorithms.RBFnet import RBFNet
+from Algorithms.RBF import RBF
 
 class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph):
     def __init__(self, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
 
-        self.colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
         self.setupUi(self)
 
         self.btn_clean_input_graph.clicked.connect(self.clear_points)
         self.btn_train.clicked.connect(self.train_rbf)
 
         self.input_graph.onclick
-
-        self.temp_error = []
 
         self.input_graph.TRAIN_BUTTON = self.btn_train
 
@@ -46,7 +39,23 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self._max_ephocs = int(self.max_ephocs.value())
         
         self.disable_all()
-        self.train = RBFNet(self._hidden_neurons, self._learning_rate, self._max_ephocs)
+
+        #
+        # NUM_SAMPLES = 100
+        # X = np.random.uniform(0, 5, NUM_SAMPLES)
+        # X = np.sort(X, axis=0)
+        # noise = np.random.uniform(-0.2, 0.2, NUM_SAMPLES)
+        # y = np.sin(2 * np.pi * X)*2  + noise + 2
+
+        # self.train = RBF(self._hidden_neurons, self._learning_rate, self._max_ephocs, self._min_error)
+        # self.train.fit(X, y)
+        
+        # y_pred = self.train.predict(X)
+        # self.input_graph.plot_lines(X, y, y_pred)
+        #
+
+
+        self.train = RBF(self._hidden_neurons, self._learning_rate, self._max_ephocs, self._min_error)
         self.train.fit(self._points[:,0], self._points[:,1])
 
         self.y_predic = self.train.predict(self._points[:,0])

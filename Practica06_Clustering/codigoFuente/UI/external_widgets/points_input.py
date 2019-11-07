@@ -98,13 +98,23 @@ class Points_Input(QWidget):
     def plot_lines(self, X = [], y = [], y_pred = []):
         self.maped = False
 
+        x_y = np.column_stack((X,y))
+        x_y_pred = np.column_stack((X,y_pred))
+
+        x_y = x_y[x_y[:,0].argsort()]
+
+        x_y_pred = x_y_pred[x_y_pred[:,0].argsort()]
+
         self.figure = plt.figure(2)
         plt.clf()
         self.init_graph()
         self.ax = plt.gca()
 
-        self.ax.plot(X, y, '-o', label='true')
-        self.ax.plot(X, y_pred, '-o', label='RBF-Net')
+        self.ax.plot(x_y[:,0], x_y[:,1], '-o', label='Patrones de entrenamiento')
+        self.ax.plot(x_y_pred[:,0], x_y_pred[:,1], '-o', label='Salida de la red')
+
+        # self.ax.plot(X,y, '-o', label='Patrones de entrenamiento')
+        # self.ax.plot(X, y_pred, '-o', label='Salida de la red')
         self.ax.legend()
 
         self.canvas.draw()
