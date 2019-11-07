@@ -73,10 +73,10 @@ class Points_Input(QWidget):
         self.fig.set_facecolor('#323232')
         self.ax.grid(zorder=0)
         self.ax.set_axisbelow(True)
-        self.ax.set_xlim([-5, 5])
-        self.ax.set_ylim([-5, 5])
-        self.ax.set_xticks(range(-5,6))
-        self.ax.set_yticks(range(-5,6))
+        self.ax.set_xlim([0, 5])
+        self.ax.set_ylim([0, 5])
+        self.ax.set_xticks(range(0,6))
+        self.ax.set_yticks(range(0,6))
         self.ax.axhline(y=0, color='#323232')
         self.ax.axvline(x=0, color='#323232')
         self.ax.spines['right'].set_visible(False)
@@ -95,123 +95,21 @@ class Points_Input(QWidget):
 
     
 
-    # def fill_plot(self, algorithm, progress_bar, size = 30, dpi = 40):
-    #     self.maped = False
-    #     self.algorithm = algorithm
+    def plot_lines(self, X = [], y = [], y_pred = []):
+        self.maped = False
 
-    #     self.figure = plt.figure(2)
-    #     plt.clf()
-    #     self.init_graph()
-    #     self.ax = plt.gca()
-    #     self.colors_class_type(len(self.classes))
+        self.figure = plt.figure(2)
+        plt.clf()
+        self.init_graph()
+        self.ax = plt.gca()
 
-    #     progress = 20 / dpi
-    #     progress_count = 80
+        self.ax.plot(X, y, '-o', label='true')
+        self.ax.plot(X, y_pred, '-o', label='RBF-Net')
+        self.ax.legend()
 
-    #     x = list(np.linspace(-5+size*0.005,5-size*0.005,dpi))
-    #     y = list(np.linspace(-5+size*0.005,5-size*0.005,dpi))
-    #     self.plane.clear()
+        self.canvas.draw()
+        self.maped = True
 
-    #     for ind, i in enumerate(y):
-    #         self.plane.append([])
-    #         for j in x:
-    #             class_output = self.algorithm.forwardPropagation([j,i])
-    #             class_type = self.class_type(list(class_output))
-    #             self.plane[ind].append(class_type)
-    #             self.ax.scatter(j, i, s=size, c=self.colors_class[class_type], marker='s')
-    #         progress_count += progress
-    #         progress_bar.setValue(progress_count)
-
-    #     for _class in self.points.items():
-    #         points = _class[1]
-    #         for point in points:
-    #             plt.scatter(point[0], point[1], s=10, marker='o', c=self.classes[int(_class[0])-1][1])
-
-    #     self.canvas.draw()
-    #     self.maped = True
-
-    # def normalize_class(self, class_vector):
-    #     normalized_class = list(np.zeros(len(class_vector),dtype=np.int32))
-    #     normalized_class[class_vector.index(max(class_vector))] = 1
-    #     return normalized_class
-
-    # def class_type(self, class_vector):
-    #     return class_vector.index(max(class_vector))
-
-    # def colors_class_type(self, classes_count):
-    #     colors = ['red', 'black', 'darkgreen', 'navy', 'orange', 'yellowgreen', 'fuchsia', 'gold', 'cyan', 'pink', 'brown']
-    #     self.colors_class = []
-    #     for _ in range(classes_count):
-    #         color = np.random.choice(colors)
-    #         colors.pop(colors.index(color))
-    #         self.colors_class.append(color)
-
-
-    # def show_lines(self, init_layer, bias):
-    
-    #     plt.figure(2)
-    #     plt.clf()
-    #     plt.tight_layout()
-
-    #     self.fig = plt.figure(2)
-    #     self.ax = plt.gca()
-    #     self.init_lines(self.fig, self.ax)
-
-    #     for index, (neuron, tetha) in enumerate(zip(init_layer,bias)):
-    #         w1 = neuron[0]
-    #         w2 = neuron[1]
-    #         y = [(-(tetha/w1)/(tetha/w2))*-5+(-tetha/w1),(-(tetha/w1)/(tetha/w2))*5+(-tetha/w1)]
-    #         x = [-5,5]
-    #         line, = self.ax.plot(x,y)
-    #         line.set_label('Neurona {}'.format(index+1))
-        
-    #     self.ax.legend()
-
-    #     for _class in self.points.items():
-    #         points = _class[1]
-    #         for point in points:
-    #             self.ax.scatter(point[0], point[1], s=5, marker='o', c=self.classes[int(_class[0])-1][1])
-
-
-    #     self.canvas.draw()
-
-    # def show_planes(self, size = 30, dpi = 40):
-    #     self.figure = plt.figure(2)
-    #     plt.clf()
-    #     self.init_graph()
-    #     self.ax = plt.gca()
-
-    #     x = list(np.linspace(-5+size*0.005,5-size*0.005,dpi))
-    #     y = list(np.linspace(-5+size*0.005,5-size*0.005,dpi))
-
-    #     for ind_y, i in enumerate(y):
-    #         for ind_x, j in enumerate(x):
-    #             class_type = self.plane[ind_y][ind_x]
-    #             self.ax.scatter(j, i, s=size, c=self.colors_class[class_type], marker='s')
-
-    #     for _class in self.points.items():
-    #         points = _class[1]
-    #         for point in points:
-    #             plt.scatter(point[0], point[1], s=10, marker='o', c=self.classes[int(_class[0])-1][1])
-
-    #     self.canvas.draw()
-
-    # def init_lines(self, fig, ax):
-    #     fig.set_facecolor('#323232')
-    #     ax.grid(zorder=0)
-    #     ax.set_axisbelow(True)
-    #     ax.set_xlim([-5, 5])
-    #     ax.set_ylim([-5, 5])
-    #     ax.set_xticks(range(-5,6))
-    #     ax.set_yticks(range(-5,6))
-    #     ax.axhline(y=0, color='#323232')
-    #     ax.axvline(x=0, color='#323232')
-    #     ax.spines['right'].set_visible(False)
-    #     ax.spines['top'].set_visible(False)
-    #     ax.spines['bottom'].set_visible(False)
-    #     ax.spines['left'].set_visible(False)
-    #     ax.tick_params(axis='x', colors='#b1b1b1')
-    #     ax.tick_params(axis='y', colors='#b1b1b1')
 
 
 

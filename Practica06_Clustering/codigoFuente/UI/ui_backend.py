@@ -18,7 +18,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.setupUi(self)
 
         self.btn_clean_input_graph.clicked.connect(self.clear_points)
-        self.btn_train.clicked.connect(self.train_mlp)
+        self.btn_train.clicked.connect(self.train_rbf)
 
         self.input_graph.onclick
 
@@ -32,16 +32,10 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.error_graph.clear_graph()
         self.btn_train.setEnabled(False)
 
-    def validate_activation(self):
-        if len(self.input_graph.points.keys()) >= 3:
-            self.activate_train()
 
-    def activate_train(self):
-        self.btn_train.setEnabled(True)
-
-    def train_mlp(self):
+    def train_rbf(self):
         # List of with all the inputs with the form [x1,x2,...,xn]
-        self._points = self.input_graph.points
+        self._points = np.array(self.input_graph.points)
         # Tuple of Integers with the architecture with the form [layer_1_count, layer_2_count, ...]
         self._hidden_neurons = int(self.hidden_layer_count.value())
         # Integer with the learning rate
@@ -52,33 +46,18 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self._max_ephocs = int(self.max_ephocs.value())
         
         self.disable_all()
-        self.progressBar.setValue(0)
-        
-        # print("Classes count: {} \nArchitecture: {} \nLearning rate: {} \nMin error: {} \nMax ephocs: {}".format(self._classes_count, self._architecture, self._learning_rate, self._min_error, self._max_ephocs))
+        self.train = RBFNet(self._hidden_neurons, self._learning_rate, self._max_ephocs)
+        self.train.fit(self._points[:,0], self._points[:,1])
 
-        """ Here is where the MLP must be instantiated"""
-        self.hilo = threading.Thread(target=self.ejecute_algorithm)
-        self.hilo.start()
+        self.y_predic = self.train.predict(self._points[:,0])
 
-    def ejecute_algorithm(self):
-        self.train = RBFNet(self.input_graph.points, self._hidden_neurons, self._learning_rate, self._max_ephocs)
-        self.train.countChanged.connect(self.onCountChanged)
-        self.train.finished.connect(self.onFinished)
-        self.train.start()
+        self.input_graph.plot_lines(self._points[:,0], self._points[:,1], self.y_predic)
 
-    def onCountChanged(self, value):
-        self.progressBar.setValue(value)
 
-    def onFinished(self):
-        self.progressBar.setValue(80)
-        # self.input_graph.fill_plot(self.train, self.progressBar)
+
         self.error_graph.graph_errors(self.train.errors)
-        self.btn_plot_lines.setEnabled(True)
         self.enable_all()
 
-    def disable_show_btn(self):
-        self.btn_plot_planes.setEnabled(False)
-        self.btn_plot_lines.setEnabled(False)
 
     def disable_all(self):
         self.btn_clean_input_graph.setEnabled(False)
