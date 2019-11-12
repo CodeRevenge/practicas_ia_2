@@ -16,17 +16,19 @@ class RBF(object):
         self.errors = []
 
     def fit(self, X, y):
-
+        # Training hidden layer
         self.centroids, self.std_dev = self.kmeans(X, self.hidden_neurons)
 
-        # training
+        # Training output layer
         acumulated_error = 999
         errors = []
         ephoc = 0
         while ephoc < self.max_ephochs:
+            self.acumulated_outputs = []
             for i in range(X.shape[0]):
                 outputs_rbf = np.array([self.gaussian(X[i], c, s) for c, s, in zip(self.centroids, self.std_dev)])
                 net = outputs_rbf.T.dot(self.w) + self.bias
+                self.acumulated_outputs.append(net)
 
     
                 error = -(y[i] - net).flatten()
@@ -34,7 +36,7 @@ class RBF(object):
     
                 self.w = self.w - self.learning_rate * error * outputs_rbf
                 self.bias = self.bias - self.learning_rate * error
-            acumulated_error = np.sum(errors)/len(y)
+            acumulated_error = (np.sum(abs((np.array(y) - np.array(self.acumulated_outputs))))) / (len(y)**2)
             self.errors.append(acumulated_error)
             ephoc += 1
 
@@ -50,7 +52,10 @@ class RBF(object):
         return np.exp(-1 / (2 * s**2) * (x-c)**2)
 
     def kmeans(self, X, hidden_neurons):
-
+        '''
+        Clustering
+        '''
+        # Choice random elements
         clusters = np.random.choice(np.squeeze(X), size=hidden_neurons)
         prev_clusters = clusters.copy()
         std_dev = np.zeros(hidden_neurons)
