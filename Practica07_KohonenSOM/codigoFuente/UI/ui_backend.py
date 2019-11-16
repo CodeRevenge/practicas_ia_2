@@ -37,12 +37,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         
         self.btn_train.setEnabled(False)
 
-    #     thread = threading.Thread(target=self.train)
-    #     thread.start()
-
-    # def train(self):
         self.som = SOM(self.k_neighborhood, self.k_distance, self.mesh_size, self.max_ephocs, self.learning_rate)
-        # self.som.started.connect(self.som.train)
         self.som.countChanged.connect(self.onCountChanged)
         self.som.finished.connect(self.onFinished)
         self.som.start()
