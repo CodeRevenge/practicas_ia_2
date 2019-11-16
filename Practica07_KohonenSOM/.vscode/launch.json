@@ -8,6 +8,13 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Main",
+            "type": "python",
+            "request": "launch",
             "program": "${workspaceFolder}/codigoFuente/__main__.py",
             "console": "integratedTerminal"
         }

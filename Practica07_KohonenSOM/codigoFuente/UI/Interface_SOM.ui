@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1288</width>
-    <height>657</height>
+    <height>715</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -535,7 +535,7 @@ QPushButton:disabled
       <property name="minimumSize">
        <size>
         <width>632</width>
-        <height>240</height>
+        <height>291</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -551,7 +551,7 @@ QPushButton:disabled
        <property name="sizeConstraint">
         <enum>QLayout::SetDefaultConstraint</enum>
        </property>
-       <item row="1" column="0" colspan="2">
+       <item row="2" column="0" colspan="2">
         <widget class="QLabel" name="label_2">
          <property name="font">
           <font>
@@ -565,60 +565,6 @@ QPushButton:disabled
          </property>
          <property name="text">
           <string>Tamaño de la malla:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="4">
-        <widget class="QPushButton" name="btn_train">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>60</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-           <pointsize>12</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Primero debe ingresar al menos 2 puntos de diferentes clases para activar el entrenamiento del MLP.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
-         </property>
-         <property name="text">
-          <string>Entrenar RBF</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="2">
-        <widget class="QLabel" name="label_3">
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Especifique el número de épocas máximas.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>Tipo de distancia:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -645,12 +591,12 @@ QPushButton:disabled
          </property>
         </widget>
        </item>
-       <item row="1" column="2" colspan="2">
+       <item row="2" column="2" colspan="2">
         <widget class="QSpinBox" name="inp_grid_size">
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>30</height>
+           <height>25</height>
           </size>
          </property>
          <property name="font">
@@ -680,16 +626,65 @@ QPushButton:disabled
           <number>40</number>
          </property>
          <property name="value">
-          <number>2</number>
+          <number>20</number>
          </property>
         </widget>
        </item>
-       <item row="2" column="2" colspan="2">
+       <item row="0" column="2" colspan="2">
+        <widget class="QComboBox" name="cbx_neighborhood">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="editable">
+          <bool>false</bool>
+         </property>
+         <property name="currentText">
+          <string>4's</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>4's</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Estrella</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QLabel" name="label_3">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Especifique el número de épocas máximas.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>Tipo de distancia:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2" colspan="2">
         <widget class="QComboBox" name="cbx_distance">
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>30</height>
+           <height>25</height>
           </size>
          </property>
          <property name="editable">
@@ -715,33 +710,166 @@ QPushButton:disabled
          </item>
         </widget>
        </item>
-       <item row="0" column="2" colspan="2">
-        <widget class="QComboBox" name="cbx_neighborhood">
+       <item row="3" column="0" colspan="2">
+        <widget class="QLabel" name="label_4">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Especifique el error mínimo.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>Épocas:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2" colspan="2">
+        <widget class="QSpinBox" name="inp_ephocs">
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>30</height>
+           <height>25</height>
           </size>
          </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
          </property>
-         <property name="editable">
-          <bool>false</bool>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mínimo 3 y máximo 10 capas.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
-         <property name="currentText">
-          <string>4's</string>
+         <property name="frame">
+          <bool>true</bool>
          </property>
-         <item>
-          <property name="text">
-           <string>4's</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Estrella</string>
-          </property>
-         </item>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>true</bool>
+         </property>
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>99999999</number>
+         </property>
+         <property name="value">
+          <number>5000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <widget class="QLabel" name="label_5">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Especifique el error mínimo.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>Velocidad de aprendizaje:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2" colspan="2">
+        <widget class="QDoubleSpinBox" name="inp_learning_rate">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mínimo 3 y máximo 10 capas.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="keyboardTracking">
+          <bool>true</bool>
+         </property>
+         <property name="decimals">
+          <number>3</number>
+         </property>
+         <property name="minimum">
+          <double>0.001000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>0.990000000000000</double>
+         </property>
+         <property name="value">
+          <double>0.500000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" colspan="4">
+        <widget class="QPushButton" name="btn_train">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="cursor">
+          <cursorShape>OpenHandCursor</cursorShape>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Primero debe ingresar al menos 2 puntos de diferentes clases para activar el entrenamiento del MLP.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
+         </property>
+         <property name="text">
+          <string>Entrenar SOM</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="4">
+        <widget class="QProgressBar" name="progressBar">
+         <property name="value">
+          <number>0</number>
+         </property>
         </widget>
        </item>
       </layout>

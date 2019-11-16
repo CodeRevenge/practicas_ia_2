@@ -1,10 +1,11 @@
-from UI.Interface_RBF import QtWidgets, Ui_MainWindow, QtCore
+from UI.Interface_SOM import QtWidgets, Ui_MainWindow, QtCore
 from PyQt5 import QtGui
 import matplotlib.pyplot as plt
 from UI.external_widgets.error_graph import Error_Graph
 from UI.external_widgets.points_input import Points_Input
 import numpy as np
-from Algorithms.RBF import RBF
+import threading
+from Algorithms.SOM import SOM
 
 class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph):
     def __init__(self, *args, **kwargs):
@@ -13,11 +14,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.setupUi(self)
 
         self.btn_clean_input_graph.clicked.connect(self.clear_points)
-        self.btn_train.clicked.connect(self.train_rbf)
-
-        self.input_graph.onclick
-
-        self.input_graph.TRAIN_BUTTON = self.btn_train
+        self.btn_train.clicked.connect(self.train_som)
 
     def clear_points(self):
         self.input_graph.clearPlot()
@@ -26,55 +23,35 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.btn_train.setEnabled(False)
 
 
-    def train_rbf(self):
-        # List of with all the inputs with the form [x1,x2,...,xn]
-        self._points = np.array(self.input_graph.points)
-        # Tuple of Integers with the architecture with the form [layer_1_count, layer_2_count, ...]
-        self._hidden_neurons = int(self.hidden_layer_count.value())
-        # Integer with the learning rate
-        self._learning_rate = float(self.learning_rate.value())
-        # Integer with the min error
-        self._min_error = float(self.min_error.value())
+    def train_som(self):
+        # String with the Neighborhood type
+        self.k_neighborhood = str(self.cbx_neighborhood.currentText())
+        # String with the distance function
+        self.k_distance = str(self.cbx_distance.currentText())
+        # Integer with the size of the grid
+        self.mesh_size = int(self.inp_grid_size.value())
         # Integer with the count of max ephocs
-        self._max_ephocs = int(self.max_ephocs.value())
+        self.max_ephocs = int(self.inp_ephocs.value())
+        # Double with the learning rate
+        self.learning_rate = float(self.inp_learning_rate.value())
         
-        self.disable_all()
-
-        #
-        # NUM_SAMPLES = 100
-        # X = np.random.uniform(0, 5, NUM_SAMPLES)
-        # X = np.sort(X, axis=0)
-        # noise = np.random.uniform(-0.2, 0.2, NUM_SAMPLES)
-        # y = np.sin(2 * np.pi * X)*2  + noise + 2
-
-        # self.train = RBF(self._hidden_neurons, self._learning_rate, self._max_ephocs, self._min_error)
-        # self.train.fit(X, y)
-        
-        # y_pred = self.train.predict(X)
-        # self.input_graph.plot_lines(X, y, y_pred)
-        #
-
-
-        self.train = RBF(self._hidden_neurons, self._learning_rate, self._max_ephocs, self._min_error)
-        self.train.fit(self._points[:,0], self._points[:,1])
-
-        self.y_predic = self.train.predict(self._points[:,0])
-
-        self.input_graph.plot_lines(self._points[:,0], self._points[:,1], self.y_predic)
-
-
-
-        self.error_graph.graph_errors(self.train.errors)
-        self.enable_all()
-
-
-    def disable_all(self):
-        self.btn_clean_input_graph.setEnabled(False)
         self.btn_train.setEnabled(False)
-        self.input_graph.setEnabled(False)
 
-    def enable_all(self):
-        self.btn_clean_input_graph.setEnabled(True)
+    #     thread = threading.Thread(target=self.train)
+    #     thread.start()
+
+    # def train(self):
+        self.som = SOM(self.k_neighborhood, self.k_distance, self.mesh_size, self.max_ephocs, self.learning_rate)
+        # self.som.started.connect(self.som.train)
+        self.som.countChanged.connect(self.onCountChanged)
+        self.som.finished.connect(self.onFinished)
+        self.som.start()
+
+    def onCountChanged(self, value):
+        self.progressBar.setValue(value)
+
+    def onFinished(self):
+        print('finished')
+        self.progressBar.setValue(100)
+        self.input_graph.plot_lines(self.som.net)
         self.btn_train.setEnabled(True)
-        self.input_graph.setEnabled(True)
-    
