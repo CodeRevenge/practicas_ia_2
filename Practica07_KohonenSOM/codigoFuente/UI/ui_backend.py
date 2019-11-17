@@ -42,11 +42,14 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         self.som.finished.connect(self.onFinished)
         self.som.start()
 
+        # self.som.train()
+        # self.onFinished()
+
     def onCountChanged(self, value):
         self.progressBar.setValue(value)
 
     def onFinished(self):
-        print('finished')
         self.progressBar.setValue(100)
         self.input_graph.plot_lines(self.som.net)
+        self.error_graph.graph_errors(self.som.acumulated_errors)
         self.btn_train.setEnabled(True)

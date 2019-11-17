@@ -42,9 +42,10 @@ class Error_Graph(QWidget):
     
 
     def init_graph(self, x_max = 2000, y_max = 15):
-        plt.figure(1)
-        plt.tight_layout()
-        self.ax = plt.gca()
+        self.figure = plt.figure(1)
+        self.figure.clf()
+        self.figure.tight_layout()
+        self.ax = self.figure.gca()
         self.figure.set_facecolor('#323232')
         self.ax.grid(zorder=0)
         self.ax.set_axisbelow(True)
@@ -70,7 +71,7 @@ class Error_Graph(QWidget):
     def set_title(self, min_error = '', max_ephocs = ''):
         plt.figure(1)
         self.ax = plt.gca()
-        self.ax.set_title('Error mínimo alcanzado: {:.2f}     Épocas alcanzadas: {}'.format(min_error, max_ephocs), fontdict = self.TITLE_STYLE)
+        self.ax.set_title('Error mínimo alcanzado: {:.6f}'.format(min_error), fontdict = self.TITLE_STYLE)
 
     def add_error(self, error):
         plt.figure(1)
@@ -88,6 +89,7 @@ class Error_Graph(QWidget):
         plt.clf()
         self.init_graph()
         self.canvas.draw()
+        np.sqrt()
     
 
     def graph_errors(self, errors):
@@ -95,11 +97,13 @@ class Error_Graph(QWidget):
             self.error_points = errors.copy()
         else:
             self.error_points = list.copy(errors)
-        plt.figure(1)
-        plt.tight_layout()
-        self.ax = plt.gca()
-        self.ax.cla()
-        self.ax.grid(zorder=0)
+        # self.figure = plt.figure(1)
+        # self.figure.clf()
+        # self.figure.tight_layout()
+        # self.ax = self.figure.gca()
+        # self.ax.cla()
+        # self.ax.grid(zorder=0)
+        self.init_graph(len(self.error_points), max(self.error_points))
         self.ax.plot(self.error_points, c='red')
         try:
             self.set_title(self.error_points[-1], len(self.error_points))

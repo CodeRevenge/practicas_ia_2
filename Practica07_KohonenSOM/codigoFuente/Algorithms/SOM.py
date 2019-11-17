@@ -5,7 +5,7 @@ from matplotlib import patches as patches
 
 class SOM(QThread):
     countChanged = pyqtSignal(int)
-    def __init__(self, k_neighborhood='f', k_distance= 'e', mesh_size= 20, max_ephocs= 4000, learning_rate= 0.01):
+    def __init__(self, k_neighborhood='Cuatro', k_distance= 'Euclidea', mesh_size= 20, max_ephocs= 500, learning_rate= 0.5):
         super(QThread, self).__init__()
 
         self.training_set = self.load_data()
@@ -14,6 +14,7 @@ class SOM(QThread):
         self.mesh_dimensions = np.array([mesh_size,mesh_size])
         self.max_ephocs = max_ephocs
         self.learning_rate = learning_rate
+        self.acumulated_errors = list()
         
 
 
@@ -59,7 +60,8 @@ class SOM(QThread):
         progress_count = 0
 
         for i in range(self.max_ephocs):
-            print('Iteration %d' % i)
+            error = []
+            # print('Iteration %d' % i)
             
             # select a training example at random
             t = self.training_set[:, np.random.randint(0, n)].reshape(np.array([m, 1]))
@@ -68,8 +70,8 @@ class SOM(QThread):
             bmu, bmu_idx = self.find_bmu(t, self.net, m)
             
             # decay the SOM parameters
-            r = self.decay_radius(init_radius, i, time_constant)
-            l = self.decay_learning_rate(self.learning_rate, i, self.max_ephocs)
+            r = self.decrese_radius(init_radius, i, time_constant)
+            l = self.decrese_learning_rate(self.learning_rate, i, self.max_ephocs)
             
             # now we know the BMU, update its weight vector to move closer to input
             # and move its neighbours in 2-D space closer
@@ -78,26 +80,55 @@ class SOM(QThread):
                 for y in range(self.net.shape[1]):
                     w = self.net[x, y, :].reshape(m, 1)
                     # get the 2-D distance (again, not the actual Euclidean distance)
-                    w_dist = np.sum((np.array([x, y]) - bmu_idx) ** 2)
+                    if self.k_distance == 'Euclidea':
+                        w_dist = np.sum((np.array([x, y]) - bmu_idx) ** 2)
+                    elif self.k_distance == 'Coseno':
+                        w_dist = np.sum(1- ((np.array([x, y]) * bmu_idx) / (np.sqrt((np.array([x, y]) * bmu_idx) ** 2))))
+                    elif self.k_distance == 'Manhattan':
+                        w_dist = np.sum(np.fabs(np.array([x, y])-bmu_idx))
                     # if the distance is within the current neighbourhood radius
-                    if w_dist <= r**2:
-                        # calculate the degree of influence (based on the 2-D distance)
-                        influence = self.calculate_influence(w_dist, r)
-                        # now update the neuron's weight using the formula:
-                        # new w = old w + (learning rate * influence * delta)
-                        # where delta = input vector (t) - old w
-                        new_w = w + (l * influence * (t - w))
-                        # commit the new weight
-                        self.net[x, y, :] = new_w.reshape(1, 10)
+                    if self.k_neighborhood == 'Cuatro' and w_dist <= r**2:
+                            # calculate the degree of influence (based on the 2-D distance)
+                            influence = self.calculate_influence(w_dist, r)
+                            # now update the neuron's weight using the formula:
+                            # new w = old w + (learning rate * influence * delta)
+                            # where delta = input vector (t) - old w
+                            new_w = w + (l * influence * (t - w))
+                            # commit the new weight
+                            self.net[x, y, :] = new_w.reshape(1, m)
+                            dist = abs(bmu.reshape(m)-np.mean(self.training_set, axis=1))
+                            error.append(np.sqrt(np.dot(dist, dist.T)))
+                    elif self.k_neighborhood == 'Estrella' and w_dist <= r**4:
+                            # calculate the degree of influence (based on the 2-D distance)
+                            influence = self.calculate_influence(w_dist, r)
+                            # now update the neuron's weight using the formula:
+                            # new w = old w + (learning rate * influence * delta)
+                            # where delta = input vector (t) - old w
+                            new_w = w + (l * influence * (t - w))
+                            # commit the new weight
+                            self.net[x, y, :] = new_w.reshape(1, m)
+                            dist = abs(bmu.reshape(m)-np.mean(self.training_set, axis=1))
+                            error.append(np.sqrt(np.dot(dist, dist.T)))
+            self.acumulated_errors.append(float(sum(error) / float(len(self.training_set.T))))
             
             progress_count += progress
             if int(progress_count % 5):
                 self.countChanged.emit(progress_count)
 
-    def decay_radius(self, initial_radius, i, time_constant):
+    def calculate_error(self):
+        errs = list()
+        for vector in self.training_set.T:
+            print(vector)
+            indx = np.argmin(np.sum((self.net - vector) ** 2, axis=2))
+            w = np.array([int(indx / self.net.shape[0]), indx % self.net.shape[1]])
+            dist = self.net[w[0], w[1]] - vector
+            errs.append(np.sqrt(np.dot(dist, dist.T)))
+        return float(sum(errs) / float(len(self.training_set.T)))
+
+    def decrese_radius(self, initial_radius, i, time_constant):
         return initial_radius * np.exp(-i / time_constant)
 
-    def decay_learning_rate(self, initial_learning_rate, i, max_ephocs):
+    def decrese_learning_rate(self, initial_learning_rate, i, max_ephocs):
         return initial_learning_rate * np.exp(-i / max_ephocs)
 
     def calculate_influence(self, distance, radius):
@@ -117,7 +148,13 @@ class SOM(QThread):
             for y in range(net.shape[1]):
                 w = net[x, y, :].reshape(m, 1)
                 # don't bother with actual Euclidean distance, to avoid expensive sqrt operation
-                sq_dist = np.sum((w - t) ** 2)
+                # Choose the kind of distance operation
+                if self.k_distance == 'Euclidea':
+                    sq_dist = np.sum((w - t) ** 2)
+                elif self.k_distance == 'Coseno':
+                    sq_dist = np.sum(1 - ((w * t) / (np.sqrt((w * t) ** 2))))
+                elif self.k_distance == 'Manhattan':
+                    sq_dist = np.sum(np.fabs(w-t))
                 if sq_dist < min_dist:
                     min_dist = sq_dist
                     bmu_idx = np.array([x, y])
