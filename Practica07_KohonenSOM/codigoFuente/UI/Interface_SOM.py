@@ -661,10 +661,6 @@ class Ui_MainWindow(object):
         self.gridLayout_4 = QtWidgets.QGridLayout(self.input_box)
         self.gridLayout_4.setSizeConstraint(QtWidgets.QLayout.SetMaximumSize)
         self.gridLayout_4.setObjectName("gridLayout_4")
-        self.btn_clean_input_graph = QtWidgets.QPushButton(self.input_box)
-        self.btn_clean_input_graph.setMinimumSize(QtCore.QSize(0, 30))
-        self.btn_clean_input_graph.setObjectName("btn_clean_input_graph")
-        self.gridLayout_4.addWidget(self.btn_clean_input_graph, 1, 0, 1, 1)
         self.input_graph = Points_Input(self.input_box)
         self.input_graph.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.input_graph.setStyleSheet("padding: 0px;")
@@ -704,7 +700,6 @@ class Ui_MainWindow(object):
         self.btn_train.setText(_translate("MainWindow", "Entrenar SOM"))
         self.error_box.setTitle(_translate("MainWindow", "Errores"))
         self.input_box.setTitle(_translate("MainWindow", "Entrada de puntos"))
-        self.btn_clean_input_graph.setText(_translate("MainWindow", "Limpiar gráfica"))
 
 from UI.external_widgets.error_graph import Error_Graph
 from UI.external_widgets.points_input import Points_Input

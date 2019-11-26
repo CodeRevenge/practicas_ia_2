@@ -13,7 +13,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
 
         self.setupUi(self)
 
-        self.btn_clean_input_graph.clicked.connect(self.clear_points)
+        # self.btn_clean_input_graph.clicked.connect(self.clear_points)
         self.btn_train.clicked.connect(self.train_som)
 
     def clear_points(self):
