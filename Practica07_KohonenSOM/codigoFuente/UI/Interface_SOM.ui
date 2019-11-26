@@ -26,7 +26,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MultiLayer Adaline</string>
+   <string>Kohonen SOM</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources/resources.qrc">
@@ -534,13 +534,13 @@ QPushButton:disabled
      <widget class="QGroupBox" name="control_box">
       <property name="minimumSize">
        <size>
-        <width>632</width>
-        <height>291</height>
+        <width>0</width>
+        <height>400</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>632</width>
+        <width>16777215</width>
         <height>16777215</height>
        </size>
       </property>
@@ -623,7 +623,7 @@ QPushButton:disabled
           <number>2</number>
          </property>
          <property name="maximum">
-          <number>40</number>
+          <number>200</number>
          </property>
          <property name="value">
           <number>20</number>
@@ -645,11 +645,11 @@ QPushButton:disabled
           <bool>false</bool>
          </property>
          <property name="currentText">
-          <string>4's</string>
+          <string>Cuatro</string>
          </property>
          <item>
           <property name="text">
-           <string>4's</string>
+           <string>Cuatro</string>
           </property>
          </item>
          <item>
@@ -700,7 +700,7 @@ QPushButton:disabled
          </item>
          <item>
           <property name="text">
-           <string>Hamming</string>
+           <string>Coseno</string>
           </property>
          </item>
          <item>
@@ -765,7 +765,7 @@ QPushButton:disabled
           <number>99999999</number>
          </property>
          <property name="value">
-          <number>5000</number>
+          <number>500</number>
          </property>
         </widget>
        </item>
@@ -875,18 +875,18 @@ QPushButton:disabled
       </layout>
      </widget>
     </item>
-    <item row="0" column="0">
+    <item row="1" column="1">
      <widget class="QGroupBox" name="error_box">
       <property name="minimumSize">
        <size>
-        <width>632</width>
-        <height>240</height>
+        <width>0</width>
+        <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>16777215</width>
-        <height>300</height>
+        <width>800</width>
+        <height>16777215</height>
        </size>
       </property>
       <property name="title">
@@ -906,11 +906,11 @@ QPushButton:disabled
       </layout>
      </widget>
     </item>
-    <item row="1" column="0" colspan="2">
+    <item row="0" column="0" rowspan="2">
      <widget class="QGroupBox" name="input_box">
       <property name="minimumSize">
        <size>
-        <width>1271</width>
+        <width>800</width>
         <height>400</height>
        </size>
       </property>
@@ -921,19 +921,6 @@ QPushButton:disabled
        <property name="sizeConstraint">
         <enum>QLayout::SetMaximumSize</enum>
        </property>
-       <item row="1" column="0">
-        <widget class="QPushButton" name="btn_clean_input_graph">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Limpiar gráfica</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
         <widget class="Points_Input" name="input_graph" native="true">
          <property name="layoutDirection">

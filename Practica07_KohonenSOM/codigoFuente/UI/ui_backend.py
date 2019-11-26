@@ -13,7 +13,7 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
 
         self.setupUi(self)
 
-        self.btn_clean_input_graph.clicked.connect(self.clear_points)
+        # self.btn_clean_input_graph.clicked.connect(self.clear_points)
         self.btn_train.clicked.connect(self.train_som)
 
     def clear_points(self):
@@ -37,21 +37,19 @@ class UI_Backend(QtWidgets.QMainWindow, Ui_MainWindow, Points_Input, Error_Graph
         
         self.btn_train.setEnabled(False)
 
-    #     thread = threading.Thread(target=self.train)
-    #     thread.start()
-
-    # def train(self):
         self.som = SOM(self.k_neighborhood, self.k_distance, self.mesh_size, self.max_ephocs, self.learning_rate)
-        # self.som.started.connect(self.som.train)
         self.som.countChanged.connect(self.onCountChanged)
         self.som.finished.connect(self.onFinished)
         self.som.start()
+
+        # self.som.train()
+        # self.onFinished()
 
     def onCountChanged(self, value):
         self.progressBar.setValue(value)
 
     def onFinished(self):
-        print('finished')
         self.progressBar.setValue(100)
         self.input_graph.plot_lines(self.som.net)
+        self.error_graph.graph_errors(self.som.acumulated_errors)
         self.btn_train.setEnabled(True)

@@ -7,16 +7,16 @@ from matplotlib import patches as patches
 # %matplotlib inline
 
 # 8 colours as initial test set
-#raw_data = np.array([[1, 0, 0], [0, 1, 0],
+# raw_data = np.array([[1, 0, 0], [0, 1, 0],
 #                     [0, 0.5, 0.25], [0, 0, 1],
 #                     [0, 0, 0.5], [1, 1, 0.2],
 #                     [1, 0.4, 0.25], [1, 0, 1]]).T * 255
 # or use random colours
 # raw_data = np.random.randint(0, 255, (3, 100))
 
-# data_file = open('c:/Users/masar/Documents/UDG/Semestres/8° Semestre/Inteligencia Artificial II/Practicas/Practica07_KohonenSOM/codigoFuente/Algorithms/poker-hand-training-true.data','r')
+data_file = open('c:/Users/masar/Documents/UDG/Semestres/8° Semestre/Inteligencia Artificial II/Practicas/Practica07_KohonenSOM/codigoFuente/Algorithms/poker-hand-training-true.data','r')
 # data_file = open('codigoFuente/Algorithms/poker-hand-training-true.data','r')
-data_file = open('poker-hand-training-true.data','r')
+# data_file = open('poker-hand-training-true.data','r')
 raw_data = []
 for line in data_file.readlines():
     a = line.split(',')
@@ -27,7 +27,7 @@ raw_data = np.array(raw_data).T
 
 a = 25
 network_dimensions = np.array([a,a])
-n_iterations = 10000
+n_iterations = 5000
 init_learning_rate = 0.01
 
 normalise_data = True
@@ -122,7 +122,7 @@ for i in range(n_iterations):
                 # where delta = input vector (t) - old w
                 new_w = w + (l * influence * (t - w))
                 # commit the new weight
-                net[x, y, :] = new_w.reshape(1, 10)
+                net[x, y, :] = new_w.reshape(1, m)
 
 fig = plt.figure()
 # setup axes

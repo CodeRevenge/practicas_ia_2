@@ -1,4 +1,4 @@
-# <center>Práctica 04: Multi Layer Adaline</center>
+# <center>Práctica 07: Kohonen Self Organizing Map</center>
 ![PyPI - Python Version](https://img.shields.io/badge/python-3.5%20|%203.6%20|%203.7-blue)
 
 ## Uso

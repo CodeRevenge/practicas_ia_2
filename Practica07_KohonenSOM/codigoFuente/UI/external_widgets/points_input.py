@@ -12,8 +12,6 @@ import numpy as np
 class Points_Input(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self, parent) 
-        self.TRAIN_BUTTON = QWidget
-        self.update_last_layer_input = lambda x:x
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0,0,0,0)
@@ -27,11 +25,6 @@ class Points_Input(QWidget):
         self.layout.addWidget(self.canvas) 
          
         self.init_graph()
-
-        self.points = []
-
-        self.trained = False
-        
         self.canvas.draw()
 
 
@@ -56,22 +49,26 @@ class Points_Input(QWidget):
         self.ax.tick_params(axis='y', colors='#b1b1b1')
 
     def clearPlot(self):
-        self.maped = False
-        plt.figure(2)
-        plt.clf()
-        self.init_graph()
+        self.fig = plt.figure(2)
+        self.fig.clf()
+        self.ax = plt.gca()
+        self.ax.cla()
+        # self.init_graph()
         self.canvas.draw()
 
     
 
     def plot_lines(self, net):
-        print('ok')
+        self.clearPlot()
         self.fig = plt.figure(2)
         self.ax = plt.gca()
+        self.fig.set_facecolor('#323232')
         # setup axes
-        self.ax = self.fig.add_subplot(111, aspect='equal')
+        # self.ax = self.fig.add_subplot(111, aspect='equal')
         self.ax.set_xlim((0, net.shape[0]+1))
         self.ax.set_ylim((0, net.shape[1]+1))
+        self.ax.tick_params(axis='x', colors='#b1b1b1')
+        self.ax.tick_params(axis='y', colors='#b1b1b1')
 
         # plot the rectangles
         for x in range(1, net.shape[0] + 1):
